@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 
 namespace FindableManaCrystals.Tiles {
-	partial class ManaCrystalShardTile : ModTile {
+	public partial class ManaCrystalShardTile : ModTile {
 		public override void ModifyLight( int i, int j, ref float r, ref float g, ref float b ) {
 			float illum = this.GetIlluminationAt( i, j );
 

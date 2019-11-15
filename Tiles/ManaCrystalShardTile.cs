@@ -12,7 +12,7 @@ using Terraria.ObjectData;
 
 
 namespace FindableManaCrystals.Tiles {
-	partial class ManaCrystalShardTile : ModTile {
+	public partial class ManaCrystalShardTile : ModTile {
 		private static int AnimationFrameWidth = 18;
 
 

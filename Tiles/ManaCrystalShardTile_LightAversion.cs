@@ -7,7 +7,7 @@ using HamstarHelpers.Helpers.Tiles;
 
 
 namespace FindableManaCrystals.Tiles {
-	partial class ManaCrystalShardTile : ModTile {
+	public partial class ManaCrystalShardTile : ModTile {
 		public static void UpdateLightAversionForTile( int tileX, int tileY, float tolerance, float brightness ) {
 			float rand = TmlHelpers.SafelyGetRand().NextFloat();
 			rand *= tolerance;

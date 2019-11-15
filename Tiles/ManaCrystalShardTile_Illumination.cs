@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 
 namespace FindableManaCrystals.Tiles {
-	partial class ManaCrystalShardTile : ModTile {
+	public partial class ManaCrystalShardTile : ModTile {
 		public float GetIlluminationAt( int i, int j ) {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
 			float illum = singleton.IlluminatedCrystals.Get2DOrDefault( i, j );
