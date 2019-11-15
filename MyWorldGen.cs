@@ -41,7 +41,7 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		public FindableManaCrystalsWorldGenPass( int shards ) : base( "PopulateManaCrystalShards", 1f ) {
+		public FindableManaCrystalsWorldGenPass( int shards ) : base( "Findable Mana Crystals: Populate Shards", 1f ) {
 			this.NeededShards = shards;
 		}
 
