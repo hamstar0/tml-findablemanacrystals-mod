@@ -59,6 +59,11 @@ namespace FindableManaCrystals {
 		[DefaultValue( 768 )]
 		public int HugeWorldManaCrystalShards { get; set; } = 768;
 
+		////
+
+		[DefaultValue( true )]
+		public bool StartPlayersWithBinoculars { get; set; } = true;
+
 
 
 		////
