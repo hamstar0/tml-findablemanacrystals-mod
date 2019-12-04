@@ -74,7 +74,7 @@ namespace FindableManaCrystals.Tiles {
 			Main.tileLighted[ this.Type ] = true;
 			Main.tileValue[ this.Type ] = 790;	// just below life crystals
 			Main.tileFrameImportant[ this.Type ] = true;
-			Main.tileObsidianKill[ this.Type ] = true;
+			Main.tileObsidianKill[ this.Type ] = false;
 			Main.tileNoAttach[ this.Type ] = true;
 
 			TileObjectData.newTile.CopyFrom( TileObjectData.Style1x1 );
@@ -105,7 +105,7 @@ namespace FindableManaCrystals.Tiles {
 
 			if( Main.tile[i,j].frameY != frameY ) {
 				if( frameY == -1 ) {
-					TileHelpers.KillTile( i, j, false, true );
+					TileHelpers.KillTileSynced( i, j, false, true );
 				} else {
 					Main.tile[i, j].frameY = frameY;
 					resetFrame = true;
@@ -127,30 +127,46 @@ namespace FindableManaCrystals.Tiles {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
 			singleton.IlluminatedCrystals.Remove2D( i, j );
 
-			Item.NewItem( i << 4, j << 4, 16, 16, ModContent.ItemType<ManaCrystalShardItem>() );
+			Item.NewItem( (i << 4), (j << 4), 16, 16, ModContent.ItemType<ManaCrystalShardItem>() );
 		}
 
 
 		////////////////
 
 		private void UpdateDrawnTileSlow( int i, int j ) {
-			var projSingletone = ModContent.GetInstance<FindableManaCrystalsProjectile>();
-			int responseDistSqr = FindableManaCrystalsMod.Config.ManaCrystalShardMagicResonanceTileRange * 16;
-			responseDistSqr *= responseDistSqr;
+			var projSingleton = ModContent.GetInstance<FindableManaCrystalsProjectile>();
+			int resonanceDistSqr = FindableManaCrystalsConfig.Instance.ManaCrystalShardMagicResonanceTileRange * 16;
+			resonanceDistSqr *= resonanceDistSqr;
 
 			int tileWldX = i << 4;
 			int tileWldY = j << 4;
 
-			foreach( int projWho in projSingletone.GetAllMagicProjectiles() ) {
+			foreach( int projWho in projSingleton.GetAllMagicProjectiles() ) {
 				Vector2 pos = Main.projectile[projWho].Center;
 				int distX = ((int)pos.X) - tileWldX;
 				int distY = ((int)pos.Y) - tileWldY;
 
 				int distSqr = (distX*distX) + (distY*distY);
-				if( distSqr < responseDistSqr ) {
+				if( distSqr < resonanceDistSqr ) {
 					this.SetIlluminateAt( i, j );
 					break;
 				}
+			}
+
+			if( FindableManaCrystalsConfig.Instance.DebugModeCheatReveal ) {
+				var pos = new Vector2( ( i << 4 ) + 8, ( j << 4 ) + 8 );
+				//Dust dust = Dust.QuickDust( pos, Color.Blue );
+				//dust.noLight = true;
+				Dust dust = Dust.NewDustPerfect(
+					Position: pos,
+					Type: 61,
+					Velocity: default(Vector2),
+					Alpha: 0,
+					newColor: Color.Blue,
+					Scale: 1f
+				);
+				dust.noGravity = true;
+				dust.noLight = true;
 			}
 		}
 	}

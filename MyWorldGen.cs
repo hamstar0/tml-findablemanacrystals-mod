@@ -75,7 +75,7 @@ namespace FindableManaCrystals {
 
 			WorldGen.Place1x1( centerTileX, centerTileY, shardTile, 0 );
 
-			if( FindableManaCrystalsMod.Config.DebugModeInfo ) {
+			if( FindableManaCrystalsConfig.Instance.DebugModeInfo ) {
 				LogHelpers.Log( "Placed Mana Crystal Shard (of " + this.NeededShards + ")" +
 					" at " + centerTileX + "," + centerTileY +
 					" (" + ( centerTileX << 4 ) + "," + ( centerTileY << 4 ) + ")"

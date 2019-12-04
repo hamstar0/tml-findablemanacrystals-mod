@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.Classes.UI.ModConfig;
+using HamstarHelpers.Services.Configs;
 using System;
 using System.ComponentModel;
 using Terraria.ModLoader.Config;
@@ -10,7 +11,13 @@ namespace FindableManaCrystals {
 
 
 
-	public class FindableManaCrystalsConfig : ModConfig {
+	public class FindableManaCrystalsConfig : StackableModConfig {
+		public static FindableManaCrystalsConfig Instance => ModConfigStack.GetMergedConfigs<FindableManaCrystalsConfig>();
+
+
+
+		////////////////
+
 		public override ConfigScope Mode => ConfigScope.ServerSide;
 
 
@@ -18,6 +25,7 @@ namespace FindableManaCrystals {
 		////
 
 		public bool DebugModeInfo { get; set; } = false;
+		public bool DebugModeCheatReveal { get; set; } = false;
 
 
 		////
@@ -30,13 +38,17 @@ namespace FindableManaCrystals {
 		[DefaultValue( 80 )]
 		public int ManaCrystalShardTeleportRadius { get; set; } = 80;
 
-		[Range( 0.01f, 100f )]
-		[DefaultValue( 20f )]
-		public float ManaCrystalShardLightToleranceScale { get; set; } = 20f;
+		[Range( 0.01f, 300f )]
+		[DefaultValue( 60f )]
+		public float ManaCrystalShardLightToleranceScale { get; set; } = 60f;
 
 		[Range( 0, 100 )]
 		[DefaultValue( 10 )]
 		public int ManaCrystalShardMagicResonanceTileRange { get; set; } = 10;
+
+		[Range( 0.001f, 10f )]
+		[DefaultValue( 0.04f )]
+		public float IlluminationDimRate { get; set; } = 0.04f;
 
 
 		[Range( 0, 10000 )]

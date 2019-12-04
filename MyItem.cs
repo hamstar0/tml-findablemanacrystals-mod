@@ -12,7 +12,7 @@ namespace FindableManaCrystals {
 
 			switch( item.type ) {
 			case ItemID.Binoculars:
-				tip = new TooltipLine( this.mod, "AdventureModeBinoculars", "Use to spot important things" );
+				tip = new TooltipLine( this.mod, "AdventureModeBinoculars", "May detect hints of nearby magical treasure when used" );
 				tooltips.Add( tip );
 				break;
 			}

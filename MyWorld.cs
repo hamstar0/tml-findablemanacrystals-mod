@@ -58,19 +58,19 @@ namespace FindableManaCrystals {
 			switch( WorldHelpers.GetSize() ) {
 			default:
 			case WorldSize.SubSmall:
-				shards = FindableManaCrystalsMod.Config.TinyWorldManaCrystalShards;
+				shards = FindableManaCrystalsConfig.Instance.TinyWorldManaCrystalShards;
 				break;
 			case WorldSize.Small:
-				shards = FindableManaCrystalsMod.Config.SmallWorldManaCrystalShards;
+				shards = FindableManaCrystalsConfig.Instance.SmallWorldManaCrystalShards;
 				break;
 			case WorldSize.Medium:
-				shards = FindableManaCrystalsMod.Config.MediumWorldManaCrystalShards;
+				shards = FindableManaCrystalsConfig.Instance.MediumWorldManaCrystalShards;
 				break;
 			case WorldSize.Large:
-				shards = FindableManaCrystalsMod.Config.LargeWorldManaCrystalShards;
+				shards = FindableManaCrystalsConfig.Instance.LargeWorldManaCrystalShards;
 				break;
 			case WorldSize.SuperLarge:
-				shards = FindableManaCrystalsMod.Config.HugeWorldManaCrystalShards;
+				shards = FindableManaCrystalsConfig.Instance.HugeWorldManaCrystalShards;
 				break;
 			}
 
@@ -118,7 +118,7 @@ namespace FindableManaCrystals {
 					ManaCrystalShardTile.UpdateLightAversionForTile(
 						tileAt.tileX,
 						tileAt.tileY,
-						FindableManaCrystalsMod.Config.ManaCrystalShardLightToleranceScale,
+						FindableManaCrystalsConfig.Instance.ManaCrystalShardLightToleranceScale,
 						brightness
 					);
 				}

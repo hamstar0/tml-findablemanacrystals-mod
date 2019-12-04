@@ -19,8 +19,6 @@ namespace FindableManaCrystals {
 
 		public static FindableManaCrystalsMod Instance { get; private set; }
 
-		public static FindableManaCrystalsConfig Config => ModContent.GetInstance<FindableManaCrystalsConfig>();
-
 
 
 		////////////////
@@ -57,7 +55,7 @@ namespace FindableManaCrystals {
 		}
 
 		public override void PostAddRecipes() {
-			if( FindableManaCrystalsMod.Config.ManaCrystalShardsPerManaCrystal == 0 ) {
+			if( FindableManaCrystalsConfig.Instance.ManaCrystalShardsPerManaCrystal == 0 ) {
 				return;
 			}
 
@@ -71,7 +69,7 @@ namespace FindableManaCrystals {
 
 					recipe.requiredItem[i] = new Item();
 					recipe.requiredItem[i].SetDefaults( shardType, true );
-					recipe.requiredItem[i].stack = FindableManaCrystalsMod.Config.ManaCrystalShardsPerManaCrystal;
+					recipe.requiredItem[i].stack = FindableManaCrystalsConfig.Instance.ManaCrystalShardsPerManaCrystal;
 					break;
 				}
 			}

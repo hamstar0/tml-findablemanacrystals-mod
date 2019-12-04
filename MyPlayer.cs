@@ -37,7 +37,7 @@ namespace FindableManaCrystals {
 
 		public override void SetupStartInventory( IList<Item> items, bool mediumcoreDeath ) {
 			if( !mediumcoreDeath ) {
-				if( FindableManaCrystalsMod.Config.StartPlayersWithBinoculars ) {
+				if( FindableManaCrystalsConfig.Instance.StartPlayersWithBinoculars ) {
 					var binocs = new Item();
 					binocs.SetDefaults( ItemID.Binoculars );
 					binocs.stack = 1;
