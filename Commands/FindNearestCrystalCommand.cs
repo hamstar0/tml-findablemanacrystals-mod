@@ -30,20 +30,30 @@ namespace FindableManaCrystals.Commands {
 			int manaCrystalType = ModContent.TileType<ManaCrystalShardTile>();
 			int shortestSqr = Main.maxTilesX * Main.maxTilesX;
 			int nearestX = -1, nearestY = -1;
+			int count = 0;
 
-			for( int i=0; i<Main.maxTilesY; i++ ) {
-				for( int j = 0; j < Main.maxTilesX; j++ ) {
-					Tile tile = Main.tile[i, j];
-					if( tile == null || !tile.active() || tile.type != manaCrystalType ) { continue; }
-
-					if( (i*i)+(j*j) < shortestSqr ) {
-						nearestX = i;
-						nearestY = j;
+			for( int y=0; y<Main.maxTilesY; y++ ) {
+				for( int x=0; x<Main.maxTilesX; x++ ) {
+					Tile tile = Main.tile[x, y];
+					if( tile == null || !tile.active() || tile.type != manaCrystalType ) {
+						continue;
 					}
+
+					int diffX = (int)(Main.LocalPlayer.position.X / 16f) - x;
+					int diffY = (int)(Main.LocalPlayer.position.Y / 16f) - y;
+					int diffSqr = ( diffY * diffY ) + ( diffX * diffX );
+
+					if( diffSqr < shortestSqr ) {
+						shortestSqr = diffSqr;
+						nearestX = x;
+						nearestY = y;
+					}
+
+					count++;
 				}
 			}
 
-			caller.Reply( "Nearest mana crystal at x:"+nearestX+", y:"+nearestY, Color.Lime );
+			caller.Reply( "Nearest mana crystal at x:"+nearestX+", y:"+nearestY+" (of "+count+")", Color.Lime );
 		}
 	}
 }

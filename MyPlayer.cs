@@ -1,4 +1,5 @@
 ﻿using FindableManaCrystals.Tiles;
+using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Services.Timers;
 using Microsoft.Xna.Framework;
 using System;
@@ -21,7 +22,7 @@ namespace FindableManaCrystals {
 		////////////////
 
 		public override void PreUpdate() {
-			if( this.ScanTickElapsed++ == 15 ) {
+			if( this.ScanTickElapsed++ == 10 ) {
 				this.ScanTickElapsed = 0;
 
 				Item item = this.player.HeldItem;
@@ -50,24 +51,32 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		public float MeasureClosestManaCrystalShardTileDistance() {
+		public float? MeasureClosestOnScreenManaCrystalShardTileDistance() {
 			float closest = -1, current;
-			int maxX = (int)( Main.screenPosition.X + Main.screenWidth );
-			int maxY = (int)( Main.screenPosition.Y + Main.screenHeight );
-			maxX = maxX >> 4;
-			maxY = maxY >> 4;
+			int maxWldX = (int)Main.screenPosition.X + Main.screenWidth;
+			int maxWldY = (int)Main.screenPosition.Y + Main.screenHeight;
+			int midWldX = maxWldX - (Main.screenWidth / 2);
+			int midWldY = maxWldY - (Main.screenHeight / 2);
 
-			for( int i = (int)Main.screenPosition.X >> 4; i < maxX; i++ ) {
-				for( int j = (int)Main.screenPosition.Y >> 4; j < maxY; j++ ) {
-					Tile tile = Main.tile[i, j];
+			int minTileX = (int)Main.screenPosition.X >> 4;
+			int minTileY = (int)Main.screenPosition.Y >> 4;
+			int midTileX = midWldX >> 4;
+			int midTileY = midWldY >> 4;
+			int maxTileX = maxWldX >> 4;
+			int maxTileY = maxWldY >> 4;
 
-					if( tile == null || !tile.active() || tile.type != ModContent.TileType<ManaCrystalShardTile>() ) {
+			int shardType = ModContent.TileType<ManaCrystalShardTile>();
+
+			for( int x = minTileX; x < maxTileX; x++ ) {
+				for( int y = minTileY; y < maxTileY; y++ ) {
+					Tile tile = Main.tile[x, y];
+					if( tile == null || !tile.active() || tile.type != shardType ) {
 						continue;
 					}
 
 					current = Vector2.DistanceSquared(
-						new Vector2( i, j ),
-						new Vector2( maxX, maxY )
+						new Vector2( x, y ),
+						new Vector2( midTileX, midTileY )
 					);
 					if( closest == -1 || current < closest ) {
 						closest = current;
@@ -76,18 +85,32 @@ namespace FindableManaCrystals {
 			}
 
 			return closest == -1
-				? -1
-				: (float)Math.Sqrt( closest );
+				? null
+				: (float?)Math.Sqrt( closest );
 		}
 
 
 		public void AnimateManaCrystalShardHint() {
-			float manaProximity = this.MeasureClosestManaCrystalShardTileDistance();
-			if( manaProximity <= 0 ) {
+			if( Timers.GetTimerTickDuration("ManaCrystalShardHint") > 0 ) {
 				return;
 			}
 
-			Timers.SetTimer( "ManaCrystalShardHint", (int)Math.Max( 10, manaProximity ), false, () => {
+			if( this.MeasureClosestOnScreenManaCrystalShardTileDistance() == null ) {
+				return;
+			}
+
+			int beginTicks = FindableManaCrystalsConfig.Instance.BinocularsHintBeginDurationTicks;
+			Timers.SetTimer( "ManaCrystalShardHint", beginTicks, false, () => {
+				Item heldItem = Main.LocalPlayer.HeldItem;
+				if( heldItem == null || heldItem.IsAir || heldItem.type != ItemID.Binoculars ) {
+					return 0;
+				}
+
+				float? newTileProximityIf = this.MeasureClosestOnScreenManaCrystalShardTileDistance();
+				if( !newTileProximityIf.HasValue ) {
+					return 0;
+				}
+
 				int dustIdx = Dust.NewDust(
 					Main.screenPosition,
 					Main.screenWidth,
@@ -103,12 +126,9 @@ namespace FindableManaCrystals {
 				dust.noGravity = true;
 				dust.noLight = true;
 
-				float newManaProximity = this.MeasureClosestManaCrystalShardTileDistance();
-				if( newManaProximity <= 0 ) {
-					return 0;
-				}
-
-				return (int)Math.Max( 10, newManaProximity );
+				float newTileProximity = newTileProximityIf.Value
+					* (1f - FindableManaCrystalsConfig.Instance.BinocularsHintIntensity);
+				return (int)Math.Max( 6, newTileProximity );
 			} );
 		}
 	}

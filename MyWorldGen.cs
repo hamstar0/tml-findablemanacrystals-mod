@@ -72,7 +72,9 @@ namespace FindableManaCrystals {
 				progress?.Set( stepWeight * (float)i );
 
 				if( FindableManaCrystalsWorldGenPass.GetRandomShardAttachableTile(within, 10000, pattern, out randCenterTile) ) {
-					this.SpawnShard( randCenterTile.TileX, randCenterTile.TileY );
+					if( !this.SpawnShard(randCenterTile.TileX, randCenterTile.TileY) ) {
+						i--;
+					}
 				}
 			}
 		}
@@ -80,17 +82,19 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		private void SpawnShard( int centerTileX, int centerTileY ) {
+		private bool SpawnShard( int tileX, int tileY ) {
 			ushort shardTile = (ushort)ModContent.TileType<ManaCrystalShardTile>();
 
-			WorldGen.Place1x1( centerTileX, centerTileY, shardTile, 0 );
+			WorldGen.Place1x1( tileX, tileY, shardTile, 0 );
 
 			if( FindableManaCrystalsConfig.Instance.DebugModeInfo ) {
 				LogHelpers.Log( "Placed Mana Crystal Shard (of " + this.NeededShards + ")" +
-					" at " + centerTileX + "," + centerTileY +
-					" (" + ( centerTileX << 4 ) + "," + ( centerTileY << 4 ) + ")"
+					" at " + tileX + "," + tileY +
+					" (" + ( tileX << 4 ) + "," + ( tileY << 4 ) + ")"
 				);
 			}
+
+			return Main.tile[tileX, tileY].type == shardTile;
 		}
 	}
 }
