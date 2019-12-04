@@ -53,23 +53,23 @@ namespace FindableManaCrystals {
 
 		[Range( 0, 10000 )]
 		[DefaultValue( 160 )]
-		public int TinyWorldManaCrystalShards { get; set; } = 160;
+		public int TinyWorldManaCrystalShards { get; set; } = 192;
 
 		[Range( 0, 10000 )]
 		[DefaultValue( 192 )]
-		public int SmallWorldManaCrystalShards { get; set; } = 192;
+		public int SmallWorldManaCrystalShards { get; set; } = 384;
 
 		[Range( 0, 10000 )]
 		[DefaultValue( 384 )]
-		public int MediumWorldManaCrystalShards { get; set; } = 384;
+		public int MediumWorldManaCrystalShards { get; set; } = 768;
 
 		[Range( 0, 10000 )]
 		[DefaultValue( 576 )]
-		public int LargeWorldManaCrystalShards { get; set; } = 576;
+		public int LargeWorldManaCrystalShards { get; set; } = 1536;
 
 		[Range( 0, 10000 )]
 		[DefaultValue( 768 )]
-		public int HugeWorldManaCrystalShards { get; set; } = 768;
+		public int HugeWorldManaCrystalShards { get; set; } = 2304;
 
 		////
 
