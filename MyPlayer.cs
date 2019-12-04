@@ -52,41 +52,46 @@ namespace FindableManaCrystals {
 		////////////////
 
 		public float? MeasureClosestOnScreenManaCrystalShardTileDistance() {
-			float closest = -1, current;
-			int maxWldX = (int)Main.screenPosition.X + Main.screenWidth;
-			int maxWldY = (int)Main.screenPosition.Y + Main.screenHeight;
-			int midWldX = maxWldX - (Main.screenWidth / 2);
-			int midWldY = maxWldY - (Main.screenHeight / 2);
+			float closestSqr = -1;
+			int midWldX = (int)Main.screenPosition.X - ( Main.screenWidth / 2 );
+			int midWldY = (int)Main.screenPosition.Y - ( Main.screenHeight / 2 );
 
-			int minTileX = (int)Main.screenPosition.X >> 4;
-			int minTileY = (int)Main.screenPosition.Y >> 4;
+			int radius = FindableManaCrystalsConfig.Instance.BinocularDetectionRadiusTiles;
+			int maxDistSqr = radius * radius;
+
 			int midTileX = midWldX >> 4;
 			int midTileY = midWldY >> 4;
-			int maxTileX = maxWldX >> 4;
-			int maxTileY = maxWldY >> 4;
+			int minTileX = midTileX - radius;
+			int minTileY = midTileY - radius;
+			int maxTileX = midTileX + radius;
+			int maxTileY = midTileY + radius;
 
 			int shardType = ModContent.TileType<ManaCrystalShardTile>();
 
 			for( int x = minTileX; x < maxTileX; x++ ) {
 				for( int y = minTileY; y < maxTileY; y++ ) {
+					float distSqr = Vector2.DistanceSquared(
+						new Vector2( x, y ),
+						new Vector2( midTileX, midTileY )
+					);
+					if( distSqr >= maxDistSqr ) {
+						continue;
+					}
+
 					Tile tile = Main.tile[x, y];
 					if( tile == null || !tile.active() || tile.type != shardType ) {
 						continue;
 					}
 
-					current = Vector2.DistanceSquared(
-						new Vector2( x, y ),
-						new Vector2( midTileX, midTileY )
-					);
-					if( closest == -1 || current < closest ) {
-						closest = current;
+					if( closestSqr == -1 || distSqr < closestSqr ) {
+						closestSqr = distSqr;
 					}
 				}
 			}
 
-			return closest == -1
+			return closestSqr == -1
 				? null
-				: (float?)Math.Sqrt( closest );
+				: (float?)Math.Sqrt( closestSqr );
 		}
 
 
