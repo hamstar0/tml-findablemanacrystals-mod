@@ -38,9 +38,11 @@ namespace FindableManaCrystals {
 		[DefaultValue( 80 )]
 		public int ManaCrystalShardTeleportRadius { get; set; } = 80;
 
-		[Range( 0.01f, 300f )]
-		[DefaultValue( 60f )]
-		public float ManaCrystalShardLightToleranceScale { get; set; } = 60f;
+		[Label("Mana Crystal Shard Light Tolerance (0 = unlimited)")]
+		[Range( 0f, 1000f )]
+		[DefaultValue( 0f )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
+		public float ManaCrystalShardLightToleranceScale { get; set; } = 0f;
 
 		[Range( 0, 100 )]
 		[DefaultValue( 10 )]
@@ -48,27 +50,28 @@ namespace FindableManaCrystals {
 
 		[Range( 0.001f, 10f )]
 		[DefaultValue( 0.04f )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float IlluminationDimRate { get; set; } = 0.04f;
 
 
 		[Range( 0, 10000 )]
-		[DefaultValue( 160 )]
+		[DefaultValue( 192 )]
 		public int TinyWorldManaCrystalShards { get; set; } = 192;
 
 		[Range( 0, 10000 )]
-		[DefaultValue( 192 )]
+		[DefaultValue( 384 )]
 		public int SmallWorldManaCrystalShards { get; set; } = 384;
 
 		[Range( 0, 10000 )]
-		[DefaultValue( 384 )]
+		[DefaultValue( 768 )]
 		public int MediumWorldManaCrystalShards { get; set; } = 768;
 
 		[Range( 0, 10000 )]
-		[DefaultValue( 576 )]
+		[DefaultValue( 1536 )]
 		public int LargeWorldManaCrystalShards { get; set; } = 1536;
 
 		[Range( 0, 10000 )]
-		[DefaultValue( 768 )]
+		[DefaultValue( 2304 )]
 		public int HugeWorldManaCrystalShards { get; set; } = 2304;
 
 		////

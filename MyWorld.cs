@@ -54,8 +54,9 @@ namespace FindableManaCrystals {
 
 		public override void ModifyWorldGenTasks( List<GenPass> tasks, ref float totalWeight ) {
 			int shards;
+			WorldSize wldSize = WorldHelpers.GetSize();
 
-			switch( WorldHelpers.GetSize() ) {
+			switch( wldSize ) {
 			default:
 			case WorldSize.SubSmall:
 				shards = FindableManaCrystalsConfig.Instance.TinyWorldManaCrystalShards;

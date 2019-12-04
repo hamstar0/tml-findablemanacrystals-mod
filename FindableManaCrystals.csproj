@@ -19,7 +19,4 @@
       <HintPath>..\..\Mod Helpers\v5 (tML11)\HamstarHelpers\bin\Release\net452\HamstarHelpers.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
 </Project>

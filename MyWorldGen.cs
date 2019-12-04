@@ -1,10 +1,11 @@
-﻿using HamstarHelpers.Classes.Tiles.TilePattern;
-using HamstarHelpers.Helpers.Debug;
-using System;
+﻿using System;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.World.Generation;
 using Microsoft.Xna.Framework;
+using HamstarHelpers.Helpers.TModLoader;
+using HamstarHelpers.Classes.Tiles.TilePattern;
+using HamstarHelpers.Helpers.Debug;
 using FindableManaCrystals.Tiles;
 
 
@@ -15,12 +16,13 @@ namespace FindableManaCrystals {
 				int maxAttempts,
 				TilePattern pattern,
 				out (int TileX, int TileY) randTile ) {
+			var rand = TmlHelpers.SafelyGetRand();
 			int attempts = 0;
 			int randCaveTileX, randCaveTileY;
 			
 			do {
-				randCaveTileX = WorldGen.genRand.Next( within.X, within.X + within.Width );
-				randCaveTileY = WorldGen.genRand.Next( within.Y, within.Y + within.Height );
+				randCaveTileX = rand.Next( within.X, within.X + within.Width );
+				randCaveTileY = rand.Next( within.Y, within.Y + within.Height );
 
 				if( pattern.Check( randCaveTileX, randCaveTileY ) ) {
 					break;
@@ -51,8 +53,16 @@ namespace FindableManaCrystals {
 		public override void Apply( GenerationProgress progress ) {
 			(int TileX, int TileY) randCenterTile;
 			float stepWeight = 1f / (float)this.NeededShards;
-			TilePattern pattern = ModContent.GetInstance<FindableManaCrystalsWorld>().ManaCrystalShardPattern;
-			var within = new Rectangle( 64, (int)Main.worldSurface, Main.maxTilesX - 128, Main.maxTilesY - ( 220 + 64 ) );
+
+			TilePattern pattern = ModContent.GetInstance<FindableManaCrystalsWorld>()
+				.ManaCrystalShardPattern;
+
+			var within = new Rectangle(
+				64,
+				(int)Main.worldSurface,
+				Main.maxTilesX - 128,
+				Main.maxTilesY - ( 220 + 64 )
+			);
 
 			if( progress != null ) {
 				progress.Message = "Pre-placing Mana Crystal Shards: %";

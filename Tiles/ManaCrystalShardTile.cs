@@ -154,16 +154,14 @@ namespace FindableManaCrystals.Tiles {
 			}
 
 			if( FindableManaCrystalsConfig.Instance.DebugModeCheatReveal ) {
-				var pos = new Vector2( ( i << 4 ) + 8, ( j << 4 ) + 8 );
-				//Dust dust = Dust.QuickDust( pos, Color.Blue );
-				//dust.noLight = true;
+				var pos = new Vector2( (i << 4) + 8, (j << 4) + 8 );
 				Dust dust = Dust.NewDustPerfect(
 					Position: pos,
 					Type: 61,
 					Velocity: default(Vector2),
 					Alpha: 0,
 					newColor: Color.Blue,
-					Scale: 1f
+					Scale: 3f
 				);
 				dust.noGravity = true;
 				dust.noLight = true;
