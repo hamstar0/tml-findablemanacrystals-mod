@@ -8,7 +8,8 @@ using Terraria.ModLoader;
 namespace FindableManaCrystals.Tiles {
 	public partial class ManaCrystalShardTile : ModTile {
 		public override void ModifyLight( int i, int j, ref float r, ref float g, ref float b ) {
-			float illum = this.GetIlluminationAt( i, j );
+			float illum;
+			ManaCrystalShardTile.GetIlluminationAt( i, j, out illum );
 
 			r = illum * 0.32f;
 			g = illum * 0.32f;
@@ -27,9 +28,11 @@ namespace FindableManaCrystals.Tiles {
 
 		public override bool PreDraw( int i, int j, SpriteBatch spriteBatch ) {
 			this.UpdateDrawnTileSlow( i, j );
-			this.UpdateIlluminationAt( i, j );
+			ManaCrystalShardTile.UpdateIlluminationAt( i, j );
 
-			float illum = this.GetIlluminationAt( i, j );
+			float illum;
+			ManaCrystalShardTile.GetIlluminationAt( i, j, out illum );
+			
 			if( illum <= 0f ) {
 				return false;
 			} else if( illum >= 0.9f ) {
@@ -54,12 +57,20 @@ namespace FindableManaCrystals.Tiles {
 
 			int x = (i<<4) - (int)Main.screenPosition.X;
 			int y = (j<<4) - (int)Main.screenPosition.Y;
+			Color color = Lighting.GetColor( i, j ) * illum * 0.75f;
+			
+			if( tile.frameX >= texture.Width ) {
+				tile.frameX = ManaCrystalShardTile.PickFrameX( i, j );
+			}
+			if( tile.frameY >= texture.Height ) {
+				tile.frameY = ManaCrystalShardTile.PickFrameY( i, j );
+			}
 
 			spriteBatch.Draw(
 				texture: texture,
 				position: new Vector2(x, y) + zero,
 				sourceRectangle: new Rectangle( tile.frameX, tile.frameY, 16, 16 ),
-				color: Lighting.GetColor(i, j) * illum * 0.5f,
+				color: color,
 				rotation: 0f,
 				origin: default(Vector2),
 				scale: 1f,

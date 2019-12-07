@@ -1,10 +1,8 @@
 ﻿using FindableManaCrystals.Items;
 using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.DotNET.Extensions;
 using HamstarHelpers.Helpers.Tiles;
 using HamstarHelpers.Helpers.TModLoader;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,13 +11,17 @@ using Terraria.ObjectData;
 
 namespace FindableManaCrystals.Tiles {
 	public partial class ManaCrystalShardTile : ModTile {
-		private static int AnimationFrameWidth = 18;
+		public const int AnimationFrameWidth = 18;
 
 
 
 		////////////////
 
-		public static short PredictFrameY( int i, int j ) {
+		public static short PickFrameX( int i, int j ) {
+			return (short)( TmlHelpers.SafelyGetRand().Next(3) * ManaCrystalShardTile.AnimationFrameWidth );
+		}
+
+		public static short PickFrameY( int i, int j ) {
 			Tile uTile = Main.tile[i, j - 1];
 			Tile dTile = Main.tile[i, j + 1];
 			Tile lTile = Main.tile[i - 1, j];
@@ -53,20 +55,6 @@ namespace FindableManaCrystals.Tiles {
 		}
 
 
-		////////////////
-
-		internal static void InitializeSingleton() {
-			var instance = ModContent.GetInstance<ManaCrystalShardTile>();
-			instance.IlluminatedCrystals = new Dictionary<int, IDictionary<int, float>>();
-		}
-
-
-
-		////////////////
-
-		internal IDictionary<int, IDictionary<int, float>> IlluminatedCrystals;
-
-
 
 		////////////////
 
@@ -74,40 +62,45 @@ namespace FindableManaCrystals.Tiles {
 			Main.tileLighted[ this.Type ] = true;
 			Main.tileValue[ this.Type ] = 790;	// just below life crystals
 			Main.tileFrameImportant[ this.Type ] = true;
-			Main.tileObsidianKill[ this.Type ] = false;
 			Main.tileNoAttach[ this.Type ] = true;
 
+			//TileObjectData.newTile.CopyFrom( TileObjectData.GetTileData(TileID.Crystals, 0) );
 			TileObjectData.newTile.CopyFrom( TileObjectData.Style1x1 );
 			TileObjectData.addTile( this.Type );
-			
+
 			//ModTranslation name = this.CreateMapEntryName();
 			//name.SetDefault( "Mana Crystal Shard" );
 			//this.AddMapEntry( new Color( 238, 145, 105 ), name );
 		}
 
+		public override void PostSetDefaults() {
+			Main.tileObsidianKill[this.Type] = false;
+		}
+
 		////////////////
 
 		public override bool CanPlace( int i, int j ) {
-			int frameY = ManaCrystalShardTile.PredictFrameY( i, j );
+			int frameY = ManaCrystalShardTile.PickFrameY( i, j );
 			return frameY != -1;
 		}
 
 		public override void PlaceInWorld( int i, int j, Item item ) {
 			Tile tile = Main.tile[i, j];
-			tile.frameX = (short)(TmlHelpers.SafelyGetRand().Next(3) * ManaCrystalShardTile.AnimationFrameWidth);
-			tile.frameY = ManaCrystalShardTile.PredictFrameY( i, j );
+			tile.frameX = ManaCrystalShardTile.PickFrameX( i, j );
+			tile.frameY = ManaCrystalShardTile.PickFrameY( i, j );
 		}
 
 		////
 
 		public override bool TileFrame( int i, int j, ref bool resetFrame, ref bool noBreak ) {
-			short frameY = ManaCrystalShardTile.PredictFrameY( i, j );
+			Tile tile = Main.tile[i, j];
+			short frameY = ManaCrystalShardTile.PickFrameY( i, j );
 
-			if( Main.tile[i,j].frameY != frameY ) {
+			if( tile.frameY != frameY ) {
 				if( frameY == -1 ) {
 					TileHelpers.KillTileSynced( i, j, false, true );
 				} else {
-					Main.tile[i, j].frameY = frameY;
+					tile.frameY = frameY;
 					resetFrame = true;
 				}
 			}
@@ -124,10 +117,11 @@ namespace FindableManaCrystals.Tiles {
 		}
 
 		public override void KillTile( int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem ) {
-			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
-			singleton.IlluminatedCrystals.Remove2D( i, j );
+			ManaCrystalShardTile.RemoveIlluminationAt( i, j );
 
-			Item.NewItem( (i << 4), (j << 4), 16, 16, ModContent.ItemType<ManaCrystalShardItem>() );
+			if( !fail && !effectOnly && !noItem ) {
+				Item.NewItem( (i << 4), (j << 4), 16, 16, ModContent.ItemType<ManaCrystalShardItem>() );
+			}
 		}
 
 
@@ -148,7 +142,7 @@ namespace FindableManaCrystals.Tiles {
 
 				int distSqr = (distX*distX) + (distY*distY);
 				if( distSqr < resonanceDistSqr ) {
-					this.SetIlluminateAt( i, j );
+					ManaCrystalShardTile.SetIlluminationAt( i, j, 1f );
 					break;
 				}
 			}

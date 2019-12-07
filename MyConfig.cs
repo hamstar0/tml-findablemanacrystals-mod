@@ -25,6 +25,7 @@ namespace FindableManaCrystals {
 		////
 
 		public bool DebugModeInfo { get; set; } = false;
+		public bool DebugModeWorldGenInfo { get; set; } = false;
 		public bool DebugModeCheatReveal { get; set; } = false;
 
 

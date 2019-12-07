@@ -1,50 +1,86 @@
 ﻿using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.DotNET.Extensions;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
 
 namespace FindableManaCrystals.Tiles {
 	public partial class ManaCrystalShardTile : ModTile {
-		public float GetIlluminationAt( int i, int j ) {
-			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
-			float illum = singleton.IlluminatedCrystals.Get2DOrDefault( i, j );
+		private static object MyLock = new object();
 
-			return illum;
-			/*// Animate flicker
-			return ( (int)( illum * 100 ) % 2 ) == 0
-				? illum
-				: 0f;*/
+
+
+		////////////////
+
+		public static bool ContainsIlluminationAt( int i, int j, float minIllum ) {
+			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
+
+			lock( ManaCrystalShardTile.MyLock ) {
+				if( singleton._IlluminatedCrystals == null ) {
+					singleton._IlluminatedCrystals = new Dictionary<int, IDictionary<int, float>>();
+				}
+				return singleton._IlluminatedCrystals.Get2DOrDefault( i, j ) >= minIllum;
+			}
 		}
 
-		public void SetIlluminateAt( int i, int j ) {
+		public static bool GetIlluminationAt( int i, int j, out float illum ) {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
-			if( !singleton.IlluminatedCrystals.ContainsKey(i) || !singleton.IlluminatedCrystals[i].ContainsKey(j) ) {
-				LogHelpers.Warn( "Cannot illuminate "+i+","+j+"; no shard defined");
-				return;
-			}
 
-			if( Main.tile[i,j].type != ModContent.TileType<ManaCrystalShardTile>() ) {
-				LogHelpers.Warn( "Cannot illuminate "+i+","+j+"; incorrect tile");
-				return;
+			lock( ManaCrystalShardTile.MyLock ) {
+				if( singleton._IlluminatedCrystals == null ) {
+					singleton._IlluminatedCrystals = new Dictionary<int, IDictionary<int, float>>();
+				}
+				return singleton._IlluminatedCrystals.TryGetValue2D( i, j, out illum );
 			}
-
-			singleton.IlluminatedCrystals[i][j] = 1f;
 		}
-
 
 		////
 
-		private void UpdateIlluminationAt( int i, int j ) {
+		public static void RemoveIlluminationAt( int i, int j ) {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
-			if( !singleton.IlluminatedCrystals.ContainsKey(i) || !singleton.IlluminatedCrystals[i].ContainsKey(j) ) {
-				singleton.IlluminatedCrystals.Set2D( i, j, 0f );
-				return;
-			}
 
-			if( singleton.IlluminatedCrystals[i][j] > 0f ) {
-				singleton.IlluminatedCrystals[i][j] -= FindableManaCrystalsConfig.Instance.IlluminationDimRate;
+			lock( ManaCrystalShardTile.MyLock ) {
+				if( singleton._IlluminatedCrystals == null ) {
+					singleton._IlluminatedCrystals = new Dictionary<int, IDictionary<int, float>>();
+				}
+				singleton._IlluminatedCrystals.Remove2D( i, j );
 			}
 		}
+
+		public static void SetIlluminationAt( int i, int j, float illum ) {
+			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
+
+			lock( ManaCrystalShardTile.MyLock ) {
+				if( singleton._IlluminatedCrystals == null ) {
+					singleton._IlluminatedCrystals = new Dictionary<int, IDictionary<int, float>>();
+				}
+				singleton._IlluminatedCrystals.Set2D( i, j, illum );
+			}
+		}
+
+
+		////////////////
+
+		private static void UpdateIlluminationAt( int i, int j ) {
+			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
+
+			lock( ManaCrystalShardTile.MyLock ) {
+				if( !singleton._IlluminatedCrystals.ContainsKey(i) || !singleton._IlluminatedCrystals[i].ContainsKey(j) ) {
+					singleton._IlluminatedCrystals.Set2D( i, j, 0f );
+					return;
+				}
+
+				if( singleton._IlluminatedCrystals[i][j] > 0f ) {
+					singleton._IlluminatedCrystals[i][j] -= FindableManaCrystalsConfig.Instance.IlluminationDimRate;
+				}
+			}
+		}
+
+
+
+		////////////////
+
+		private IDictionary<int, IDictionary<int, float>> _IlluminatedCrystals = null;
 	}
 }

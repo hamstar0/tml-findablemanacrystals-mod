@@ -1,8 +1,6 @@
 using FindableManaCrystals.Items;
-using FindableManaCrystals.Tiles;
 using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.Recipes;
-using HamstarHelpers.Services.Debug.CustomHotkeys;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -30,7 +28,6 @@ namespace FindableManaCrystals {
 		////////////////
 
 		public override void Load() {
-			ManaCrystalShardTile.InitializeSingleton();
 			FindableManaCrystalsWorld.InitializeSingleton();
 			FindableManaCrystalsProjectile.InitializeSingleton();
 		}

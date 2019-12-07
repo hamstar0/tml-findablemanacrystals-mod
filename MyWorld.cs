@@ -1,10 +1,10 @@
-﻿using HamstarHelpers.Helpers.World;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.World.Generation;
 using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.World;
 using HamstarHelpers.Classes.Tiles.TilePattern;
 using FindableManaCrystals.Tiles;
 using FindableManaCrystals.NetProtocols;
@@ -29,7 +29,7 @@ namespace FindableManaCrystals {
 					if( Main.tile[x, y].type == ModContent.TileType<ManaCrystalShardTile>() ) {
 						return false;
 					}
-					return ManaCrystalShardTile.PredictFrameY( x, y ) != -1;
+					return ManaCrystalShardTile.PickFrameY( x, y ) != -1;
 				}
 			} );
 		}
