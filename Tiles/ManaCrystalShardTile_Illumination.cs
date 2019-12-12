@@ -15,7 +15,7 @@ namespace FindableManaCrystals.Tiles {
 
 		public static bool ContainsIlluminationAt( int i, int j, float minIllum ) {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
-			if( singleton == null ) {
+			if( singleton == null || singleton._IlluminatedCrystals == null ) {
 				return false;
 			}
 
@@ -29,7 +29,7 @@ namespace FindableManaCrystals.Tiles {
 
 		public static bool GetIlluminationAt( int i, int j, out float illum ) {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
-			if( singleton == null ) {
+			if( singleton == null || singleton._IlluminatedCrystals == null ) {
 				illum = 0f;
 				return false;
 			}
@@ -46,6 +46,7 @@ namespace FindableManaCrystals.Tiles {
 
 		public static void RemoveIlluminationAt( int i, int j ) {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
+			if( singleton == null || singleton._IlluminatedCrystals == null ) { return; }
 
 			lock( ManaCrystalShardTile.MyLock ) {
 				if( singleton._IlluminatedCrystals == null ) {
@@ -57,6 +58,7 @@ namespace FindableManaCrystals.Tiles {
 
 		public static void SetIlluminationAt( int i, int j, float illum ) {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
+			if( singleton == null || singleton._IlluminatedCrystals == null ) { return; }
 
 			lock( ManaCrystalShardTile.MyLock ) {
 				if( singleton._IlluminatedCrystals == null ) {
@@ -71,7 +73,7 @@ namespace FindableManaCrystals.Tiles {
 
 		private static void UpdateIlluminationAt( int i, int j ) {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
-			if( singleton == null ) { return; }
+			if( singleton == null || singleton._IlluminatedCrystals == null ) { return; }
 
 			lock( ManaCrystalShardTile.MyLock ) {
 				if( !singleton._IlluminatedCrystals.ContainsKey(i) || !singleton._IlluminatedCrystals[i].ContainsKey(j) ) {
