@@ -36,7 +36,17 @@ namespace FindableManaCrystals.Tiles {
 			if( illum <= 0f ) {
 				return false;
 			} else if( illum >= 0.9f ) {
-				Dust.NewDust( new Vector2(i<<4, j<<4), 16, 16, 20, 0f, 0f, 0, new Color(255, 255, 255), 0.5f );
+				Dust.NewDust(
+					Position: new Vector2(i<<4, j<<4),
+					Width: 16,
+					Height: 16,
+					Type: 20,
+					SpeedX: 0f,
+					SpeedY: 0f,
+					Alpha: 0,
+					newColor: new Color(255, 255, 255),
+					Scale: 0.5f
+				);
 			}
 
 			SpriteEffects effects = SpriteEffects.None;

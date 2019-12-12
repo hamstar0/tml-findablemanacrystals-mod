@@ -22,5 +22,34 @@ namespace FindableManaCrystals {
 				break;
 			}
 		}
+
+
+		////////////////
+
+		public override void OnConsumeItem( Item item, Player player ) {
+			switch( item.type ) {
+			case ItemID.ManaCrystal:
+				if( FindableManaCrystalsConfig.Instance.ReducedManaCrystalStatIncrease ) {
+					player.statManaMax -= 15;
+				}
+				this.ModifyPopupText();
+				break;
+			}
+		}
+
+
+		////////////////
+
+		private void ModifyPopupText() {
+			for( int idx = 0; idx < Main.combatText.Length; idx++ ) {
+				CombatText txt = Main.combatText[idx];
+				if( txt == null || !txt.active ) { continue; }
+
+				if( txt.text.Equals( "20" ) ) {
+					txt.text = "5";
+					break;
+				}
+			}
+		}
 	}
 }

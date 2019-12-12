@@ -93,6 +93,11 @@ namespace FindableManaCrystals {
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float BinocularsHintIntensity { get; set; } = 0.5f;
 
+		////
+
+		[DefaultValue( true )]
+		public bool ReducedManaCrystalStatIncrease { get; set; } = true;
+
 
 
 		////
