@@ -89,9 +89,9 @@ namespace FindableManaCrystals {
 		public int BinocularsHintBeginDurationTicks { get; set; } = 30;
 
 		[Range( 0f, 1f )]
-		[DefaultValue( 0.75f )]
+		[DefaultValue( 0.6f )]
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
-		public float BinocularsHintIntensity { get; set; } = 0.5f;
+		public float BinocularsHintIntensity { get; set; } = 0.6f;
 
 		////
 

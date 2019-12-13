@@ -59,12 +59,12 @@ namespace FindableManaCrystals {
 			int radius = FindableManaCrystalsConfig.Instance.BinocularDetectionRadiusTiles;
 			int maxDistSqr = radius * radius;
 
-			int midTileX = midWldX >> 4;
-			int midTileY = midWldY >> 4;
-			int minTileX = midTileX - radius;
-			int minTileY = midTileY - radius;
-			int maxTileX = midTileX + radius;
-			int maxTileY = midTileY + radius;
+			int midTileX = Math.Max( 0, midWldX >> 4 );
+			int midTileY = Math.Max( 0, midWldY >> 4 );
+			int minTileX = Math.Max( 0, midTileX - radius );
+			int minTileY = Math.Max( 0, midTileY - radius );
+			int maxTileX = Math.Min( Main.maxTilesX - 1, midTileX + radius );
+			int maxTileY = Math.Min( Main.maxTilesY - 1, midTileY + radius );
 
 			int shardType = ModContent.TileType<ManaCrystalShardTile>();
 
@@ -131,9 +131,10 @@ namespace FindableManaCrystals {
 				dust.noGravity = true;
 				dust.noLight = true;
 
-				float newTileProximity = newTileProximityIf.Value
-					* (1f - FindableManaCrystalsConfig.Instance.BinocularsHintIntensity);
-				return (int)Math.Max( 6, newTileProximity );
+				float intensity = 1f - FindableManaCrystalsConfig.Instance.BinocularsHintIntensity;
+				float newTileProximity = newTileProximityIf.Value * intensity;
+
+				return (int)Math.Max( 5, newTileProximity );
 			} );
 		}
 	}
