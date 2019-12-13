@@ -30,7 +30,7 @@ namespace FindableManaCrystals {
 			switch( item.type ) {
 			case ItemID.ManaCrystal:
 				if( FindableManaCrystalsConfig.Instance.ReducedManaCrystalStatIncrease ) {
-					player.statManaMax -= 15;
+					player.statManaMax -= 10;
 				}
 				this.ModifyPopupText();
 				break;
@@ -46,7 +46,7 @@ namespace FindableManaCrystals {
 				if( txt == null || !txt.active ) { continue; }
 
 				if( txt.text.Equals( "20" ) ) {
-					txt.text = "5";
+					txt.text = "10";
 					break;
 				}
 			}
