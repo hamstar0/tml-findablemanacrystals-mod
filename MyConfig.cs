@@ -45,9 +45,9 @@ namespace FindableManaCrystals {
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float ManaCrystalShardLightToleranceScale { get; set; } = 0f;
 
-		[Range( 0, 100 )]
-		[DefaultValue( 10 )]
-		public int ManaCrystalShardMagicResonanceTileRange { get; set; } = 10;
+		[Range( 0, 200 )]
+		[DefaultValue( 14 )]
+		public int ManaCrystalShardMagicResonanceTileRange { get; set; } = 14;
 
 		[Range( 0.001f, 10f )]
 		[DefaultValue( 0.04f )]

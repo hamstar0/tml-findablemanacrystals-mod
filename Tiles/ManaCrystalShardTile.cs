@@ -63,14 +63,15 @@ namespace FindableManaCrystals.Tiles {
 			Main.tileValue[ this.Type ] = 790;	// just below life crystals
 			Main.tileFrameImportant[ this.Type ] = true;
 			Main.tileNoAttach[ this.Type ] = true;
-
+			this.dustType = DustID.BlueCrystalShard;
+			
 			//TileObjectData.newTile.CopyFrom( TileObjectData.GetTileData(TileID.Crystals, 0) );
 			TileObjectData.newTile.CopyFrom( TileObjectData.Style1x1 );
 			TileObjectData.addTile( this.Type );
 
-			//ModTranslation name = this.CreateMapEntryName();
-			//name.SetDefault( "Mana Crystal Shard" );
-			//this.AddMapEntry( new Color( 238, 145, 105 ), name );
+			ModTranslation name = this.CreateMapEntryName();
+			name.SetDefault( "Mana Crystal Shard" );
+			this.AddMapEntry( new Color(32, 48, 160), name );
 		}
 
 		public override void PostSetDefaults() {

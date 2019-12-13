@@ -51,16 +51,16 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		public float? MeasureClosestOnScreenManaCrystalShardTileDistance() {
+		public float? MeasureClosestOnScreenManaCrystalShardTileDistance( out float percentOfMaxRange ) {
 			float closestSqr = -1;
-			int midWldX = (int)Main.screenPosition.X - ( Main.screenWidth / 2 );
-			int midWldY = (int)Main.screenPosition.Y - ( Main.screenHeight / 2 );
+			int midWldX = (int)Main.screenPosition.X + ( Main.screenWidth / 2 );
+			int midWldY = (int)Main.screenPosition.Y + ( Main.screenHeight / 2 );
 
 			int radius = FindableManaCrystalsConfig.Instance.BinocularDetectionRadiusTiles;
 			int maxDistSqr = radius * radius;
 
-			int midTileX = Math.Max( 0, midWldX >> 4 );
-			int midTileY = Math.Max( 0, midWldY >> 4 );
+			int midTileX = midWldX >> 4;
+			int midTileY = midWldY >> 4;
 			int minTileX = Math.Max( 0, midTileX - radius );
 			int minTileY = Math.Max( 0, midTileY - radius );
 			int maxTileX = Math.Min( Main.maxTilesX - 1, midTileX + radius );
@@ -89,9 +89,16 @@ namespace FindableManaCrystals {
 				}
 			}
 
-			return closestSqr == -1
-				? null
-				: (float?)Math.Sqrt( closestSqr );
+			float? result;
+			if( closestSqr == -1 ) {
+				result = null;
+				percentOfMaxRange = 0f;
+			} else {
+				result = (float?)Math.Sqrt( closestSqr );
+				percentOfMaxRange = 1f - (result.Value / radius);
+			}
+
+			return result;
 		}
 
 
@@ -100,7 +107,8 @@ namespace FindableManaCrystals {
 				return;
 			}
 
-			if( this.MeasureClosestOnScreenManaCrystalShardTileDistance() == null ) {
+			float percent;
+			if( this.MeasureClosestOnScreenManaCrystalShardTileDistance( out percent ) == null ) {
 				return;
 			}
 
@@ -111,30 +119,39 @@ namespace FindableManaCrystals {
 					return 0;
 				}
 
-				float? newTileProximityIf = this.MeasureClosestOnScreenManaCrystalShardTileDistance();
+				float? newTileProximityIf = this.MeasureClosestOnScreenManaCrystalShardTileDistance( out percent );
 				if( !newTileProximityIf.HasValue ) {
 					return 0;
 				}
 
+				float rateScaleOfSparks = 1f - FindableManaCrystalsConfig.Instance.BinocularsHintIntensity;
+				float rateOfSparks = newTileProximityIf.Value * rateScaleOfSparks;
+
 				int dustIdx = Dust.NewDust(
-					Main.screenPosition,
-					Main.screenWidth,
-					Main.screenHeight,
-					59,
-					0f,
-					0f,
-					0,
-					new Color( 255, 255, 255 ),
-					1.25f
+					Position: Main.screenPosition,
+					Width: Main.screenWidth,
+					Height: Main.screenHeight,
+					Type: 59,
+					SpeedX: 0f,
+					SpeedY: 0f,
+					Alpha: 128 - (int)(percent * 128f),
+					newColor: new Color( 255, 255, 255 ),
+					Scale: 1.25f + (2f * percent * percent)
 				);
 				Dust dust = Main.dust[dustIdx];
 				dust.noGravity = true;
 				dust.noLight = true;
 
-				float intensity = 1f - FindableManaCrystalsConfig.Instance.BinocularsHintIntensity;
-				float newTileProximity = newTileProximityIf.Value * intensity;
+				if( FindableManaCrystalsConfig.Instance.DebugModeInfo ) {
+					DebugHelpers.Print(
+						"FindableManaCrystals",
+						"rateOfSparks: " + rateScaleOfSparks.ToString("N2")
+							+", proximity: "+newTileProximityIf.Value.ToString("N2")
+							+", rate: "+rateOfSparks.ToString("N2")
+					);
+				}
 
-				return (int)Math.Max( 5, newTileProximity );
+				return (int)Math.Max( 5, rateOfSparks );
 			} );
 		}
 	}

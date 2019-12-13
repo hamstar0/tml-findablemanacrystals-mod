@@ -15,7 +15,7 @@ namespace FindableManaCrystals.Tiles {
 
 		public static bool ContainsIlluminationAt( int i, int j, float minIllum ) {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
-			if( singleton == null || singleton._IlluminatedCrystals == null ) {
+			if( singleton == null ) {
 				return false;
 			}
 
@@ -29,7 +29,7 @@ namespace FindableManaCrystals.Tiles {
 
 		public static bool GetIlluminationAt( int i, int j, out float illum ) {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
-			if( singleton == null || singleton._IlluminatedCrystals == null ) {
+			if( singleton == null ) {
 				illum = 0f;
 				return false;
 			}
@@ -46,7 +46,7 @@ namespace FindableManaCrystals.Tiles {
 
 		public static void RemoveIlluminationAt( int i, int j ) {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
-			if( singleton == null || singleton._IlluminatedCrystals == null ) { return; }
+			if( singleton == null ) { return; }
 
 			lock( ManaCrystalShardTile.MyLock ) {
 				if( singleton._IlluminatedCrystals == null ) {
@@ -58,7 +58,7 @@ namespace FindableManaCrystals.Tiles {
 
 		public static void SetIlluminationAt( int i, int j, float illum ) {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
-			if( singleton == null || singleton._IlluminatedCrystals == null ) { return; }
+			if( singleton == null ) { return; }
 
 			lock( ManaCrystalShardTile.MyLock ) {
 				if( singleton._IlluminatedCrystals == null ) {
@@ -73,9 +73,12 @@ namespace FindableManaCrystals.Tiles {
 
 		private static void UpdateIlluminationAt( int i, int j ) {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
-			if( singleton == null || singleton._IlluminatedCrystals == null ) { return; }
+			if( singleton == null ) { return; }
 
 			lock( ManaCrystalShardTile.MyLock ) {
+				if( singleton._IlluminatedCrystals == null ) {
+					singleton._IlluminatedCrystals = new Dictionary<int, IDictionary<int, float>>();
+				}
 				if( !singleton._IlluminatedCrystals.ContainsKey(i) || !singleton._IlluminatedCrystals[i].ContainsKey(j) ) {
 					singleton._IlluminatedCrystals.Set2D( i, j, 0f );
 					return;
