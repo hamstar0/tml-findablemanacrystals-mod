@@ -46,8 +46,8 @@ namespace FindableManaCrystals {
 		public float ManaCrystalShardLightToleranceScale { get; set; } = 0f;
 
 		[Range( 0, 200 )]
-		[DefaultValue( 14 )]
-		public int ManaCrystalShardMagicResonanceTileRange { get; set; } = 14;
+		[DefaultValue( 9 )]
+		public int ManaCrystalShardMagicResonanceTileRange { get; set; } = 9;
 
 		[Range( 0.001f, 10f )]
 		[DefaultValue( 0.04f )]

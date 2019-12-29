@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 
 namespace FindableManaCrystals.Items {
-	internal class ManaCrystalShardItem : ModItem {
+	public class ManaCrystalShardItem : ModItem {
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Mana Crystal Shard" );
 			this.Tooltip.SetDefault( "Lights up when magic is nearby"
