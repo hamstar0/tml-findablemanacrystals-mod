@@ -60,7 +60,7 @@ namespace FindableManaCrystals.Tiles {
 
 		public override void SetDefaults() {
 			Main.tileLighted[ this.Type ] = true;
-			Main.tileValue[ this.Type ] = 790;	// just below life crystals
+			//Main.tileValue[ this.Type ] = 790;	// just below life crystals
 			Main.tileFrameImportant[ this.Type ] = true;
 			Main.tileNoAttach[ this.Type ] = true;
 			this.dustType = DustID.BlueCrystalShard;

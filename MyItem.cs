@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HamstarHelpers.Helpers.Items.Attributes;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -18,7 +19,7 @@ namespace FindableManaCrystals {
 					"May detect hints of nearby magical treasure that Spelunker Potions may miss"
 				);
 
-				tooltips.Add( tip );
+				ItemInformationAttributeHelpers.ApplyTooltipAt( tooltips, tip );
 				break;
 			}
 		}
