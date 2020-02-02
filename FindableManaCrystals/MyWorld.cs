@@ -38,10 +38,10 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		private IDictionary<int, int> ManaCrystalShardChecked = new Dictionary<int, int>();	// Technically incorrect; unimportant
+		private IDictionary<int, int> ManaCrystalShardIllumChecked = new Dictionary<int, int>();	// Technically incorrect; unimportant
 
-		private (int tileX, int tileY)[] ManaCrystalShardCheckQueue = new (int, int)[1];
-		private int ManaCrystalShardCheckQueueSize = 0;
+		private (int tileX, int tileY)[] ManaCrystalShardIllumCheckQueue = new (int, int)[1];
+		private int ManaCrystalShardIllumCheckQueueSize = 0;
 
 
 		////////////////
@@ -82,7 +82,7 @@ namespace FindableManaCrystals {
 		////////////////
 
 		public override void PreUpdate() {
-			if( this.ManaCrystalShardCheckQueueSize > 0 ) {
+			if( this.ManaCrystalShardIllumCheckQueueSize > 0 ) {
 				this.ProcessManaCrystalShardQueue();
 			}
 		}
@@ -94,23 +94,23 @@ namespace FindableManaCrystals {
 			if( Main.netMode == 1 ) {
 				ManaCrystalShardCheckProtocol.QuickRequest( tileX, tileY, brightness );
 			} else {
-				if( this.ManaCrystalShardCheckQueueSize == (this.ManaCrystalShardCheckQueue.Length - 1) ) {
-					Array.Resize( ref this.ManaCrystalShardCheckQueue, this.ManaCrystalShardCheckQueue.Length * 2 );
+				if( this.ManaCrystalShardIllumCheckQueueSize == (this.ManaCrystalShardIllumCheckQueue.Length - 1) ) {
+					Array.Resize( ref this.ManaCrystalShardIllumCheckQueue, this.ManaCrystalShardIllumCheckQueue.Length * 2 );
 				}
-				this.ManaCrystalShardCheckQueue[ this.ManaCrystalShardCheckQueueSize++ ] = (tileX, tileY);
+				this.ManaCrystalShardIllumCheckQueue[ this.ManaCrystalShardIllumCheckQueueSize++ ] = (tileX, tileY);
 			}
 		}
 
 		private void ProcessManaCrystalShardQueue() {
 			int shardType = ModContent.TileType<ManaCrystalShardTile>();
 
-			for( int i = 0; i < this.ManaCrystalShardCheckQueueSize; i++ ) {
-				(int tileX, int tileY) tileAt = this.ManaCrystalShardCheckQueue[i];
+			for( int i = 0; i < this.ManaCrystalShardIllumCheckQueueSize; i++ ) {
+				(int tileX, int tileY) tileAt = this.ManaCrystalShardIllumCheckQueue[i];
 
-				if( this.ManaCrystalShardChecked.ContainsKey( tileAt.tileX ) && this.ManaCrystalShardChecked[tileAt.tileX] == tileAt.tileY ) {
+				if( this.ManaCrystalShardIllumChecked.ContainsKey( tileAt.tileX ) && this.ManaCrystalShardIllumChecked[tileAt.tileX] == tileAt.tileY ) {
 					continue;
 				}
-				this.ManaCrystalShardChecked[tileAt.tileX] = tileAt.tileY;
+				this.ManaCrystalShardIllumChecked[tileAt.tileX] = tileAt.tileY;
 
 				Tile tile = Framing.GetTileSafely( tileAt.tileX, tileAt.tileY );
 				float brightness = Lighting.Brightness( tileAt.tileX, tileAt.tileY );
@@ -125,8 +125,8 @@ namespace FindableManaCrystals {
 				}
 			}
 
-			this.ManaCrystalShardChecked.Clear();
-			this.ManaCrystalShardCheckQueueSize = 0;
+			this.ManaCrystalShardIllumChecked.Clear();
+			this.ManaCrystalShardIllumCheckQueueSize = 0;
 		}
 	}
 }

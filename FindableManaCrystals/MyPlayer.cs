@@ -1,12 +1,14 @@
-﻿using FindableManaCrystals.Tiles;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Services.Timers;
-using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Utilities;
+using FindableManaCrystals.Tiles;
+using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.TModLoader;
+using HamstarHelpers.Services.Timers;
 
 
 namespace FindableManaCrystals {
@@ -126,14 +128,15 @@ namespace FindableManaCrystals {
 
 				float rateScaleOfSparks = 1f - FindableManaCrystalsConfig.Instance.BinocularsHintIntensity;
 				float rateOfSparks = newTileProximityIf.Value * rateScaleOfSparks;
+				UnifiedRandom rand = TmlHelpers.SafelyGetRand();
 
 				int dustIdx = Dust.NewDust(
 					Position: Main.screenPosition,
 					Width: Main.screenWidth,
 					Height: Main.screenHeight,
 					Type: 59,
-					SpeedX: 0f,
-					SpeedY: 0f,
+					SpeedX: (4f * rand.NextFloat() * percent * percent) - 2f,
+					SpeedY: (4f * rand.NextFloat() * percent * percent) - 2f,
 					Alpha: 128 - (int)(percent * 128f),
 					newColor: new Color( 255, 255, 255 ),
 					Scale: 1.25f + (2f * percent * percent)

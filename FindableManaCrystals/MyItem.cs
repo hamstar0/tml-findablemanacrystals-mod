@@ -15,11 +15,25 @@ namespace FindableManaCrystals {
 			case ItemID.Binoculars:
 				tip = new TooltipLine(
 					this.mod,
-					"AdventureModeBinoculars",
+					"FindableManaCrystalsBinoculars",
 					"May detect hints of nearby magical treasure that Spelunker Potions may miss"
 				);
 
 				ItemInformationAttributeHelpers.ApplyTooltipAt( tooltips, tip );
+				break;
+			case ItemID.ManaCrystal:
+				if( !FindableManaCrystalsConfig.Instance.ReducedManaCrystalStatIncrease ) {
+					break;
+				}
+
+				tip = new TooltipLine(
+					this.mod,
+					"FindableManaCrystalsManaCrystal",
+					"Permanently increases maximum mana by 10"
+				);
+
+				int idx = tooltips.FindIndex( t => t.Name == "ManaCrystal" );
+				tooltips[ idx ] = tip;
 				break;
 			}
 		}
