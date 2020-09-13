@@ -22,7 +22,9 @@ namespace FindableManaCrystals {
 				ItemInformationAttributeHelpers.ApplyTooltipAt( tooltips, tip );
 				break;
 			case ItemID.ManaCrystal:
-				if( !FindableManaCrystalsConfig.Instance.ReducedManaCrystalStatIncrease ) {
+				var config = FindableManaCrystalsConfig.Instance;
+
+				if( !config.Get<bool>( nameof(FindableManaCrystalsConfig.ReducedManaCrystalStatIncrease) ) ) {
 					break;
 				}
 
@@ -44,7 +46,9 @@ namespace FindableManaCrystals {
 		public override void OnConsumeItem( Item item, Player player ) {
 			switch( item.type ) {
 			case ItemID.ManaCrystal:
-				if( FindableManaCrystalsConfig.Instance.ReducedManaCrystalStatIncrease ) {
+				var config = FindableManaCrystalsConfig.Instance;
+
+				if( config.Get<bool>( nameof(FindableManaCrystalsConfig.ReducedManaCrystalStatIncrease) ) ) {
 					player.statManaMax -= 10;
 				}
 				this.ModifyPopupText();

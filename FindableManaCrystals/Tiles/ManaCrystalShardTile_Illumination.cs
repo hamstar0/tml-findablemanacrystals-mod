@@ -85,7 +85,9 @@ namespace FindableManaCrystals.Tiles {
 				}
 
 				if( singleton._IlluminatedCrystals[i][j] > 0f ) {
-					singleton._IlluminatedCrystals[i][j] -= FindableManaCrystalsConfig.Instance.IlluminationDimRate;
+					var config = FindableManaCrystalsConfig.Instance;
+					string entryName = nameof( FindableManaCrystalsConfig.IlluminationDimRate );
+					singleton._IlluminatedCrystals[i][j] -= config.Get<float>( entryName );
 				}
 			}
 		}

@@ -53,29 +53,30 @@ namespace FindableManaCrystals {
 		////////////////
 
 		public override void ModifyWorldGenTasks( List<GenPass> tasks, ref float totalWeight ) {
+			var config = FindableManaCrystalsConfig.Instance;
 			int shards;
 			WorldSize wldSize = WorldHelpers.GetSize();
 
 			switch( wldSize ) {
 			default:
 			case WorldSize.SubSmall:
-				shards = FindableManaCrystalsConfig.Instance.TinyWorldManaCrystalShards;
+				shards = config.Get<int>( nameof(FindableManaCrystalsConfig.TinyWorldManaCrystalShards ) );
 				break;
 			case WorldSize.Small:
-				shards = FindableManaCrystalsConfig.Instance.SmallWorldManaCrystalShards;
+				shards = config.Get<int>( nameof(FindableManaCrystalsConfig.SmallWorldManaCrystalShards) );
 				break;
 			case WorldSize.Medium:
-				shards = FindableManaCrystalsConfig.Instance.MediumWorldManaCrystalShards;
+				shards = config.Get<int>( nameof(FindableManaCrystalsConfig.MediumWorldManaCrystalShards) );
 				break;
 			case WorldSize.Large:
-				shards = FindableManaCrystalsConfig.Instance.LargeWorldManaCrystalShards;
+				shards = config.Get<int>( nameof(FindableManaCrystalsConfig.LargeWorldManaCrystalShards) );
 				break;
 			case WorldSize.SuperLarge:
-				shards = FindableManaCrystalsConfig.Instance.HugeWorldManaCrystalShards;
+				shards = config.Get<int>( nameof(FindableManaCrystalsConfig.HugeWorldManaCrystalShards) );
 				break;
 			}
 
-			tasks.Add( new FindableManaCrystalsWorldGenPass( shards ) );
+			tasks.Add( new FindableManaCrystalsWorldGenPass(shards) );
 		}
 
 
@@ -102,6 +103,7 @@ namespace FindableManaCrystals {
 		}
 
 		private void ProcessManaCrystalShardQueue() {
+			var config = FindableManaCrystalsConfig.Instance;
 			int shardType = ModContent.TileType<ManaCrystalShardTile>();
 
 			for( int i = 0; i < this.ManaCrystalShardIllumCheckQueueSize; i++ ) {
@@ -119,7 +121,7 @@ namespace FindableManaCrystals {
 					ManaCrystalShardTile.UpdateLightAversionForTile(
 						tileAt.tileX,
 						tileAt.tileY,
-						FindableManaCrystalsConfig.Instance.ManaCrystalShardLightToleranceScale,
+						config.Get<float>( nameof(FindableManaCrystalsConfig.ManaCrystalShardLightToleranceScale) ),
 						brightness
 					);
 				}

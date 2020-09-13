@@ -129,8 +129,10 @@ namespace FindableManaCrystals.Tiles {
 		////////////////
 
 		private void UpdateDrawnTileSlow( int i, int j ) {
+			var config = FindableManaCrystalsConfig.Instance;
 			var projSingleton = ModContent.GetInstance<FindableManaCrystalsProjectile>();
-			int resonanceDistSqr = FindableManaCrystalsConfig.Instance.ManaCrystalShardMagicResonanceTileRange * 16;
+			string manaTileEntry = nameof( FindableManaCrystalsConfig.ManaCrystalShardMagicResonanceTileRange );
+			int resonanceDistSqr = config.Get<int>(manaTileEntry) * 16;
 			resonanceDistSqr *= resonanceDistSqr;
 
 			int tileWldX = i << 4;
@@ -148,7 +150,7 @@ namespace FindableManaCrystals.Tiles {
 				}
 			}
 
-			if( FindableManaCrystalsConfig.Instance.DebugModeCheatReveal ) {
+			if( config.DebugModeCheatReveal ) {
 				var pos = new Vector2( (i << 4) + 8, (j << 4) + 8 );
 				Dust dust = Dust.NewDustPerfect(
 					Position: pos,

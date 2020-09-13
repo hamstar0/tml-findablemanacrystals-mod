@@ -40,7 +40,9 @@ namespace FindableManaCrystals {
 
 		public override void SetupStartInventory( IList<Item> items, bool mediumcoreDeath ) {
 			if( !mediumcoreDeath ) {
-				if( FindableManaCrystalsConfig.Instance.StartPlayersWithBinoculars ) {
+				var config = FindableManaCrystalsConfig.Instance;
+
+				if( config.Get<bool>( nameof(FindableManaCrystalsConfig.StartPlayersWithBinoculars) ) ) {
 					var binocs = new Item();
 					binocs.SetDefaults( ItemID.Binoculars );
 					binocs.stack = 1;
@@ -58,7 +60,8 @@ namespace FindableManaCrystals {
 			int midWldX = (int)Main.screenPosition.X + ( Main.screenWidth / 2 );
 			int midWldY = (int)Main.screenPosition.Y + ( Main.screenHeight / 2 );
 
-			int radius = FindableManaCrystalsConfig.Instance.BinocularDetectionRadiusTiles;
+			var config = FindableManaCrystalsConfig.Instance;
+			int radius = config.Get<int>( nameof(FindableManaCrystalsConfig.BinocularDetectionRadiusTiles) );
 			int maxDistSqr = radius * radius;
 
 			int midTileX = midWldX >> 4;
@@ -114,7 +117,9 @@ namespace FindableManaCrystals {
 				return;
 			}
 
-			int beginTicks = FindableManaCrystalsConfig.Instance.BinocularsHintBeginDurationTicks;
+			var config = FindableManaCrystalsConfig.Instance;
+
+			int beginTicks = config.Get<int>( nameof(FindableManaCrystalsConfig.BinocularsHintBeginDurationTicks) );
 			Timers.SetTimer( "ManaCrystalShardHint", beginTicks, false, () => {
 				Item heldItem = Main.LocalPlayer.HeldItem;
 				if( heldItem == null || heldItem.IsAir || heldItem.type != ItemID.Binoculars ) {
@@ -126,7 +131,8 @@ namespace FindableManaCrystals {
 					return 0;
 				}
 
-				float rateScaleOfSparks = 1f - FindableManaCrystalsConfig.Instance.BinocularsHintIntensity;
+				float rateScaleOfSparks = config.Get<int>( nameof(FindableManaCrystalsConfig.BinocularsHintIntensity) );
+				rateScaleOfSparks = 1f - rateScaleOfSparks;
 				float rateOfSparks = newTileProximityIf.Value * rateScaleOfSparks;
 				UnifiedRandom rand = TmlHelpers.SafelyGetRand();
 
@@ -145,7 +151,7 @@ namespace FindableManaCrystals {
 				dust.noGravity = true;
 				dust.noLight = true;
 
-				if( FindableManaCrystalsConfig.Instance.DebugModeInfo ) {
+				if( config.DebugModeInfo ) {
 					DebugHelpers.Print(
 						"FindableManaCrystals",
 						"rateOfSparks: " + rateScaleOfSparks.ToString("N2")

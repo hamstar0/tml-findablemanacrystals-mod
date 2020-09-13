@@ -1,8 +1,8 @@
-﻿using HamstarHelpers.Classes.UI.ModConfig;
-using HamstarHelpers.Services.Configs;
-using System;
+﻿using System;
 using System.ComponentModel;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
+using HamstarHelpers.Classes.UI.ModConfig;
 
 
 namespace FindableManaCrystals {
@@ -11,8 +11,8 @@ namespace FindableManaCrystals {
 
 
 
-	public class FindableManaCrystalsConfig : StackableModConfig {
-		public static FindableManaCrystalsConfig Instance => ModConfigStack.GetMergedConfigs<FindableManaCrystalsConfig>();
+	public partial class FindableManaCrystalsConfig : ModConfig {
+		public static FindableManaCrystalsConfig Instance => ModContent.GetInstance<FindableManaCrystalsConfig>();
 
 
 

@@ -1,9 +1,9 @@
-﻿using HamstarHelpers.Classes.Tiles.TilePattern;
-using HamstarHelpers.Helpers.TModLoader;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using HamstarHelpers.Classes.Tiles.TilePattern;
 using HamstarHelpers.Helpers.Tiles;
+using HamstarHelpers.Helpers.TModLoader;
 
 
 namespace FindableManaCrystals.Tiles {
@@ -23,10 +23,11 @@ namespace FindableManaCrystals.Tiles {
 
 
 		public static void TeleportTile( int tileX, int tileY ) {
+			var config = FindableManaCrystalsConfig.Instance;
 			(int newTileX, int newTileY) tileAt;
 			TilePattern pattern = ModContent.GetInstance<FindableManaCrystalsWorld>().ManaCrystalShardPattern;
-			int rad = FindableManaCrystalsConfig.Instance.ManaCrystalShardTeleportRadius;
-
+			int rad = config.Get<int>( nameof(FindableManaCrystalsConfig.ManaCrystalShardTeleportRadius) );
+			
 			var within = new Rectangle(
 				(int)MathHelper.Clamp( tileX - rad, 64, (Main.maxTilesX - 64) - (rad+rad) ),
 				(int)MathHelper.Clamp( tileY - rad, 64, (Main.maxTilesY - 64) - (rad+rad) ),
