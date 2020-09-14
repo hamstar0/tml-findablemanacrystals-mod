@@ -131,7 +131,7 @@ namespace FindableManaCrystals {
 					return 0;
 				}
 
-				float rateScaleOfSparks = config.Get<int>( nameof(FindableManaCrystalsConfig.BinocularsHintIntensity) );
+				float rateScaleOfSparks = config.Get<float>( nameof(FindableManaCrystalsConfig.BinocularsHintIntensity) );
 				rateScaleOfSparks = 1f - rateScaleOfSparks;
 				float rateOfSparks = newTileProximityIf.Value * rateScaleOfSparks;
 				UnifiedRandom rand = TmlHelpers.SafelyGetRand();

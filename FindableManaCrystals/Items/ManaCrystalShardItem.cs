@@ -1,7 +1,7 @@
-﻿using FindableManaCrystals.Tiles;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using FindableManaCrystals.Tiles;
 
 
 namespace FindableManaCrystals.Items {
