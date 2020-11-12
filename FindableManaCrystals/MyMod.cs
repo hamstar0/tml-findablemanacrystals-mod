@@ -1,39 +1,39 @@
-using FindableManaCrystals.Items;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Recipes;
 using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.Recipes;
+using FindableManaCrystals.Items;
 
 
 namespace FindableManaCrystals {
-	public class FindableManaCrystalsMod : Mod {
+	public class FMCMod : Mod {
 		public static string GithubUserName => "hamstar0";
 		public static string GithubProjectName => "tml-findablemanacrystals-mod";
 
 
 		////////////////
 
-		public static FindableManaCrystalsMod Instance { get; private set; }
+		public static FMCMod Instance { get; private set; }
 
 
 
 		////////////////
 
-		public FindableManaCrystalsMod() {
-			FindableManaCrystalsMod.Instance = this;
+		public FMCMod() {
+			FMCMod.Instance = this;
 		}
 
 		////////////////
 
 		public override void Load() {
-			FindableManaCrystalsWorld.InitializeSingleton();
-			FindableManaCrystalsProjectile.InitializeSingleton();
+			FMCWorld.InitializeSingleton();
+			FMCProjectile.InitializeSingleton();
 		}
 
 		public override void Unload() {
-			FindableManaCrystalsMod.Instance = null;
+			FMCMod.Instance = null;
 		}
 
 
@@ -52,9 +52,9 @@ namespace FindableManaCrystals {
 		}
 
 		public override void PostAddRecipes() {
-			var config = FindableManaCrystalsConfig.Instance;
+			var config = FMCConfig.Instance;
 
-			if( config.Get<int>( nameof(FindableManaCrystalsConfig.ManaCrystalShardsPerManaCrystal) ) == 0 ) {
+			if( config.Get<int>( nameof(FMCConfig.ManaCrystalShardsPerManaCrystal) ) == 0 ) {
 				return;
 			}
 
@@ -69,7 +69,7 @@ namespace FindableManaCrystals {
 					recipe.requiredItem[i] = new Item();
 					recipe.requiredItem[i].SetDefaults( shardType, true );
 					recipe.requiredItem[i].stack = config.Get<int>(
-						nameof(FindableManaCrystalsConfig.ManaCrystalShardsPerManaCrystal)
+						nameof(FMCConfig.ManaCrystalShardsPerManaCrystal)
 					);
 					break;
 				}

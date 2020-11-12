@@ -11,8 +11,8 @@ namespace FindableManaCrystals {
 
 
 
-	public partial class FindableManaCrystalsConfig : ModConfig {
-		public static FindableManaCrystalsConfig Instance => ModContent.GetInstance<FindableManaCrystalsConfig>();
+	public partial class FMCConfig : ModConfig {
+		public static FMCConfig Instance => ModContent.GetInstance<FMCConfig>();
 
 
 

@@ -7,8 +7,9 @@ using Terraria.ModLoader;
 
 
 namespace FindableManaCrystals {
-	class FindableManaCrystalsItem : GlobalItem {
+	class FMCItem : GlobalItem {
 		public override void ModifyTooltips( Item item, List<TooltipLine> tooltips ) {
+			string modName = "[c / FFFF88" + FMCMod.Instance.DisplayName + ":] ";
 			TooltipLine tip;
 
 			switch( item.type ) {
@@ -16,26 +17,26 @@ namespace FindableManaCrystals {
 				tip = new TooltipLine(
 					this.mod,
 					"FindableManaCrystalsBinoculars",
-					"May detect hints of nearby magical treasure that Spelunker Potions may miss"
+					modName+"May detect hints of nearby magical treasure that Spelunker Potions may miss"
 				);
 
 				ItemInformationAttributeHelpers.ApplyTooltipAt( tooltips, tip );
 				break;
 			case ItemID.ManaCrystal:
-				var config = FindableManaCrystalsConfig.Instance;
+				var config = FMCConfig.Instance;
 
-				if( !config.Get<bool>( nameof(FindableManaCrystalsConfig.ReducedManaCrystalStatIncrease) ) ) {
-					break;
+				if( config.Get<bool>( nameof(FMCConfig.ReducedManaCrystalStatIncrease) ) ) {
+					int idx = tooltips.FindIndex( t => t.Name == "ManaCrystal" );
+
+					if( idx >= 0 ) {
+						tooltips[idx] = new TooltipLine(
+							this.mod,
+							"FindableManaCrystalsManaCrystal",
+							modName+"Permanently increases maximum mana by 10"
+						);
+					}
 				}
 
-				tip = new TooltipLine(
-					this.mod,
-					"FindableManaCrystalsManaCrystal",
-					"Permanently increases maximum mana by 10"
-				);
-
-				int idx = tooltips.FindIndex( t => t.Name == "ManaCrystal" );
-				tooltips[ idx ] = tip;
 				break;
 			}
 		}
@@ -46,9 +47,9 @@ namespace FindableManaCrystals {
 		public override void OnConsumeItem( Item item, Player player ) {
 			switch( item.type ) {
 			case ItemID.ManaCrystal:
-				var config = FindableManaCrystalsConfig.Instance;
+				var config = FMCConfig.Instance;
 
-				if( config.Get<bool>( nameof(FindableManaCrystalsConfig.ReducedManaCrystalStatIncrease) ) ) {
+				if( config.Get<bool>( nameof(FMCConfig.ReducedManaCrystalStatIncrease) ) ) {
 					player.statManaMax -= 10;
 				}
 				this.ModifyPopupText();

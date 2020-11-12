@@ -40,9 +40,9 @@ namespace FindableManaCrystals {
 
 		public override void SetupStartInventory( IList<Item> items, bool mediumcoreDeath ) {
 			if( !mediumcoreDeath ) {
-				var config = FindableManaCrystalsConfig.Instance;
+				var config = FMCConfig.Instance;
 
-				if( config.Get<bool>( nameof(FindableManaCrystalsConfig.StartPlayersWithBinoculars) ) ) {
+				if( config.Get<bool>( nameof(FMCConfig.StartPlayersWithBinoculars) ) ) {
 					var binocs = new Item();
 					binocs.SetDefaults( ItemID.Binoculars );
 					binocs.stack = 1;
@@ -60,8 +60,8 @@ namespace FindableManaCrystals {
 			int midWldX = (int)Main.screenPosition.X + ( Main.screenWidth / 2 );
 			int midWldY = (int)Main.screenPosition.Y + ( Main.screenHeight / 2 );
 
-			var config = FindableManaCrystalsConfig.Instance;
-			int radius = config.Get<int>( nameof(FindableManaCrystalsConfig.BinocularDetectionRadiusTiles) );
+			var config = FMCConfig.Instance;
+			int radius = config.Get<int>( nameof(FMCConfig.BinocularDetectionRadiusTiles) );
 			int maxDistSqr = radius * radius;
 
 			int midTileX = midWldX >> 4;
@@ -117,9 +117,9 @@ namespace FindableManaCrystals {
 				return;
 			}
 
-			var config = FindableManaCrystalsConfig.Instance;
+			var config = FMCConfig.Instance;
 
-			int beginTicks = config.Get<int>( nameof(FindableManaCrystalsConfig.BinocularsHintBeginDurationTicks) );
+			int beginTicks = config.Get<int>( nameof(FMCConfig.BinocularsHintBeginDurationTicks) );
 			Timers.SetTimer( "ManaCrystalShardHint", beginTicks, false, () => {
 				Item heldItem = Main.LocalPlayer.HeldItem;
 				if( heldItem == null || heldItem.IsAir || heldItem.type != ItemID.Binoculars ) {
@@ -131,7 +131,7 @@ namespace FindableManaCrystals {
 					return 0;
 				}
 
-				float rateScaleOfSparks = config.Get<float>( nameof(FindableManaCrystalsConfig.BinocularsHintIntensity) );
+				float rateScaleOfSparks = config.Get<float>( nameof(FMCConfig.BinocularsHintIntensity) );
 				rateScaleOfSparks = 1f - rateScaleOfSparks;
 				float rateOfSparks = newTileProximityIf.Value * rateScaleOfSparks;
 				UnifiedRandom rand = TmlHelpers.SafelyGetRand();

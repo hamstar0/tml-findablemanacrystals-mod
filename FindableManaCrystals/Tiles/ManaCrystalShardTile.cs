@@ -129,9 +129,9 @@ namespace FindableManaCrystals.Tiles {
 		////////////////
 
 		private void UpdateDrawnTileSlow( int i, int j ) {
-			var config = FindableManaCrystalsConfig.Instance;
-			var projSingleton = ModContent.GetInstance<FindableManaCrystalsProjectile>();
-			string manaTileEntry = nameof( FindableManaCrystalsConfig.ManaCrystalShardMagicResonanceTileRange );
+			var config = FMCConfig.Instance;
+			var projSingleton = ModContent.GetInstance<FMCProjectile>();
+			string manaTileEntry = nameof( FMCConfig.ManaCrystalShardMagicResonanceTileRange );
 			int resonanceDistSqr = config.Get<int>(manaTileEntry) * 16;
 			resonanceDistSqr *= resonanceDistSqr;
 

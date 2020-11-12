@@ -11,9 +11,9 @@ using FindableManaCrystals.NetProtocols;
 
 
 namespace FindableManaCrystals {
-	class FindableManaCrystalsWorld : ModWorld {
+	class FMCWorld : ModWorld {
 		internal static void InitializeSingleton() {
-			var myworld = ModContent.GetInstance<FindableManaCrystalsWorld>();
+			var myworld = ModContent.GetInstance<FMCWorld>();
 
 			myworld.ManaCrystalShardPattern = new TilePattern( new TilePatternBuilder {
 				HasSolidProperties = false,
@@ -53,26 +53,26 @@ namespace FindableManaCrystals {
 		////////////////
 
 		public override void ModifyWorldGenTasks( List<GenPass> tasks, ref float totalWeight ) {
-			var config = FindableManaCrystalsConfig.Instance;
+			var config = FMCConfig.Instance;
 			int shards;
 			WorldSize wldSize = WorldHelpers.GetSize();
 
 			switch( wldSize ) {
 			default:
 			case WorldSize.SubSmall:
-				shards = config.Get<int>( nameof(FindableManaCrystalsConfig.TinyWorldManaCrystalShards ) );
+				shards = config.Get<int>( nameof(FMCConfig.TinyWorldManaCrystalShards ) );
 				break;
 			case WorldSize.Small:
-				shards = config.Get<int>( nameof(FindableManaCrystalsConfig.SmallWorldManaCrystalShards) );
+				shards = config.Get<int>( nameof(FMCConfig.SmallWorldManaCrystalShards) );
 				break;
 			case WorldSize.Medium:
-				shards = config.Get<int>( nameof(FindableManaCrystalsConfig.MediumWorldManaCrystalShards) );
+				shards = config.Get<int>( nameof(FMCConfig.MediumWorldManaCrystalShards) );
 				break;
 			case WorldSize.Large:
-				shards = config.Get<int>( nameof(FindableManaCrystalsConfig.LargeWorldManaCrystalShards) );
+				shards = config.Get<int>( nameof(FMCConfig.LargeWorldManaCrystalShards) );
 				break;
 			case WorldSize.SuperLarge:
-				shards = config.Get<int>( nameof(FindableManaCrystalsConfig.HugeWorldManaCrystalShards) );
+				shards = config.Get<int>( nameof(FMCConfig.HugeWorldManaCrystalShards) );
 				break;
 			}
 
@@ -103,7 +103,7 @@ namespace FindableManaCrystals {
 		}
 
 		private void ProcessManaCrystalShardQueue() {
-			var config = FindableManaCrystalsConfig.Instance;
+			var config = FMCConfig.Instance;
 			int shardType = ModContent.TileType<ManaCrystalShardTile>();
 
 			for( int i = 0; i < this.ManaCrystalShardIllumCheckQueueSize; i++ ) {
@@ -121,7 +121,7 @@ namespace FindableManaCrystals {
 					ManaCrystalShardTile.UpdateLightAversionForTile(
 						tileAt.tileX,
 						tileAt.tileY,
-						config.Get<float>( nameof(FindableManaCrystalsConfig.ManaCrystalShardLightToleranceScale) ),
+						config.Get<float>( nameof(FMCConfig.ManaCrystalShardLightToleranceScale) ),
 						brightness
 					);
 				}

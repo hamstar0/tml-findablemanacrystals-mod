@@ -96,7 +96,7 @@ namespace FindableManaCrystals.Tiles {
 			float brightness = Lighting.Brightness( i, j );
 
 			if( brightness > 0.05f ) {
-				var myworld = ModContent.GetInstance<FindableManaCrystalsWorld>();
+				var myworld = ModContent.GetInstance<FMCWorld>();
 				myworld.QueueManaCrystalShardCheck( i, j, brightness );
 			}
 		}

@@ -7,7 +7,7 @@ using HamstarHelpers.Helpers.DotNET.Reflection;
 
 
 namespace FindableManaCrystals {
-	public partial class FindableManaCrystalsConfig : ModConfig {
+	public partial class FMCConfig : ModConfig {
 		private IDictionary<string, object> Overrides = new ConcurrentDictionary<string, object>();
 
 

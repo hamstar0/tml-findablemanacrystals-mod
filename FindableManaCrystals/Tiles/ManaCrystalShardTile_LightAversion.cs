@@ -23,10 +23,10 @@ namespace FindableManaCrystals.Tiles {
 
 
 		public static void TeleportTile( int tileX, int tileY ) {
-			var config = FindableManaCrystalsConfig.Instance;
+			var config = FMCConfig.Instance;
 			(int newTileX, int newTileY) tileAt;
-			TilePattern pattern = ModContent.GetInstance<FindableManaCrystalsWorld>().ManaCrystalShardPattern;
-			int rad = config.Get<int>( nameof(FindableManaCrystalsConfig.ManaCrystalShardTeleportRadius) );
+			TilePattern pattern = ModContent.GetInstance<FMCWorld>().ManaCrystalShardPattern;
+			int rad = config.Get<int>( nameof(FMCConfig.ManaCrystalShardTeleportRadius) );
 			
 			var within = new Rectangle(
 				(int)MathHelper.Clamp( tileX - rad, 64, (Main.maxTilesX - 64) - (rad+rad) ),

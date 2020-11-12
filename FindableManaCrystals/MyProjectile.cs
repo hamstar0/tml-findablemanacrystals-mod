@@ -6,9 +6,9 @@ using Terraria.ModLoader;
 
 
 namespace FindableManaCrystals {
-	class FindableManaCrystalsProjectile : GlobalProjectile {
+	class FMCProjectile : GlobalProjectile {
 		internal static void InitializeSingleton() {
-			var projSingleton = ModContent.GetInstance<FindableManaCrystalsProjectile>();
+			var projSingleton = ModContent.GetInstance<FMCProjectile>();
 			projSingleton.MagicProjectiles = new HashSet<int>();
 		}
 
@@ -31,7 +31,7 @@ namespace FindableManaCrystals {
 
 		private void Initialize( Projectile projectile ) {
 			if( projectile.magic ) {
-				var projSingleton = ModContent.GetInstance<FindableManaCrystalsProjectile>();
+				var projSingleton = ModContent.GetInstance<FMCProjectile>();
 				projSingleton.MagicProjectiles.Add( projectile.whoAmI );
 			}
 		}

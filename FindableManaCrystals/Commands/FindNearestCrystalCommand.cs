@@ -22,7 +22,7 @@ namespace FindableManaCrystals.Commands {
 
 		/// @private
 		public override void Action( CommandCaller caller, string input, string[] args ) {
-			if( !FindableManaCrystalsConfig.Instance.DebugModeCheatReveal ) {
+			if( !FMCConfig.Instance.DebugModeCheatReveal ) {
 				caller.Reply( "Cheats not enabled.", Color.Yellow );
 				return;
 			}

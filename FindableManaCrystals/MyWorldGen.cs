@@ -54,7 +54,7 @@ namespace FindableManaCrystals {
 			(int TileX, int TileY) randCenterTile;
 			float stepWeight = 1f / (float)this.NeededShards;
 
-			TilePattern pattern = ModContent.GetInstance<FindableManaCrystalsWorld>()
+			TilePattern pattern = ModContent.GetInstance<FMCWorld>()
 				.ManaCrystalShardPattern;
 
 			var within = new Rectangle(
@@ -89,7 +89,7 @@ namespace FindableManaCrystals {
 			WorldGen.PlaceObject( tileX, tileY, shardTileType );
 
 			if( Main.tile[tileX, tileY].type == shardTileType ) {
-				if( FindableManaCrystalsConfig.Instance.DebugModeWorldGenInfo ) {
+				if( FMCConfig.Instance.DebugModeWorldGenInfo ) {
 					LogHelpers.Log( "Placed Mana Crystal Shard (of " + this.NeededShards + ")" +
 						" at " + tileX + "," + tileY +
 						" (" + ( tileX << 4 ) + "," + ( tileY << 4 ) + ")"

@@ -38,7 +38,7 @@ namespace FindableManaCrystals.NetProtocols {
 		////////////////
 
 		protected override void Receive( int fromWho ) {
-			var myworld = ModContent.GetInstance<FindableManaCrystalsWorld>();
+			var myworld = ModContent.GetInstance<FMCWorld>();
 			myworld.QueueManaCrystalShardCheck( this.TileX, this.TileY, this.Brightness );
 		}
 	}
