@@ -44,7 +44,7 @@ namespace FindableManaCrystals {
 
 		public static float GaugeManaShards( Vector2 worldPos ) {
 			var config = FMCConfig.Instance;
-			int maxTileRange = config.Get<int>( nameof( config.ManaShardPKEDetectionTileRangeMax ) );
+			int maxTileRange = config.Get<int>( nameof(config.ManaShardPKEDetectionTileRangeMax) );
 			if( maxTileRange <= 0 ) {
 				return 0f;
 			}
