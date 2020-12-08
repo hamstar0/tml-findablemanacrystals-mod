@@ -12,7 +12,7 @@ namespace FindableManaCrystals {
 
 
 	public partial class FMCConfig : ModConfig {
-		public static FMCConfig Instance => ModContent.GetInstance<FMCConfig>();
+		public static FMCConfig Instance { get; internal set; }
 
 
 
@@ -97,6 +97,16 @@ namespace FindableManaCrystals {
 
 		[DefaultValue( true )]
 		public bool ReducedManaCrystalStatIncrease { get; set; } = true;
+
+		////
+
+		[Range( 0f, 1f )]
+		[DefaultValue( 1f / 60f )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
+		public float PKEDetectChancePerTick { get; set; } = 1f / 60f;
+
+		[DefaultValue( true )]
+		public bool PKEDetectInterference { get; set; } = true;
 
 
 

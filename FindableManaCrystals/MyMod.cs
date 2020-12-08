@@ -8,13 +8,13 @@ using FindableManaCrystals.Items;
 
 
 namespace FindableManaCrystals {
-	public class FMCMod : Mod {
+	public partial class FMCMod : Mod {
 		public static string GithubUserName => "hamstar0";
 		public static string GithubProjectName => "tml-findablemanacrystals-mod";
 
 
 		////////////////
-
+		
 		public static FMCMod Instance { get; private set; }
 
 
@@ -30,9 +30,12 @@ namespace FindableManaCrystals {
 		public override void Load() {
 			FMCWorld.InitializeSingleton();
 			FMCProjectile.InitializeSingleton();
+
+			FMCConfig.Instance = ModContent.GetInstance<FMCConfig>();
 		}
 
 		public override void Unload() {
+			FMCConfig.Instance = null;
 			FMCMod.Instance = null;
 		}
 
@@ -49,6 +52,10 @@ namespace FindableManaCrystals {
 				}
 				Main.NewText("Lit!");
 			} );*/
+
+			if( ModLoader.GetMod("PKE Meter") != null ) {
+				FMCMod.InitializePKE();
+			}
 		}
 
 		public override void PostAddRecipes() {

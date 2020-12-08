@@ -18,5 +18,8 @@
     <Reference Include="HamstarHelpers">
       <HintPath>..\..\..\Mod Helpers\Project\HamstarHelpers\bin\Release\net452\HamstarHelpers.dll</HintPath>
     </Reference>
+    <Reference Include="PKEMeter">
+      <HintPath>..\..\..\PKE Meter\Project\PKEMeter\bin\Release\net452\PKEMeter.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
