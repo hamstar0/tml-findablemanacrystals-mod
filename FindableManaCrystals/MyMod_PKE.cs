@@ -43,11 +43,17 @@ namespace FindableManaCrystals {
 		////
 
 		public static float GaugeManaShards( Vector2 worldPos ) {
+			var config = FMCConfig.Instance;
+			int maxTileRange = config.Get<int>( nameof( config.ManaShardPKEDetectionTileRangeMax ) );
+			if( maxTileRange <= 0 ) {
+				return 0f;
+			}
+
 			var pattern = new TilePattern( new TilePatternBuilder {
 				IsActive = true,
 				IsAnyOfType = new HashSet<int> { ModContent.TileType<ManaCrystalShardTile>() }
 			} );
-			int maxDist = 256 * 16;
+			int maxDist = maxTileRange * 16;
 
 			Point? tileAt = TileFinderHelpers.GetNearestTile( worldPos, pattern, maxDist );
 			if( tileAt.HasValue ) {
