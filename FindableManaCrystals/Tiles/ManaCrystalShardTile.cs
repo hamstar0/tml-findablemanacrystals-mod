@@ -1,12 +1,12 @@
-﻿using FindableManaCrystals.Items;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Tiles;
-using HamstarHelpers.Helpers.TModLoader;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.Tiles;
+using HamstarHelpers.Helpers.TModLoader;
+using FindableManaCrystals.Items;
 
 
 namespace FindableManaCrystals.Tiles {
@@ -99,7 +99,7 @@ namespace FindableManaCrystals.Tiles {
 
 			if( tile.frameY != frameY ) {
 				if( frameY == -1 ) {
-					TileHelpers.KillTileSynced( i, j, false, true );
+					TileHelpers.KillTileSynced( i, j, false, true, true );
 				} else {
 					tile.frameY = frameY;
 					resetFrame = true;
