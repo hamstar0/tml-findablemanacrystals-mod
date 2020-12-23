@@ -18,7 +18,7 @@ namespace FindableManaCrystals {
 		////////////////
 
 		public static void InitializePKE() {
-			PKEMeter.PKEGauge gauge = PKEMeter.PKEMeterAPI.GetGauge();
+			PKEMeter.Logic.PKEGauge gauge = PKEMeter.PKEMeterAPI.GetGauge();
 			int timer = 0;
 
 			PKEMeter.PKEMeterAPI.SetGauge( (plr, pos) => {
