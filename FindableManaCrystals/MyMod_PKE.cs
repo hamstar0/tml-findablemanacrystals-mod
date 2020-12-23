@@ -11,31 +11,28 @@ using FindableManaCrystals.Tiles;
 
 namespace FindableManaCrystals {
 	public partial class FMCMod : Mod {
-		private static float LastGaugedManaShardPercent = 0f;
-
-
-
-		////////////////
-
 		public static void InitializePKE() {
 			PKEMeter.Logic.PKEText meterTextFunc = PKEMeter.PKEMeterAPI.GetMeterText();
 			PKEMeter.Logic.PKEGauge gauge = PKEMeter.PKEMeterAPI.GetGauge();
-			int timer = 0;
+			float lastGaugedManaShardPercent = 0f;
+
+			int gaugeTimer = 0;
+			int textTimer = 0;
 
 			PKEMeter.PKEMeterAPI.SetGauge( (plr, pos) => {
 				(float b, float g, float y, float r) existingGauge = gauge?.Invoke( plr, pos )
 					?? (0f, 0f, 0f, 0f);
 
-				if( FMCConfig.Instance.PKEDetectChancePerTick > 0f && timer-- <= 0 ) {
-					timer = 15;
-					FMCMod.LastGaugedManaShardPercent = FMCMod.GaugeManaShards( pos );
+				if( FMCConfig.Instance.PKEDetectChancePerTick > 0f && gaugeTimer-- <= 0 ) {
+					gaugeTimer = 15;
+					lastGaugedManaShardPercent = FMCMod.GaugeManaShards( pos );
 				}
 
 				if( FMCConfig.Instance.PKEDetectChancePerTick <= Main.rand.NextFloat() ) {
 					return existingGauge;
 				}
 				
-				existingGauge.b = FMCMod.ApplyInterferenceToManaShardGauge( FMCMod.LastGaugedManaShardPercent );
+				existingGauge.b = FMCMod.ApplyInterferenceToManaShardGauge( lastGaugedManaShardPercent );
 
 				return existingGauge;
 			} );
@@ -43,16 +40,21 @@ namespace FindableManaCrystals {
 			PKEMeter.PKEMeterAPI.SetMeterText( ( plr, pos, gauges ) => {
 				(string text, Color color) currText = meterTextFunc?.Invoke( plr, pos, gauges )
 					?? ("", Color.Transparent);
+				if( textTimer <= 0 && currText.text != "" ) {	// yield
+					return currText;
+				}
 
-				if( gauges.r > 0.75f ) {
-				} else if( gauges.y > 0.75f ) {
-				} else if( gauges.g > 0.75f ) {
-				} else if( gauges.b > 0.75f ) {
+				if( gauges.b > 0.75f ) {
+					textTimer = 60;
+				}
+
+				if( textTimer > 0 ) {
 					currText.color = Color.Blue;
+					currText.color = currText.color * (0.5f + (Main.rand.NextFloat() * 0.5f));
 					currText.text = "CLASS II ETHEREAL GEOFORM";
 				}
 
-				currText.color = currText.color * ( 0.5f + ( Main.rand.NextFloat() * 0.5f ) );
+				textTimer--;
 
 				return currText;
 			} );

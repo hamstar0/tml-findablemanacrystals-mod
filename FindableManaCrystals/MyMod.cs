@@ -53,7 +53,7 @@ namespace FindableManaCrystals {
 				Main.NewText("Lit!");
 			} );*/
 
-			if( ModLoader.GetMod("PKE Meter") != null ) {
+			if( ModLoader.GetMod("PKEMeter") != null ) {
 				FMCMod.InitializePKE();
 			}
 		}
