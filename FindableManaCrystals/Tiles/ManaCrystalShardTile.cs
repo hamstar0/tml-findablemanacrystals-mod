@@ -69,9 +69,9 @@ namespace FindableManaCrystals.Tiles {
 			TileObjectData.newTile.CopyFrom( TileObjectData.Style1x1 );
 			TileObjectData.addTile( this.Type );
 
-			ModTranslation name = this.CreateMapEntryName();
-			name.SetDefault( "Mana Crystal Shard" );
-			this.AddMapEntry( new Color(32, 48, 160), name );
+			//ModTranslation name = this.CreateMapEntryName();
+			//name.SetDefault( "Mana Crystal Shard" );
+			//this.AddMapEntry( new Color(32, 48, 160, 0), name );
 		}
 
 		public override void PostSetDefaults() {
