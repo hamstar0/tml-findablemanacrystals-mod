@@ -9,7 +9,7 @@ using HamstarHelpers.Helpers.Items.Attributes;
 namespace FindableManaCrystals {
 	class FMCItem : GlobalItem {
 		public override void ModifyTooltips( Item item, List<TooltipLine> tooltips ) {
-			string modName = "[c / FFFF88:" + FMCMod.Instance.DisplayName + "] ";
+			string modName = "[c/FFFF88:" + FMCMod.Instance.DisplayName + "] - ";
 			TooltipLine tip;
 
 			switch( item.type ) {

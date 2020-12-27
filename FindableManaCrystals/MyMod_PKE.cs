@@ -17,7 +17,6 @@ namespace FindableManaCrystals {
 			float lastGaugedManaShardPercent = 0f;
 
 			int gaugeTimer = 0;
-			int textTimer = 0;
 
 			PKEMeter.PKEMeterAPI.SetGauge( (plr, pos) => {
 				(float b, float g, float y, float r) existingGauge = gauge?.Invoke( plr, pos )
@@ -40,21 +39,15 @@ namespace FindableManaCrystals {
 			PKEMeter.PKEMeterAPI.SetMeterText( ( plr, pos, gauges ) => {
 				(string text, Color color) currText = meterTextFunc?.Invoke( plr, pos, gauges )
 					?? ("", Color.Transparent);
-				if( textTimer <= 0 && currText.text != "" ) {	// yield
+				if( currText.text != "" ) {	// yield
 					return currText;
 				}
 
 				if( gauges.b > 0.75f ) {
-					textTimer = 60;
-				}
-
-				if( textTimer > 0 ) {
 					currText.color = Color.Blue;
 					currText.color = currText.color * (0.5f + (Main.rand.NextFloat() * 0.5f));
 					currText.text = "CLASS II ETHEREAL GEOFORM";
 				}
-
-				textTimer--;
 
 				return currText;
 			} );
@@ -76,7 +69,7 @@ namespace FindableManaCrystals {
 			int maxDist = maxTileRange * 16;
 
 			Point? tileAt = TileFinderHelpers.GetNearestTile( worldPos, pattern, maxDist );
-			if( tileAt.HasValue ) {
+			if( !tileAt.HasValue ) {
 				return 0f;
 			}
 
