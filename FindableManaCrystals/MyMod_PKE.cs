@@ -12,10 +12,8 @@ using FindableManaCrystals.Tiles;
 namespace FindableManaCrystals {
 	public partial class FMCMod : Mod {
 		public static void InitializePKE() {
-			PKEMeter.Logic.PKEText meterTextFunc = PKEMeter.PKEMeterAPI.GetMeterText();
 			PKEMeter.Logic.PKEGauge gauge = PKEMeter.PKEMeterAPI.GetGauge();
 			float lastGaugedManaShardPercent = 0f;
-
 			int gaugeTimer = 0;
 
 			PKEMeter.PKEMeterAPI.SetGauge( (plr, pos) => {
@@ -36,20 +34,12 @@ namespace FindableManaCrystals {
 				return existingGauge;
 			} );
 
-			PKEMeter.PKEMeterAPI.SetMeterText( ( plr, pos, gauges ) => {
-				(string text, Color color) currText = meterTextFunc?.Invoke( plr, pos, gauges )
-					?? ("", Color.Transparent);
-				if( currText.text != "" ) {	// yield
-					return currText;
-				}
-
-				if( gauges.b > 0.75f ) {
-					currText.color = Color.Blue;
-					currText.color = currText.color * (0.5f + (Main.rand.NextFloat() * 0.5f));
-					currText.text = "CLASS II ETHEREAL GEOFORM";
-				}
-
-				return currText;
+			PKEMeter.PKEMeterAPI.SetMeterText( "FindableManaCrystals", ( plr, pos, gauges ) => {
+				return new PKEMeter.Logic.PKETextMessage(
+					message: "CLASS II ETHEREAL GEOFORM",
+					color: Color.Blue * ( 0.5f + ( Main.rand.NextFloat() * 0.5f ) ),
+					priority: gauges.b * 0.75f
+				);
 			} );
 		}
 
