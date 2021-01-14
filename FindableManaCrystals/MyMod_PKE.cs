@@ -17,15 +17,18 @@ namespace FindableManaCrystals {
 			int gaugeTimer = 0;
 
 			PKEMeter.PKEMeterAPI.SetGauge( (plr, pos) => {
+				var config = FMCConfig.Instance;
+				float detectChancePerTick = config.Get<float>( nameof(config.PKEDetectChancePerTick) );
 				(float b, float g, float y, float r) existingGauge = gauge?.Invoke( plr, pos )
 					?? (0f, 0f, 0f, 0f);
 
-				if( FMCConfig.Instance.PKEDetectChancePerTick > 0f && gaugeTimer-- <= 0 ) {
+				if( detectChancePerTick > 0f && gaugeTimer-- <= 0 ) {
 					gaugeTimer = 15;
 					lastGaugedManaShardPercent = FMCMod.GaugeManaShards( pos );
 				}
 
-				if( FMCConfig.Instance.PKEDetectChancePerTick <= Main.rand.NextFloat() ) {
+				// No detection this time
+				if( detectChancePerTick <= Main.rand.NextFloat() ) {
 					return existingGauge;
 				}
 				
@@ -38,12 +41,13 @@ namespace FindableManaCrystals {
 				return new PKEMeter.Logic.PKETextMessage(
 					message: "CLASS II ETHEREAL GEOFORM",
 					color: Color.Blue * ( 0.5f + ( Main.rand.NextFloat() * 0.5f ) ),
-					priority: gauges.b * 0.75f
+					priority: lastGaugedManaShardPercent * 0.99f
 				);
 			} );
 		}
 
-		////
+
+		////////////////
 
 		public static float GaugeManaShards( Vector2 worldPos ) {
 			var config = FMCConfig.Instance;
@@ -69,8 +73,13 @@ namespace FindableManaCrystals {
 			return Math.Max( 1f - distPerc, 0f );
 		}
 
+
+		////////////////
+
 		public static float ApplyInterferenceToManaShardGauge( float gaugedPercent ) {
-			if( FMCConfig.Instance.PKEDetectInterference ) {
+			var config = FMCConfig.Instance;
+
+			if( config.Get<bool>( nameof(config.PKEDetectInterference) ) ) {
 				gaugedPercent *= Main.rand.NextFloat();
 			}
 

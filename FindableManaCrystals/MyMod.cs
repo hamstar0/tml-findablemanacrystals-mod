@@ -73,11 +73,11 @@ namespace FindableManaCrystals {
 						continue;
 					}
 
+					int stack = config.Get<int>( nameof(FMCConfig.ManaCrystalShardsPerManaCrystal) );
+
 					recipe.requiredItem[i] = new Item();
 					recipe.requiredItem[i].SetDefaults( shardType, true );
-					recipe.requiredItem[i].stack = config.Get<int>(
-						nameof(FMCConfig.ManaCrystalShardsPerManaCrystal)
-					);
+					recipe.requiredItem[i].stack = stack;
 					break;
 				}
 			}
