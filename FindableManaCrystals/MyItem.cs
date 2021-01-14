@@ -9,15 +9,14 @@ using HamstarHelpers.Helpers.Items.Attributes;
 namespace FindableManaCrystals {
 	class FMCItem : GlobalItem {
 		public override void ModifyTooltips( Item item, List<TooltipLine> tooltips ) {
-			string modName = "[c/FFFF88:" + FMCMod.Instance.DisplayName + "] - ";
-			TooltipLine tip;
+			string modName = "[c/FFFF88:FMC] - ";
 
 			switch( item.type ) {
 			case ItemID.Binoculars:
-				tip = new TooltipLine(
+				var tip = new TooltipLine(
 					this.mod,
 					"FindableManaCrystalsBinoculars",
-					modName+"May detect hints of nearby magical treasure that Spelunker Potions may miss"
+					modName+"Now detects hints of certain magical phenomena"
 				);
 
 				ItemInformationAttributeHelpers.ApplyTooltipAt( tooltips, tip );

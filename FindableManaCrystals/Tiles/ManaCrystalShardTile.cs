@@ -131,12 +131,13 @@ namespace FindableManaCrystals.Tiles {
 		private void UpdateDrawnTileSlow( int i, int j ) {
 			var config = FMCConfig.Instance;
 			var projSingleton = ModContent.GetInstance<FMCProjectile>();
-			string manaTileEntry = nameof( FMCConfig.ManaCrystalShardMagicResonanceTileRange );
-			int resonanceDistSqr = config.Get<int>(manaTileEntry) * 16;
+
+			string manaTileEntry = nameof( config.ManaCrystalShardMagicResonanceTileRange );
+			int resonanceDistSqr = config.Get<int>( manaTileEntry ) * 16;
 			resonanceDistSqr *= resonanceDistSqr;
 
-			int tileWldX = i << 4;
-			int tileWldY = j << 4;
+			int tileWldX = i * 16;
+			int tileWldY = j * 16;
 
 			foreach( int projWho in projSingleton.GetAllMagicProjectiles() ) {
 				Vector2 pos = Main.projectile[projWho].Center;

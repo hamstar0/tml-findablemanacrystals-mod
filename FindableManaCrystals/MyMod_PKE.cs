@@ -13,26 +13,40 @@ namespace FindableManaCrystals {
 	public partial class FMCMod : Mod {
 		public static void InitializePKE() {
 			PKEMeter.Logic.PKEGauge gauge = PKEMeter.PKEMeterAPI.GetGauge();
+
+			Point? lastNearestShardTile = null;
 			float lastGaugedManaShardPercent = 0f;
 			int gaugeTimer = 0;
 
 			PKEMeter.PKEMeterAPI.SetGauge( (plr, pos) => {
 				var config = FMCConfig.Instance;
 				float detectChancePerTick = config.Get<float>( nameof(config.PKEDetectChancePerTick) );
+
 				(float b, float g, float y, float r) existingGauge = gauge?.Invoke( plr, pos )
 					?? (0f, 0f, 0f, 0f);
 
-				if( detectChancePerTick > 0f && gaugeTimer-- <= 0 ) {
+				if( gaugeTimer-- <= 0 ) {
 					gaugeTimer = 15;
-					lastGaugedManaShardPercent = FMCMod.GaugeManaShards( pos );
+					lastGaugedManaShardPercent = FMCMod.GaugeNearbyManaShards( pos, out lastNearestShardTile );
 				}
 
-				// No detection this time
-				if( detectChancePerTick <= Main.rand.NextFloat() ) {
-					return existingGauge;
+				float illumAmt = 0;
+				if( lastNearestShardTile.HasValue ) {
+					ManaCrystalShardTile.GetIlluminationAt(
+						lastNearestShardTile.Value.X,
+						lastNearestShardTile.Value.Y,
+						out illumAmt
+					);
 				}
-				
-				existingGauge.b = FMCMod.ApplyInterferenceToManaShardGauge( lastGaugedManaShardPercent );
+
+				if( illumAmt > 0f ) {
+					existingGauge.b = lastGaugedManaShardPercent;
+					existingGauge.b += (1f - lastGaugedManaShardPercent) * Math.Min(illumAmt, 1f);
+				} else {
+					if( detectChancePerTick > Main.rand.NextFloat() ) {
+						existingGauge.b = FMCMod.ApplyInterferenceToManaShardGauge( lastGaugedManaShardPercent );
+					}
+				}
 
 				return existingGauge;
 			} );
@@ -41,7 +55,7 @@ namespace FindableManaCrystals {
 				return new PKEMeter.Logic.PKETextMessage(
 					message: "CLASS II ETHEREAL GEOFORM",
 					color: Color.Blue * ( 0.5f + ( Main.rand.NextFloat() * 0.5f ) ),
-					priority: lastGaugedManaShardPercent * 0.99f
+					priority: lastGaugedManaShardPercent * 0.99999f
 				);
 			} );
 		}
@@ -49,10 +63,11 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		public static float GaugeManaShards( Vector2 worldPos ) {
+		public static float GaugeNearbyManaShards( Vector2 worldPos, out Point? nearestShardTile ) {
 			var config = FMCConfig.Instance;
 			int maxTileRange = config.Get<int>( nameof(config.ManaShardPKEDetectionTileRangeMax) );
 			if( maxTileRange <= 0 ) {
+				nearestShardTile = null;
 				return 0f;
 			}
 
@@ -62,12 +77,12 @@ namespace FindableManaCrystals {
 			} );
 			int maxDist = maxTileRange * 16;
 
-			Point? tileAt = TileFinderHelpers.GetNearestTile( worldPos, pattern, maxDist );
-			if( !tileAt.HasValue ) {
+			nearestShardTile = TileFinderHelpers.GetNearestTile( worldPos, pattern, maxDist );
+			if( !nearestShardTile.HasValue ) {
 				return 0f;
 			}
 
-			Vector2 worldPosAt = new Vector2( tileAt.Value.X * 16, tileAt.Value.Y * 16 );
+			Vector2 worldPosAt = new Vector2( nearestShardTile.Value.X * 16, nearestShardTile.Value.Y * 16 );
 
 			float distPerc = (worldPosAt - worldPos).Length() / (float)maxDist;
 			return Math.Max( 1f - distPerc, 0f );
