@@ -12,7 +12,7 @@ using FindableManaCrystals.Tiles;
 namespace FindableManaCrystals {
 	public partial class FMCMod : Mod {
 		public static void InitializePKE() {
-			PKEMeter.Logic.PKEGauge gauge = PKEMeter.PKEMeterAPI.GetGauge();
+			PKEMeter.Logic.PKEGaugesGetter gauge = PKEMeter.PKEMeterAPI.GetGauge();
 
 			Point? lastNearestShardTile = null;
 			float lastGaugedManaShardPercent = 0f;
@@ -22,8 +22,8 @@ namespace FindableManaCrystals {
 				var config = FMCConfig.Instance;
 				float detectChancePerTick = config.Get<float>( nameof(config.PKEDetectChancePerTick) );
 
-				(float b, float g, float y, float r) existingGauge = gauge?.Invoke( plr, pos )
-					?? (0f, 0f, 0f, 0f);
+				PKEMeter.Logic.PKEGaugeValues existingGauge = gauge?.Invoke( plr, pos )
+					?? new PKEMeter.Logic.PKEGaugeValues( 0f, 0f, 0f, 0f);
 
 				if( gaugeTimer-- <= 0 ) {
 					gaugeTimer = 15;
@@ -40,11 +40,11 @@ namespace FindableManaCrystals {
 				}
 
 				if( illumAmt > 0f ) {
-					existingGauge.b = lastGaugedManaShardPercent;
-					existingGauge.b += (1f - lastGaugedManaShardPercent) * Math.Min(illumAmt, 1f);
+					existingGauge.BluePercent = lastGaugedManaShardPercent;
+					existingGauge.BluePercent += (1f - lastGaugedManaShardPercent) * Math.Min(illumAmt, 1f);
 				} else {
 					if( detectChancePerTick > Main.rand.NextFloat() ) {
-						existingGauge.b = FMCMod.ApplyInterferenceToManaShardGauge( lastGaugedManaShardPercent );
+						existingGauge.BluePercent = FMCMod.ApplyInterferenceToManaShardGauge( lastGaugedManaShardPercent );
 					}
 				}
 
@@ -53,12 +53,13 @@ namespace FindableManaCrystals {
 
 			PKEMeter.PKEMeterAPI.SetMeterText( "FindableManaCrystals", ( plr, pos, gauges ) => {
 				return new PKEMeter.Logic.PKETextMessage(
-					title: "BLUE: GEOFORMS",
 					message: "CLASS II ETHEREAL GEOFORM",
 					color: Color.Blue * ( 0.5f + ( Main.rand.NextFloat() * 0.5f ) ),
 					priority: lastGaugedManaShardPercent * 0.99999f
 				);
 			} );
+
+			PKEMeter.PKEMeterAPI.SetPKEBlueTooltip( () => "GEOFORM" );
 		}
 
 
