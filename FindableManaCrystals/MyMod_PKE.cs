@@ -53,6 +53,7 @@ namespace FindableManaCrystals {
 
 			PKEMeter.PKEMeterAPI.SetMeterText( "FindableManaCrystals", ( plr, pos, gauges ) => {
 				return new PKEMeter.Logic.PKETextMessage(
+					title: "BLUE: GEOFORMS",
 					message: "CLASS II ETHEREAL GEOFORM",
 					color: Color.Blue * ( 0.5f + ( Main.rand.NextFloat() * 0.5f ) ),
 					priority: lastGaugedManaShardPercent * 0.99999f
