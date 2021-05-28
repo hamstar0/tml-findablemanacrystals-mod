@@ -2,8 +2,8 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Recipes;
+using ModLibsCore.Libraries.Debug;
+using ModLibsGeneral.Libraries.Recipes;
 using FindableManaCrystals.Items;
 
 
@@ -21,13 +21,9 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		public FMCMod() {
-			FMCMod.Instance = this;
-		}
-
-		////////////////
-
 		public override void Load() {
+			FMCMod.Instance = this;
+
 			FMCWorld.InitializeSingleton();
 			FMCProjectile.InitializeSingleton();
 
@@ -67,7 +63,7 @@ namespace FindableManaCrystals {
 
 			int shardType = ModContent.ItemType<ManaCrystalShardItem>();
 
-			foreach( Recipe recipe in RecipeFinderHelpers.GetRecipesOfItem( ItemID.ManaCrystal ) ) {
+			foreach( Recipe recipe in RecipeFinderLibraries.GetRecipesOfItem( ItemID.ManaCrystal ) ) {
 				for( int i = 0; i < recipe.requiredItem.Length; i++ ) {
 					if( recipe.requiredItem[i] != null && !recipe.requiredItem[i].IsAir ) {
 						continue;

@@ -1,9 +1,9 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using HamstarHelpers.Classes.Tiles.TilePattern;
-using HamstarHelpers.Helpers.Tiles;
-using HamstarHelpers.Helpers.TModLoader;
+using ModLibsCore.Libraries.TModLoader;
+using ModLibsGeneral.Libraries.Tiles;
+using ModLibsTiles.Classes.Tiles.TilePattern;
 
 
 namespace FindableManaCrystals.Tiles {
@@ -13,7 +13,7 @@ namespace FindableManaCrystals.Tiles {
 				return;
 			}
 
-			float rand = TmlHelpers.SafelyGetRand().NextFloat();
+			float rand = TmlLibraries.SafelyGetRand().NextFloat();
 			rand *= tolerance;
 
 			if( rand < brightness ) {
@@ -36,7 +36,7 @@ namespace FindableManaCrystals.Tiles {
 			);
 
 			if( FindableManaCrystalsWorldGenPass.GetRandomShardAttachableTile( within, 100, pattern, out tileAt ) ) {
-				TileHelpers.Swap1x1Synced( tileX, tileY, tileAt.newTileX, tileAt.newTileY, true, true, true );
+				TileLibraries.Swap1x1Synced( tileX, tileY, tileAt.newTileX, tileAt.newTileY, true, true, true );
 
 				for( int i = 0; i < 4; i++ ) {
 					Dust.NewDust(

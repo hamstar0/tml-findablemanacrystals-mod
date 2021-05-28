@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.World.Generation;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.World;
-using HamstarHelpers.Classes.Tiles.TilePattern;
+using ModLibsCore.Libraries.Debug;
+using ModLibsGeneral.Libraries.World;
+using ModLibsTiles.Classes.Tiles.TilePattern;
 using FindableManaCrystals.Tiles;
 using FindableManaCrystals.NetProtocols;
 
@@ -55,7 +55,7 @@ namespace FindableManaCrystals {
 		public override void ModifyWorldGenTasks( List<GenPass> tasks, ref float totalWeight ) {
 			var config = FMCConfig.Instance;
 			int shards;
-			WorldSize wldSize = WorldHelpers.GetSize();
+			WorldSize wldSize = WorldLibraries.GetSize();
 
 			switch( wldSize ) {
 			default:

@@ -5,10 +5,10 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
+using ModLibsCore.Libraries.Debug;
+using ModLibsCore.Libraries.TModLoader;
+using ModLibsCore.Services.Timers;
 using FindableManaCrystals.Tiles;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.TModLoader;
-using HamstarHelpers.Services.Timers;
 
 
 namespace FindableManaCrystals {
@@ -134,7 +134,7 @@ namespace FindableManaCrystals {
 				float rateScaleOfSparks = config.Get<float>( nameof(FMCConfig.BinocularsHintIntensity) );
 				rateScaleOfSparks = 1f - rateScaleOfSparks;
 				float rateOfSparks = newTileProximityIf.Value * rateScaleOfSparks;
-				UnifiedRandom rand = TmlHelpers.SafelyGetRand();
+				UnifiedRandom rand = TmlLibraries.SafelyGetRand();
 
 				int dustIdx = Dust.NewDust(
 					Position: Main.screenPosition,
@@ -152,7 +152,7 @@ namespace FindableManaCrystals {
 				dust.noLight = true;
 
 				if( config.DebugModeInfo ) {
-					DebugHelpers.Print(
+					DebugLibraries.Print(
 						"FindableManaCrystals",
 						"rateOfSparks: " + rateScaleOfSparks.ToString("N2")
 							+", proximity: "+newTileProximityIf.Value.ToString("N2")

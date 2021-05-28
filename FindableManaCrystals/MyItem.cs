@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using HamstarHelpers.Helpers.Items.Attributes;
+using ModLibsGeneral.Libraries.Items.Attributes;
 
 
 namespace FindableManaCrystals {
@@ -19,7 +19,7 @@ namespace FindableManaCrystals {
 					modName+"Now detects hints of certain magical phenomena"
 				);
 
-				ItemInformationAttributeHelpers.ApplyTooltipAt( tooltips, tip );
+				ItemInformationAttributeLibraries.ApplyTooltipAt( tooltips, tip );
 				break;
 			case ItemID.ManaCrystal:
 				var config = FMCConfig.Instance;

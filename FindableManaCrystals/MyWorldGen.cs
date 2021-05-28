@@ -3,9 +3,9 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.World.Generation;
 using Microsoft.Xna.Framework;
-using HamstarHelpers.Helpers.TModLoader;
-using HamstarHelpers.Classes.Tiles.TilePattern;
-using HamstarHelpers.Helpers.Debug;
+using ModLibsCore.Libraries.Debug;
+using ModLibsCore.Libraries.TModLoader;
+using ModLibsTiles.Classes.Tiles.TilePattern;
 using FindableManaCrystals.Tiles;
 
 
@@ -16,7 +16,7 @@ namespace FindableManaCrystals {
 				int maxAttempts,
 				TilePattern pattern,
 				out (int TileX, int TileY) randTile ) {
-			var rand = TmlHelpers.SafelyGetRand();
+			var rand = TmlLibraries.SafelyGetRand();
 			int attempts = 0;
 			int randCaveTileX, randCaveTileY;
 			
@@ -90,7 +90,7 @@ namespace FindableManaCrystals {
 
 			if( Main.tile[tileX, tileY].type == shardTileType ) {
 				if( FMCConfig.Instance.DebugModeWorldGenInfo ) {
-					LogHelpers.Log( "Placed Mana Crystal Shard (of " + this.NeededShards + ")" +
+					LogLibraries.Log( "Placed Mana Crystal Shard (of " + this.NeededShards + ")" +
 						" at " + tileX + "," + tileY +
 						" (" + ( tileX << 4 ) + "," + ( tileY << 4 ) + ")"
 					);

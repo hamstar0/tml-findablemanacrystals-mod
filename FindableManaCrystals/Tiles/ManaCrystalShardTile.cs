@@ -3,9 +3,9 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Tiles;
-using HamstarHelpers.Helpers.TModLoader;
+using ModLibsCore.Libraries.Debug;
+using ModLibsCore.Libraries.TModLoader;
+using ModLibsGeneral.Libraries.Tiles;
 using FindableManaCrystals.Items;
 
 
@@ -18,7 +18,7 @@ namespace FindableManaCrystals.Tiles {
 		////////////////
 
 		public static short PickFrameX( int i, int j ) {
-			return (short)( TmlHelpers.SafelyGetRand().Next(3) * ManaCrystalShardTile.AnimationFrameWidth );
+			return (short)( TmlLibraries.SafelyGetRand().Next(3) * ManaCrystalShardTile.AnimationFrameWidth );
 		}
 
 		public static short PickFrameY( int i, int j ) {
@@ -99,7 +99,7 @@ namespace FindableManaCrystals.Tiles {
 
 			if( tile.frameY != frameY ) {
 				if( frameY == -1 ) {
-					TileHelpers.KillTileSynced( i, j, false, true, true );
+					TileLibraries.KillTileSynced( i, j, false, true, true );
 				} else {
 					tile.frameY = frameY;
 					resetFrame = true;

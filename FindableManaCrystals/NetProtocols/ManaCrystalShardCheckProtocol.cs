@@ -1,13 +1,14 @@
-﻿using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
-using System;
+﻿using System;
 using Terraria.ModLoader;
+using ModLibsCore.Services.Network.SimplePacket;
 
 
 namespace FindableManaCrystals.NetProtocols {
-	class ManaCrystalShardCheckProtocol : PacketProtocolSendToServer {
+	[Serializable]
+	class ManaCrystalShardCheckProtocol : SimplePacketPayload {
 		public static void QuickRequest( int tileX, int tileY, float brightness ) {
-			var protocol = new ManaCrystalShardCheckProtocol( tileX, tileY, brightness );
-			protocol.SendToServer( false );
+			var packet = new ManaCrystalShardCheckProtocol( tileX, tileY, brightness );
+			SimplePacket.SendToServer( packet );
 		}
 
 
@@ -30,16 +31,15 @@ namespace FindableManaCrystals.NetProtocols {
 			this.Brightness = brightness;
 		}
 
-		////
-
-		protected override void InitializeClientSendData() {
-		}
-
 		////////////////
 
-		protected override void Receive( int fromWho ) {
+		public override void ReceiveOnServer( int fromWho ) {
 			var myworld = ModContent.GetInstance<FMCWorld>();
 			myworld.QueueManaCrystalShardCheck( this.TileX, this.TileY, this.Brightness );
+		}
+
+		public override void ReceiveOnClient() {
+			throw new NotImplementedException();
 		}
 	}
 }

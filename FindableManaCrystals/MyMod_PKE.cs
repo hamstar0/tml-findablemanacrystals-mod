@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Tiles;
-using HamstarHelpers.Classes.Tiles.TilePattern;
+using ModLibsCore.Libraries.Debug;
+using ModLibsTiles.Classes.Tiles.TilePattern;
+using ModLibsTiles.Libraries.Tiles;
 using FindableManaCrystals.Tiles;
 
 
@@ -82,7 +82,7 @@ namespace FindableManaCrystals {
 			} );
 			int maxDist = maxTileRange * 16;
 
-			nearestShardTile = TileFinderHelpers.GetNearestTile( worldPos, pattern, maxDist );
+			nearestShardTile = TileFinderLibraries.GetNearestTile( worldPos, pattern, maxDist );
 			if( !nearestShardTile.HasValue ) {
 				return 0f;
 			}
