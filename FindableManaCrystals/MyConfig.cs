@@ -12,7 +12,7 @@ namespace FindableManaCrystals {
 
 
 	public partial class FMCConfig : ModConfig {
-		public static FMCConfig Instance { get; internal set; }
+		public static FMCConfig Instance => ModContent.GetInstance<FMCConfig>();
 
 
 

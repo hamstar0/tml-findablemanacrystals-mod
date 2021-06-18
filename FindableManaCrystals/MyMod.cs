@@ -26,12 +26,9 @@ namespace FindableManaCrystals {
 
 			FMCWorld.InitializeSingleton();
 			FMCProjectile.InitializeSingleton();
-
-			FMCConfig.Instance = ModContent.GetInstance<FMCConfig>();
 		}
 
 		public override void Unload() {
-			FMCConfig.Instance = null;
 			FMCMod.Instance = null;
 		}
 
