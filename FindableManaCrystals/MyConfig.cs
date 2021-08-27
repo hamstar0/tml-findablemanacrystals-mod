@@ -101,9 +101,9 @@ namespace FindableManaCrystals {
 		////
 
 		[Range( 0f, 1f )]
-		[DefaultValue( 1f / 60f )]
+		[DefaultValue( 1f / 45f )]
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
-		public float PKEDetectChancePerTick { get; set; } = 1f / 60f;
+		public float PKEDetectChancePerTick { get; set; } = 1f / 45f;
 
 		[DefaultValue( true )]
 		public bool PKEDetectInterference { get; set; } = true;
