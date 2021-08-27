@@ -32,8 +32,8 @@ namespace FindableManaCrystals {
 		////
 
 		[Range( 0, 100 )]
-		[DefaultValue( 4 )]
-		public int ManaCrystalShardsPerManaCrystal { get; set; } = 4;
+		[DefaultValue( 3 )]
+		public int ManaCrystalShardsPerManaCrystal { get; set; } = 3;
 
 		[Range( 10, 1000 )]
 		[DefaultValue( 80 )]
