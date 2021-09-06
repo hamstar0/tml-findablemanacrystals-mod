@@ -10,29 +10,33 @@ namespace FindableManaCrystals {
 	class FMCItem : GlobalItem {
 		public override void ModifyTooltips( Item item, List<TooltipLine> tooltips ) {
 			string modName = "[c/FFFF88:FMC] - ";
+			TooltipLine tip;
 
 			switch( item.type ) {
 			case ItemID.Binoculars:
-				var tip = new TooltipLine(
+				tip = new TooltipLine(
 					this.mod,
 					"FindableManaCrystalsBinoculars",
 					modName+"Now detects hints of certain magical phenomena"
 				);
 
-				ItemInformationAttributeLibraries.ApplyTooltipAt( tooltips, tip );
+				ItemInformationAttributeLibraries.AppendTooltipAtEnd( tooltips, tip );
 				break;
 			case ItemID.ManaCrystal:
 				var config = FMCConfig.Instance;
 
 				if( config.Get<bool>( nameof(FMCConfig.ReducedManaCrystalStatIncrease) ) ) {
 					int idx = tooltips.FindIndex( t => t.Name == "ManaCrystal" );
+					tip = new TooltipLine(
+						this.mod,
+						"FindableManaCrystalsManaCrystal",
+						modName + "Permanently increases maximum mana by 10"
+					);
 
 					if( idx >= 0 ) {
-						tooltips[idx] = new TooltipLine(
-							this.mod,
-							"FindableManaCrystalsManaCrystal",
-							modName+"Permanently increases maximum mana by 10"
-						);
+						tooltips[idx] = tip;
+					} else {
+						ItemInformationAttributeLibraries.AppendTooltipAtEnd( tooltips, tip );
 					}
 				}
 
