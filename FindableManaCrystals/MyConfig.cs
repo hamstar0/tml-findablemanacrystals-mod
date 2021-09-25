@@ -89,9 +89,9 @@ namespace FindableManaCrystals {
 		public int BinocularsHintBeginDurationTicks { get; set; } = 30;
 
 		[Range( 0f, 1f )]
-		[DefaultValue( 0.6f )]
+		[DefaultValue( 0.7f )]	// was 0.6f
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
-		public float BinocularsHintIntensity { get; set; } = 0.6f;
+		public float BinocularsHintIntensity { get; set; } = 0.7f;
 
 		////
 
@@ -101,9 +101,9 @@ namespace FindableManaCrystals {
 		////
 
 		[Range( 0f, 1f )]
-		[DefaultValue( 1f / 45f )]
+		[DefaultValue( 1f / 25f )]	// was 1/45
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
-		public float PKEDetectChancePerTick { get; set; } = 1f / 45f;
+		public float PKEDetectChancePerTick { get; set; } = 1f / 25f;
 
 		[DefaultValue( true )]
 		public bool PKEDetectInterference { get; set; } = true;

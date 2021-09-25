@@ -18,6 +18,8 @@ namespace FindableManaCrystals {
 			float lastGaugedManaShardPercent = 0f;
 			int gaugeTimer = 0;
 
+			//
+
 			PKEMeter.PKEMeterAPI.SetGauge( (plr, pos) => {
 				PKEMeter.Logic.PKEGaugeValues existingGauge = gauge?.Invoke( plr, pos )
 					?? new PKEMeter.Logic.PKEGaugeValues( 0f, 0f, 0f, 0f);
@@ -33,6 +35,8 @@ namespace FindableManaCrystals {
 
 				return existingGauge;
 			} );
+
+			//
 
 			PKEMeter.PKEMeterAPI.SetMeterText( "FindableManaCrystals", ( plr, pos, gauges ) => {
 				Color color = new Color( 32, 64, 255 );
@@ -51,7 +55,7 @@ namespace FindableManaCrystals {
 
 		////////////////
 		
-		public static float? ComputePKEGauge( float gaugedAmount, Point? nearestShardTile ) {
+		public static float? ComputePKEGauge( float priorGaugedAmount, Point? nearestShardTile ) {
 			float? gauge = null;
 
 			float tileIllumAmt = 0;
@@ -63,18 +67,22 @@ namespace FindableManaCrystals {
 				);
 			}
 			
+			// If tile is lit up, report gauged amount directly
 			if( tileIllumAmt > 0f ) {
-				gauge = gaugedAmount;
-				gauge += (1f - gaugedAmount) * Math.Min(tileIllumAmt, 1f);
-			} else {
+				gauge = priorGaugedAmount;
+				gauge += (1f - priorGaugedAmount) * Math.Min(tileIllumAmt, 1f);
+			}
+			// Otherwise, infrequently report gauged amount
+			else {
 				var config = FMCConfig.Instance;
 				float detectChancePerTick = config.Get<float>( nameof(config.PKEDetectChancePerTick) );
 
-				// Show detected amount only occasionally (default 1/45 chance per tick)
+				// Show detected amount only occasionally (default 1/25 chance per tick), and with heavy 'interference'
 				if( detectChancePerTick > Main.rand.NextFloat() ) {
-					gauge = FMCMod.ApplyInterferenceToManaShardGauge( gaugedAmount );
+					gauge = FMCMod.ApplyInterferenceToManaShardGauge( priorGaugedAmount );
 				}
 			}
+
 			return gauge;
 		}
 
