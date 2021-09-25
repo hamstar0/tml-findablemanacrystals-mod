@@ -35,8 +35,16 @@ namespace FindableManaCrystals.Tiles {
 				rad + rad
 			);
 
-			if( FindableManaCrystalsWorldGenPass.GetRandomShardAttachableTile( within, 100, pattern, out tileAt ) ) {
-				TileLibraries.Swap1x1Synced( tileX, tileY, tileAt.newTileX, tileAt.newTileY, true, true, true );
+			if( FindableManaCrystalsWorldGenPass.GetRandomShardAttachableTile(within, 100, pattern, out tileAt) ) {
+				TileLibraries.Swap1x1(
+					fromTileX: tileX,
+					fromTileY: tileY,
+					toTileX: tileAt.newTileX,
+					toTileY: tileAt.newTileY,
+					preserveWall: true,
+					preserveWire: true,
+					preserveLiquid: true
+				);
 
 				for( int i = 0; i < 4; i++ ) {
 					Dust.NewDust(

@@ -99,7 +99,7 @@ namespace FindableManaCrystals.Tiles {
 
 			if( tile.frameY != frameY ) {
 				if( frameY == -1 ) {
-					TileLibraries.KillTileSynced( i, j, false, true, true );
+					TileLibraries.KillTile( i, j, false, true, true );
 				} else {
 					tile.frameY = frameY;
 					resetFrame = true;
