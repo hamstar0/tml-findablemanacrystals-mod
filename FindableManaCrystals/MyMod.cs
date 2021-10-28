@@ -77,5 +77,16 @@ namespace FindableManaCrystals {
 				}
 			}
 		}
+
+
+		////////////////
+
+		public override void PreSaveAndQuit() {
+			if( Main.netMode != NetmodeID.Server ) {
+				var myplayer = Main.LocalPlayer.GetModPlayer<FindableManaCrystalsPlayer>();
+
+				myplayer.ResetBinocZoomIf();
+			}
+		}
 	}
 }
