@@ -19,6 +19,10 @@ namespace FindableManaCrystals {
 
 		////////////////
 
+		public bool IsBinocFocus => this.PreBinocZoomPercent.HasValue;
+
+		////
+
 		public override bool CloneNewInstances => false;
 
 

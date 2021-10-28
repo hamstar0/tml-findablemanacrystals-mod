@@ -7,8 +7,9 @@ using Terraria.Utilities;
 using ModLibsCore.Libraries.Debug;
 using ModLibsCore.Libraries.TModLoader;
 using ModLibsCore.Services.Timers;
-using FindableManaCrystals.Tiles;
 using ModLibsGeneral.Libraries.UI;
+using FindableManaCrystals.Tiles;
+
 
 namespace FindableManaCrystals {
 	partial class FindableManaCrystalsPlayer : ModPlayer {
@@ -18,7 +19,7 @@ namespace FindableManaCrystals {
 			int midWldY = (int)Main.screenPosition.Y + ( Main.screenHeight / 2 );
 
 			var config = FMCConfig.Instance;
-			int radius = config.Get<int>( nameof(FMCConfig.BinocularDetectionRadiusTiles) );
+			int radius = config.Get<int>( nameof(FMCConfig.BinocularsDetectionRadiusTiles) );
 
 			int midTileX = midWldX >> 4;
 			int midTileY = midWldY >> 4;
@@ -97,7 +98,7 @@ namespace FindableManaCrystals {
 
 				//
 
-				if( this.PreBinocZoomPercent.HasValue ) {
+				if( this.IsBinocFocus ) {
 					percentToCenter = percentToCenter * percentToCenter * percentToCenter;
 					newTileProximityIf *= 3f;
 				}
@@ -126,17 +127,18 @@ namespace FindableManaCrystals {
 		////
 
 		public void CreateManaShardHintFxAt( float percentToCenter ) {
-			int scrWid = (int)( (float)Main.screenWidth / Main.GameZoomTarget );
-			int scrHei = (int)( (float)Main.screenHeight / Main.GameZoomTarget );
-
-			int offsetX = (Main.screenWidth - scrWid) / 2;
-			int offsetY = (Main.screenHeight - scrHei) / 2;
-
+			//int scrWid = (int)( (float)Main.screenWidth / Main.GameZoomTarget );
+			//int scrHei = (int)( (float)Main.screenHeight / Main.GameZoomTarget );
+			//
+			//int offsetX = (Main.screenWidth - scrWid) / 2;
+			//int offsetY = (Main.screenHeight - scrHei) / 2;
+			Rectangle scr = UIZoomLibraries.GetWorldFrameOfScreen( null, true );
 			UnifiedRandom rand = TmlLibraries.SafelyGetRand();
+			
 			int dustIdx = Dust.NewDust(
-				Position: Main.screenPosition + new Vector2(offsetX, offsetY),
-				Width: scrWid,
-				Height: scrHei,
+				Position: new Vector2( scr.X, scr.Y ),
+				Width: scr.Width,
+				Height: scr.Height,
 				Type: 59,
 				SpeedX: ((4f * rand.NextFloat()) - 2f) * percentToCenter,
 				SpeedY: ((4f * rand.NextFloat()) - 2f) * percentToCenter,

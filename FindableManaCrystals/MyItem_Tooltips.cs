@@ -32,7 +32,7 @@ namespace FindableManaCrystals {
 			var tip2 = new TooltipLine(
 				this.mod,
 				"FindableManaCrystalsBinoculars_Zoom",
-				modName+"Hold right-click to improve detection"
+				modName+"Hold right-click to improve detection + cast light"
 			);
 
 			ItemInformationAttributeLibraries.AppendTooltipAtEnd( tooltips, tip1 );

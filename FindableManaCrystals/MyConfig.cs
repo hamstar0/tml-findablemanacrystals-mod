@@ -42,7 +42,7 @@ namespace FindableManaCrystals {
 		[Label("Mana Crystal Shard Light Tolerance (0 = unlimited)")]
 		[Range( 0f, 1000f )]
 		[DefaultValue( 0f )]
-		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
+		[CustomModConfigItem( typeof(MyFloatInputElement) )]
 		public float ManaCrystalShardLightToleranceScale { get; set; } = 0f;
 
 		[Range( 0, 200 )]
@@ -51,7 +51,7 @@ namespace FindableManaCrystals {
 
 		[Range( 0.001f, 10f )]
 		[DefaultValue( 0.04f )]
-		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
+		[CustomModConfigItem( typeof(MyFloatInputElement) )]
 		public float IlluminationDimRate { get; set; } = 0.04f;
 
 
@@ -82,7 +82,7 @@ namespace FindableManaCrystals {
 
 		[Range( 10, 1000 )]
 		[DefaultValue( 84 )]
-		public int BinocularDetectionRadiusTiles { get; set; } = 84;
+		public int BinocularsDetectionRadiusTiles { get; set; } = 84;
 
 		[Range( 1, 60 * 60 )]
 		[DefaultValue( 30 )]
@@ -90,8 +90,21 @@ namespace FindableManaCrystals {
 
 		[Range( 0f, 1f )]
 		[DefaultValue( 0.7f )]	// was 0.6f
-		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
+		[CustomModConfigItem( typeof(MyFloatInputElement) )]
 		public float BinocularsHintIntensity { get; set; } = 0.7f;
+
+		////
+		
+		[Range( 0f, 1f )]
+		[DefaultValue( 2f / 60f )]
+		[CustomModConfigItem( typeof(MyFloatInputElement) )]
+		public float BinocularsFocusModeLightChancePerTick { get; set; } = 2f / 60f;
+		
+		[Range( 0f, 1f )]
+		[DefaultValue( 0.4f )]
+		[CustomModConfigItem( typeof(MyFloatInputElement) )]
+		public float BinocularsFocusModeLightIntensity { get; set; } = 0.4f;
+
 
 		////
 
@@ -102,7 +115,7 @@ namespace FindableManaCrystals {
 
 		[Range( 0f, 1f )]
 		[DefaultValue( 1f / 32f )]	// was 1/45
-		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
+		[CustomModConfigItem( typeof(MyFloatInputElement) )]
 		public float PKEDetectChancePerTick { get; set; } = 1f / 32f;
 
 		[DefaultValue( true )]
