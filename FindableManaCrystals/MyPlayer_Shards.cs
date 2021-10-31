@@ -103,7 +103,7 @@ namespace FindableManaCrystals {
 					newTileProximityIf *= 3f;
 				}
 
-				this.CreateManaShardHintFxAt( percentToCenter );
+				this.CreateManaShardHintFxAt( percentToCenter, this.IsBinocFocus );
 
 				//
 
@@ -126,7 +126,7 @@ namespace FindableManaCrystals {
 
 		////
 
-		public void CreateManaShardHintFxAt( float percentToCenter ) {
+		public void CreateManaShardHintFxAt( float percentToCenter, bool isFocusing ) {
 			//int scrWid = (int)( (float)Main.screenWidth / Main.GameZoomTarget );
 			//int scrHei = (int)( (float)Main.screenHeight / Main.GameZoomTarget );
 			//
@@ -134,17 +134,24 @@ namespace FindableManaCrystals {
 			//int offsetY = (Main.screenHeight - scrHei) / 2;
 			Rectangle scr = UIZoomLibraries.GetWorldFrameOfScreen( null, true );
 			UnifiedRandom rand = TmlLibraries.SafelyGetRand();
-			
+
+			float maxVel = 2f;
+
+			if( isFocusing ) {
+				percentToCenter *= percentToCenter;
+				maxVel = 2.5f;
+			}
+
 			int dustIdx = Dust.NewDust(
 				Position: new Vector2( scr.X, scr.Y ),
 				Width: scr.Width,
 				Height: scr.Height,
 				Type: 59,
-				SpeedX: ((4f * rand.NextFloat()) - 2f) * percentToCenter,
-				SpeedY: ((4f * rand.NextFloat()) - 2f) * percentToCenter,
+				SpeedX: ((2f * maxVel * rand.NextFloat()) - maxVel) * percentToCenter,
+				SpeedY: ((2f * maxVel * rand.NextFloat()) - maxVel) * percentToCenter,
 				Alpha: 128 - (int)(percentToCenter * 128f),
 				newColor: new Color( 255, 255, 255 ),
-				Scale: 1.25f + (2f * percentToCenter)
+				Scale: 1f + (2f * percentToCenter)
 			);
 			Dust dust = Main.dust[dustIdx];
 			dust.noGravity = true;
