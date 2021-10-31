@@ -25,14 +25,14 @@ namespace FindableManaCrystals {
 			string modName = "[c/FFFF88:FMC] - ";
 
 			var tip1 = new TooltipLine(
-				this.mod,
-				"FindableManaCrystalsBinoculars_Shards",
-				modName+"Now detects hints of certain magical phenomena"
+				mod: this.mod,
+				name: "FindableManaCrystalsBinoculars_Shards",
+				text: modName + "Now detects hints of certain magical phenomena"
 			);
 			var tip2 = new TooltipLine(
-				this.mod,
-				"FindableManaCrystalsBinoculars_Zoom",
-				modName+"Hold right-click to improve detection + cast light"
+				mod: this.mod,
+				name: "FindableManaCrystalsBinoculars_Zoom",
+				text: modName+"Hold right-click to improve detection + cast light"
 			);
 
 			ItemInformationAttributeLibraries.AppendTooltipAtEnd( tooltips, tip1 );
