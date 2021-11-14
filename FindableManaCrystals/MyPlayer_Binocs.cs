@@ -55,26 +55,29 @@ namespace FindableManaCrystals {
 		}
 		
 		private void UpdateForBinocs_Focus_LightIf() {
-			var config = FMCConfig.Instance;
-
-			float chance = config.Get<float>( nameof(config.BinocularsFocusModeLightChancePerTick) );
-			if( Main.rand.NextFloat() > chance ) {
-				return;
-			}
-
-			float illum = config.Get<float>( nameof(config.BinocularsFocusModeLightIntensity) );
-
+			float illum = 0.065f;
 			Rectangle scr = UIZoomLibraries.GetWorldFrameOfScreen( null, true );
-			int tileX = (scr.X + Main.rand.Next(scr.Width)) / 16;
-			int tileY = (scr.Y + Main.rand.Next(scr.Height)) / 16;
+			int tileX = scr.Center.X / 16;  //(scr.X + Main.rand.Next(scr.Width)) / 16;
+			int tileY = scr.Center.Y / 16; //(scr.Y + Main.rand.Next(scr.Height)) / 16;
+			int rad = 4;
+			int minX = tileX - 4;
+			int maxX = tileX + 4;
+			int minY = tileY - 4;
+			int maxY = tileY + 4;
+			
+			for( int i=minX; i<maxX; i++ ) {
+				int diffX = i - tileX;
 
-			Lighting.AddLight(
-				i: tileX,
-				j: tileY,
-				R: illum,
-				G: illum,
-				B: illum
-			);
+				for( int j=minY; j<maxY; j++ ) {
+					int diffY = j - tileY;
+					int distSqr = ( diffX * diffX ) + ( diffY * diffY );
+					if( distSqr > rad * rad ) {
+						continue;
+					}
+
+					Lighting.AddLight( i, j, illum, illum, illum );
+				}
+			}
 		}
 
 

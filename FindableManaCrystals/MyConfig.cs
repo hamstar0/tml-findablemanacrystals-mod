@@ -93,18 +93,6 @@ namespace FindableManaCrystals {
 		[CustomModConfigItem( typeof(MyFloatInputElement) )]
 		public float BinocularsHintIntensity { get; set; } = 0.7f;
 
-		////
-		
-		[Range( 0f, 1f )]
-		[DefaultValue( 2f / 60f )]
-		[CustomModConfigItem( typeof(MyFloatInputElement) )]
-		public float BinocularsFocusModeLightChancePerTick { get; set; } = 2f / 60f;
-		
-		[Range( 0f, 1f )]
-		[DefaultValue( 0.4f )]
-		[CustomModConfigItem( typeof(MyFloatInputElement) )]
-		public float BinocularsFocusModeLightIntensity { get; set; } = 0.4f;
-
 
 		////
 
