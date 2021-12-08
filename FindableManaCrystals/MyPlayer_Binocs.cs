@@ -32,7 +32,7 @@ namespace FindableManaCrystals {
 		}
 		
 		private void UpdateForBinocs_ZoomStateForFocus( bool isHoldingBinocs ) {
-			if( Main.mouseRight && isHoldingBinocs ) {
+			if( Main.mouseLeft && isHoldingBinocs ) {
 				if( !this.PreBinocZoomPercent.HasValue ) {
 					this.PreBinocZoomPercent = Main.GameZoomTarget;
 				}
