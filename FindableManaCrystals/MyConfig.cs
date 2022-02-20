@@ -106,6 +106,11 @@ namespace FindableManaCrystals {
 		////
 
 		[DefaultValue( true )]
+		public bool IsGeothaumSurveyStationBreakable { get; set; } = true;
+
+		////
+
+		[DefaultValue( true )]
 		public bool StartPlayersWithBinoculars { get; set; } = true;
 
 		[Range( 10, 1000 )]
