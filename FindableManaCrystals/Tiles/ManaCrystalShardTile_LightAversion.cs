@@ -35,7 +35,7 @@ namespace FindableManaCrystals.Tiles {
 				rad + rad
 			);
 
-			if( FindableManaCrystalsWorldGenPass.GetRandomShardAttachableTile(within, 100, pattern, out tileAt) ) {
+			if( ManaShardWorldGenPass.GetRandomShardAttachableTile(within, 100, pattern, out tileAt) ) {
 				TileLibraries.Swap1x1(
 					fromTileX: tileX,
 					fromTileY: tileY,

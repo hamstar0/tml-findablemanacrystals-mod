@@ -9,8 +9,8 @@ using ModLibsTiles.Classes.Tiles.TilePattern;
 using FindableManaCrystals.Tiles;
 
 
-namespace FindableManaCrystals {
-	class FindableManaCrystalsWorldGenPass : GenPass {
+namespace FindableManaCrystals.WorldGeneration {
+	class ManaShardsWorldGenPass : GenPass {
 		public static bool GetRandomShardAttachableTile(
 				Rectangle within,
 				int maxAttempts,
@@ -43,7 +43,7 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		public FindableManaCrystalsWorldGenPass( int shards ) : base( "Findable Mana Crystals: Populate Shards", 1f ) {
+		public ManaShardsWorldGenPass( int shards ) : base( "Findable Mana Crystals: Populate Shards", 1f ) {
 			this.NeededShards = shards;
 		}
 
@@ -71,7 +71,7 @@ namespace FindableManaCrystals {
 			for( int i = 0; i < this.NeededShards; i++ ) {
 				progress?.Set( stepWeight * (float)i );
 
-				if( FindableManaCrystalsWorldGenPass.GetRandomShardAttachableTile(within, 10000, pattern, out randCenterTile) ) {
+				if( ManaShardsWorldGenPass.GetRandomShardAttachableTile(within, 10000, pattern, out randCenterTile) ) {
 					if( !this.SpawnShard(randCenterTile.TileX, randCenterTile.TileY) ) {
 						i--;
 					}

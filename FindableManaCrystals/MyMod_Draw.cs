@@ -46,7 +46,7 @@ namespace FindableManaCrystals {
 				return false;
 			}
 
-			var myplayer = Main.LocalPlayer.GetModPlayer<FindableManaCrystalsPlayer>();
+			var myplayer = Main.LocalPlayer.GetModPlayer<FMCPlayer>();
 			if( myplayer.IsBinocFocus ) {
 				return false;
 			}

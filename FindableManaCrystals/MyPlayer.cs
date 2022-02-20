@@ -7,7 +7,7 @@ using ModLibsCore.Libraries.Debug;
 
 
 namespace FindableManaCrystals {
-	partial class FindableManaCrystalsPlayer : ModPlayer {
+	partial class FMCPlayer : ModPlayer {
 		private int ScanTickElapsed = 0;
 
 		////
@@ -33,7 +33,7 @@ namespace FindableManaCrystals {
 			if( !mediumcoreDeath ) {
 				var config = FMCConfig.Instance;
 
-				if( config.Get<bool>( nameof( FMCConfig.StartPlayersWithBinoculars ) ) ) {
+				if( config.Get<bool>( nameof(FMCConfig.StartPlayersWithBinoculars) ) ) {
 					var binocs = new Item();
 					binocs.SetDefaults( ItemID.Binoculars );
 					binocs.stack = 1;

@@ -4,14 +4,13 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.World.Generation;
 using ModLibsCore.Libraries.Debug;
-using ModLibsGeneral.Libraries.World;
 using ModLibsTiles.Classes.Tiles.TilePattern;
 using FindableManaCrystals.Tiles;
 using FindableManaCrystals.NetProtocols;
 
 
 namespace FindableManaCrystals {
-	class FMCWorld : ModWorld {
+	partial class FMCWorld : ModWorld {
 		internal static void InitializeSingleton() {
 			var myworld = ModContent.GetInstance<FMCWorld>();
 
@@ -53,30 +52,8 @@ namespace FindableManaCrystals {
 		////////////////
 
 		public override void ModifyWorldGenTasks( List<GenPass> tasks, ref float totalWeight ) {
-			var config = FMCConfig.Instance;
-			int shards;
-			WorldSize wldSize = WorldLibraries.GetSize();
-
-			switch( wldSize ) {
-			default:
-			case WorldSize.SubSmall:
-				shards = config.Get<int>( nameof(FMCConfig.TinyWorldManaCrystalShards ) );
-				break;
-			case WorldSize.Small:
-				shards = config.Get<int>( nameof(FMCConfig.SmallWorldManaCrystalShards) );
-				break;
-			case WorldSize.Medium:
-				shards = config.Get<int>( nameof(FMCConfig.MediumWorldManaCrystalShards) );
-				break;
-			case WorldSize.Large:
-				shards = config.Get<int>( nameof(FMCConfig.LargeWorldManaCrystalShards) );
-				break;
-			case WorldSize.SuperLarge:
-				shards = config.Get<int>( nameof(FMCConfig.HugeWorldManaCrystalShards) );
-				break;
-			}
-
-			tasks.Add( new FindableManaCrystalsWorldGenPass(shards) );
+			tasks.Add( this.GetManaShardWorldGenTask() );
+			tasks.Add( this.GetSurveyStationsWorldGenTask() );
 		}
 
 

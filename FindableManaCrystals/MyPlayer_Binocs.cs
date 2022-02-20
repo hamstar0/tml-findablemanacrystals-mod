@@ -7,7 +7,7 @@ using ModLibsGeneral.Libraries.UI;
 
 
 namespace FindableManaCrystals {
-	partial class FindableManaCrystalsPlayer : ModPlayer {
+	partial class FMCPlayer : ModPlayer {
 		public const float MaxBinocZoom = 2.1f;
 		public const float BinocZoomRate = 1f / 15f;
 
@@ -37,16 +37,16 @@ namespace FindableManaCrystals {
 					this.PreBinocZoomPercent = Main.GameZoomTarget;
 				}
 
-				if( this.BinocZoomPercent < FindableManaCrystalsPlayer.MaxBinocZoom ) {
-					this.BinocZoomPercent += FindableManaCrystalsPlayer.BinocZoomRate;
-					if( this.BinocZoomPercent > FindableManaCrystalsPlayer.MaxBinocZoom ) {
-						this.BinocZoomPercent = FindableManaCrystalsPlayer.MaxBinocZoom;
+				if( this.BinocZoomPercent < FMCPlayer.MaxBinocZoom ) {
+					this.BinocZoomPercent += FMCPlayer.BinocZoomRate;
+					if( this.BinocZoomPercent > FMCPlayer.MaxBinocZoom ) {
+						this.BinocZoomPercent = FMCPlayer.MaxBinocZoom;
 					}
 				}
 			} else {
 				if( this.PreBinocZoomPercent.HasValue ) {
 					if( this.BinocZoomPercent > this.PreBinocZoomPercent.Value ) {
-						this.BinocZoomPercent -= FindableManaCrystalsPlayer.BinocZoomRate;
+						this.BinocZoomPercent -= FMCPlayer.BinocZoomRate;
 					} else {
 						this.ResetBinocZoomIf();
 					}

@@ -77,6 +77,34 @@ namespace FindableManaCrystals {
 
 		////
 
+		[Range( 0, 1000 )]
+		[DefaultValue( 16 )]
+		public int TinyWorldSurveyStations { get; set; } = 20;    // SmallWorldPortals / 2
+
+		[Range( 0, 1000 )]
+		[DefaultValue( 28 )]
+		public int SmallWorldSurveyStations { get; set; } = 28;  // 4200 x 1200 = 5040000
+
+		[Range( 0, 1000 )]
+		[DefaultValue( 54 )]
+		public int MediumWorldSurveyStations { get; set; } = 54; // 6400 x 1800 = 11520000
+
+		[Range( 0, 1000 )]
+		[DefaultValue( 108 )]
+		public int LargeWorldSurveyStations { get; set; } = 108;  // 8400 x 2400 = 20160000
+
+		[Range( 0, 10000 )]
+		[DefaultValue( 160 )]
+		public int HugeWorldSurveyStations { get; set; } = 160;
+
+		////
+
+		[Range( 0, 10000 )]
+		[DefaultValue( 128 )]
+		public int MinimumSurveyStationTileSpacing { get; set; } = 128;
+
+		////
+
 		[DefaultValue( true )]
 		public bool StartPlayersWithBinoculars { get; set; } = true;
 

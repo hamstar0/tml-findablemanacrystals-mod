@@ -12,7 +12,7 @@ using FindableManaCrystals.Tiles;
 
 
 namespace FindableManaCrystals {
-	partial class FindableManaCrystalsPlayer : ModPlayer {
+	partial class FMCPlayer : ModPlayer {
 		public float? MeasureClosestOnScreenManaCrystalShardTileDistance( out float percentToCenter ) {
 			float closestDist = -1;
 			int midWldX = (int)Main.screenPosition.X + ( Main.screenWidth / 2 );
