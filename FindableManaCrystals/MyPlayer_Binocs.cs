@@ -15,7 +15,7 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		private void UpdateForBinocs( bool isHoldingBinocs ) {
+		private void UpdateForShardViewing( bool isHoldingBinocs ) {
 			this.UpdateForBinocs_ZoomStateForFocus( isHoldingBinocs );
 
 			if( isHoldingBinocs ) {

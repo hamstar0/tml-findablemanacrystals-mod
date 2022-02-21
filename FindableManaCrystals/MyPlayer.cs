@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,6 +21,8 @@ namespace FindableManaCrystals {
 		////////////////
 
 		public bool IsBinocFocus => this.PreBinocZoomPercent.HasValue;
+
+		public bool IsNearSurveyStation { get; private set; } = false;
 
 
 		////////////////
@@ -50,10 +53,21 @@ namespace FindableManaCrystals {
 		public override void PreUpdate() {
 			if( Main.netMode != NetmodeID.Server ) {	// Non-server
 				if( this.player.whoAmI == Main.myPlayer ) {	// Current player
+					this.UpdateForSurveyStationProximity( out bool wasNear );
+					if( this.IsNearSurveyStation != wasNear ) {
+						if( this.IsNearSurveyStation ) {
+							Main.NewText( "Geothaumatic Surveillance Station active.", Color.Lime );
+						}
+					}
+
+					//
+
 					Item item = this.player.HeldItem;
 					bool isHoldingBinocs = item != null && !item.IsAir && item.type == ItemID.Binoculars;
 
-					this.UpdateForBinocs( isHoldingBinocs );
+					//
+
+					this.UpdateForShardViewing( isHoldingBinocs, this.IsNearSurveyStation );
 				}
 			}
 		}

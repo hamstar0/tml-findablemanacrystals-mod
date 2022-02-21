@@ -18,13 +18,17 @@ namespace FindableManaCrystals {
 		////////////////
 
 		public override void PostDrawFullscreenMap( ref string mouseText ) {
-			this.DrawAllMapChunks();
+			var myplayer = Main.LocalPlayer.GetModPlayer<FMCPlayer>();
+
+			if( myplayer.IsNearSurveyStation ) {
+				this.DrawAllShardMapChunks();
+			}
 		}
 
 
 		////////////////
 
-		private void DrawAllMapChunks() {
+		private void DrawAllShardMapChunks() {
 			int chunkSize = FMCWorld.ChunkTileSize;
 
 			(int x, int y, bool isOnScreen) topLeftTile = HUDMapLibraries.FindTopLeftTileOfFullscreenMap();
@@ -34,11 +38,11 @@ namespace FindableManaCrystals {
 			minTileX = (minTileX / chunkSize) * chunkSize;
 			minTileY = (minTileY / chunkSize) * chunkSize;
 
-			this.DrawAllMapChunksWithin( chunkSize, minTileX, minTileY );
+			this.DrawAllShardMapChunksWithin( chunkSize, minTileX, minTileY );
 		}
 
 
-		private void DrawAllMapChunksWithin( int chunkSize, int minTileX, int minTileY ) {
+		private void DrawAllShardMapChunksWithin( int chunkSize, int minTileX, int minTileY ) {
 			((int x, int y) tilePos, Vector2 scrPos) closestChunkToCursor = default;
 
 			bool rowIsInBounds = false;
@@ -72,7 +76,7 @@ namespace FindableManaCrystals {
 						);
 					}
 
-					if( this.DrawMapChunk_If( chunkSize, tileX, tileY, mapScrPos.scrPos, false) ) {
+					if( this.DrawShardMapChunk_If( chunkSize, tileX, tileY, mapScrPos.scrPos, false) ) {
 						//drawnChunks++;
 					}
 				}
@@ -86,7 +90,7 @@ namespace FindableManaCrystals {
 
 			//
 
-			this.DrawMapChunk_If(
+			this.DrawShardMapChunk_If(
 				chunkSize: chunkSize,
 				tileX: closestChunkToCursor.tilePos.x,
 				tileY: closestChunkToCursor.tilePos.y,
@@ -98,7 +102,7 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		private bool DrawMapChunk_If( int chunkSize, int tileX, int tileY, Vector2 screenPos, bool isHighlighted ) {
+		private bool DrawShardMapChunk_If( int chunkSize, int tileX, int tileY, Vector2 screenPos, bool isHighlighted ) {
 			if( tileX < 0 || tileY < 0 || tileX >= Main.maxTilesX || tileY >= Main.maxTilesY ) {
 				return false;
 			}
