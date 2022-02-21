@@ -6,7 +6,6 @@ using Terraria.World.Generation;
 using ModLibsCore.Libraries.Debug;
 using ModLibsTiles.Classes.Tiles.TilePattern;
 using FindableManaCrystals.Tiles;
-using FindableManaCrystals.NetProtocols;
 
 
 namespace FindableManaCrystals {
@@ -61,51 +60,8 @@ namespace FindableManaCrystals {
 
 		public override void PreUpdate() {
 			if( this.ManaCrystalShardIllumCheckQueueSize > 0 ) {
-				this.ProcessManaCrystalShardQueue();
+				this.ProcessManaCrystalShardIllumQueue();	// Shard 'illumination' behavior (esp. near magic)
 			}
-		}
-
-
-		////////////////
-
-		public void QueueManaCrystalShardCheck( int tileX, int tileY, float brightness ) {
-			if( Main.netMode == 1 ) {
-				ManaCrystalShardCheckProtocol.QuickRequest( tileX, tileY, brightness );
-			} else {
-				if( this.ManaCrystalShardIllumCheckQueueSize == (this.ManaCrystalShardIllumCheckQueue.Length - 1) ) {
-					Array.Resize( ref this.ManaCrystalShardIllumCheckQueue, this.ManaCrystalShardIllumCheckQueue.Length * 2 );
-				}
-				this.ManaCrystalShardIllumCheckQueue[ this.ManaCrystalShardIllumCheckQueueSize++ ] = (tileX, tileY);
-			}
-		}
-
-		private void ProcessManaCrystalShardQueue() {
-			var config = FMCConfig.Instance;
-			int shardType = ModContent.TileType<ManaCrystalShardTile>();
-
-			for( int i = 0; i < this.ManaCrystalShardIllumCheckQueueSize; i++ ) {
-				(int tileX, int tileY) tileAt = this.ManaCrystalShardIllumCheckQueue[i];
-
-				if( this.ManaCrystalShardIllumChecked.ContainsKey( tileAt.tileX ) && this.ManaCrystalShardIllumChecked[tileAt.tileX] == tileAt.tileY ) {
-					continue;
-				}
-				this.ManaCrystalShardIllumChecked[tileAt.tileX] = tileAt.tileY;
-
-				Tile tile = Framing.GetTileSafely( tileAt.tileX, tileAt.tileY );
-				float brightness = Lighting.Brightness( tileAt.tileX, tileAt.tileY );
-
-				if( tile.active() && tile.type == shardType ) {
-					ManaCrystalShardTile.UpdateLightAversionForTile(
-						tileAt.tileX,
-						tileAt.tileY,
-						config.Get<float>( nameof(FMCConfig.ManaCrystalShardLightToleranceScale) ),
-						brightness
-					);
-				}
-			}
-
-			this.ManaCrystalShardIllumChecked.Clear();
-			this.ManaCrystalShardIllumCheckQueueSize = 0;
 		}
 	}
 }

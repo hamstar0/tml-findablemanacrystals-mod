@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using ModLibsCore.Libraries.TModLoader;
 using ModLibsGeneral.Libraries.Tiles;
 using ModLibsTiles.Classes.Tiles.TilePattern;
+using FindableManaCrystals.WorldGeneration;
 
 
 namespace FindableManaCrystals.Tiles {
@@ -35,7 +36,7 @@ namespace FindableManaCrystals.Tiles {
 				rad + rad
 			);
 
-			if( ManaShardWorldGenPass.GetRandomShardAttachableTile(within, 100, pattern, out tileAt) ) {
+			if( ManaShardsWorldGenPass.GetRandomShardAttachableTile(within, 100, pattern, out tileAt) ) {
 				TileLibraries.Swap1x1(
 					fromTileX: tileX,
 					fromTileY: tileY,

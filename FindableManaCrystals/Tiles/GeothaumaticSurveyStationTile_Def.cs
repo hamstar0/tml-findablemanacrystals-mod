@@ -4,8 +4,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using ModLibsCore.Libraries.TModLoader;
-using FindableManaCrystals.Items;
 
 
 namespace FindableManaCrystals.Tiles {
@@ -76,19 +74,6 @@ namespace FindableManaCrystals.Tiles {
 				/*if( config.Get<bool>( nameof(config.GeothaumSurveyStationDropsItem ) ) ) {
 					Item.NewItem( i * 16, j * 16, 64, 32, ModContent.ItemType<GeothaumaticSurveyStationTileItem>() );
 				}*/
-			}
-		}
-
-
-		////////////////
-
-		public override void MouseOver( int i, int j ) {
-			Main.LocalPlayer.showItemIcon = true;
-			Main.LocalPlayer.showItemIcon2 = ModContent.ItemType<GeothaumaticSurveyStationTileItem>();
-
-			var myplayer = TmlLibraries.SafelyGetModPlayer<FMCPlayer>( Main.LocalPlayer );
-			if( myplayer.AddDiscoveredGeothaumStation(i, j) ) {
-				Main.NewText( "Geothaumatic Surveillance Station located!", Color.Lime );
 			}
 		}
 	}

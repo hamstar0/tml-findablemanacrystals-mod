@@ -111,6 +111,11 @@ namespace FindableManaCrystals {
 		////
 
 		[DefaultValue( true )]
+		public bool EnableGeothaumSurveyStationRecipe { get; set; } = true;
+
+		////
+
+		[DefaultValue( true )]
 		public bool StartPlayersWithBinoculars { get; set; } = true;
 
 		[Range( 10, 1000 )]
