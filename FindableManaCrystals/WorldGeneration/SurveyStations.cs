@@ -135,6 +135,10 @@ namespace FindableManaCrystals.WorldGeneration {
 		////////////////
 
 		private void SpawnStation( int centerTileX, int centerTileY ) {
+			this.SpawnStationWalls( centerTileX, centerTileY );
+
+			//
+
 			int mmmTile = SurveyStationsWorldGenPass.GetMountedMagicMirrorTileType();
 			if( mmmTile != -1 ) {
 				WorldGen.Place3x3Wall( centerTileX - 1, centerTileY, (ushort)mmmTile, 0 );
@@ -143,12 +147,39 @@ namespace FindableManaCrystals.WorldGeneration {
 			int gssTile = ModContent.TileType<GeothaumaticSurveyStationTile>();
 			WorldGen.Place3x3Wall( centerTileX - 1, centerTileY - 3, (ushort)gssTile, 0 );
 
+			//
+
 			if( FMCConfig.Instance.DebugModeWorldGenInfo ) {
 				LogLibraries.Log( "Placed geothaum survey station ("
 					+this.StationPositions.Count+" of "+this.NeededStations+")"+
 					" at "+centerTileX+","+centerTileY+
 					" ("+(centerTileX << 4)+","+(centerTileY << 4)+")"
 				);
+			}
+		}
+
+		private void SpawnStationWalls( int centerTileX, int centerTileY ) {
+			int minX = centerTileX - 2;
+			int maxX = centerTileX + 2;
+			int minY = centerTileY - 3;
+			int maxY = centerTileY + 3;
+
+			for( int x=minX; x<maxX; x++ ) {
+				bool isEdge = x <= minX || x >= (maxX-1);
+
+				for( int y=minY; y<maxY; y++ ) {
+					if( isEdge && Main.tile[x, y].wall != WallID.None ) {
+						continue;
+					}
+
+					//
+
+					Main.tile[x, y].wall = isEdge
+						? WallID.SillyBalloonPurpleWall
+						: WallID.LunarBrickWall;
+
+					WorldGen.SquareWallFrame( x, y );
+				}
 			}
 		}
 	}
