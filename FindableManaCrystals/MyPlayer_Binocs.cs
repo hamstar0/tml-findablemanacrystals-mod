@@ -15,12 +15,12 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		private void UpdateForShardViewing( bool isHoldingBinocs ) {
+		private void UpdateForShardViewing( bool isHoldingBinocs, bool isNearSurveyStation ) {
 			this.UpdateForBinocs_ZoomStateForFocus( isHoldingBinocs );
 
-			if( isHoldingBinocs ) {
-				if( this.IsBinocFocus ) {
-					this.UpdateForBinocs_Focus_LightIf();
+			if( isHoldingBinocs || isNearSurveyStation ) {
+				if( this.IsBinocFocus || isNearSurveyStation ) {
+					this.UpdateForShardViewing_Focus_LightIf();
 				}
 
 				if( this.ScanTickElapsed++ == 10 ) {
@@ -53,8 +53,10 @@ namespace FindableManaCrystals {
 				}
 			}
 		}
+
+		////
 		
-		private void UpdateForBinocs_Focus_LightIf() {
+		private void UpdateForShardViewing_Focus_LightIf() {
 			float illum = 0.065f;
 			Rectangle scr = UIZoomLibraries.GetWorldFrameOfScreen( null, true );
 			int tileX = scr.Center.X / 16;  //(scr.X + Main.rand.Next(scr.Width)) / 16;

@@ -161,20 +161,22 @@ namespace FindableManaCrystals.WorldGeneration {
 		private void SpawnStationWalls( int centerTileX, int centerTileY ) {
 			int minX = centerTileX - 2;
 			int maxX = centerTileX + 2;
-			int minY = centerTileY - 3;
-			int maxY = centerTileY + 3;
+			int minY = centerTileY - 4;
+			int maxY = centerTileY + 4;
 
 			for( int x=minX; x<maxX; x++ ) {
-				bool isEdge = x <= minX || x >= (maxX-1);
+				bool isSideEdge = x <= minX || x >= (maxX-1);
 
 				for( int y=minY; y<maxY; y++ ) {
-					if( isEdge && Main.tile[x, y].wall != WallID.None ) {
+					bool isTopEdge = y == minY;
+
+					if( (isSideEdge || isTopEdge) && Main.tile[x, y].wall != WallID.None ) {
 						continue;
 					}
 
 					//
 
-					Main.tile[x, y].wall = isEdge
+					Main.tile[x, y].wall = isSideEdge || isTopEdge
 						? WallID.SillyBalloonPurpleWall
 						: WallID.LunarBrickWall;
 

@@ -30,6 +30,7 @@ namespace FindableManaCrystals {
 
 		private void DrawAllShardMapChunks() {
 			int chunkSize = FMCWorld.ChunkTileSize;
+			int tileBoxRadius = chunkSize * 16;
 
 			(int x, int y, bool isOnScreen) topLeftTile = HUDMapLibraries.FindTopLeftTileOfFullscreenMap();
 //Main.spriteBatch.DrawString( Main.fontMouseText, "top left: "+topLeft.x+","+topLeft.y, new Vector2(16,400), Color.White );
@@ -38,20 +39,50 @@ namespace FindableManaCrystals {
 			minTileX = (minTileX / chunkSize) * chunkSize;
 			minTileY = (minTileY / chunkSize) * chunkSize;
 
-			this.DrawAllShardMapChunksWithin( chunkSize, minTileX, minTileY );
+			//
+
+			Vector2 scanTileFrom = Main.LocalPlayer.MountedCenter / 16f;
+			var tileBounds = new Rectangle(
+				x: (int)scanTileFrom.X - tileBoxRadius,
+				y: (int)scanTileFrom.Y - tileBoxRadius,
+				width: tileBoxRadius * 2,
+				height: tileBoxRadius * 2
+			);
+
+			//
+
+			this.DrawAllShardMapChunksWithin( chunkSize, minTileX, minTileY, tileBounds );
 		}
 
 
-		private void DrawAllShardMapChunksWithin( int chunkSize, int minTileX, int minTileY ) {
+		private void DrawAllShardMapChunksWithin( int chunkSize, int minTileX, int minTileY, Rectangle tileBounds ) {
 			((int x, int y) tilePos, Vector2 scrPos) closestChunkToCursor = default;
 
 			bool rowIsInBounds = false;
 			bool colIsInBounds = false;
 
 			for( int tileY = minTileY; tileY < Main.maxTilesY; tileY += chunkSize ) {
+				if( tileY < tileBounds.Top ) {
+					continue;
+				}
+				if( tileY > tileBounds.Bottom ) {
+					break;
+				}
+
+				//
+
 				rowIsInBounds = false;
 
 				for( int tileX = minTileX; tileX < Main.maxTilesX; tileX += chunkSize ) {
+					if( tileX < tileBounds.Left ) {
+						continue;
+					}
+					if( tileX > tileBounds.Right ) {
+						break;
+					}
+
+					//
+
 					var wldPos = new Vector2( tileX * 16, tileY * 16 );
 					(Vector2 scrPos, bool isOnScreen) mapScrPos = HUDMapLibraries.GetFullMapPositionAsScreenPosition(
 						wldPos
