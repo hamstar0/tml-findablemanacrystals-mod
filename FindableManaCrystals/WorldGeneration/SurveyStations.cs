@@ -139,13 +139,13 @@ namespace FindableManaCrystals.WorldGeneration {
 
 			//
 
+			int gssTile = ModContent.TileType<GeothaumaticSurveyStationTile>();
+			WorldGen.Place3x3Wall( centerTileX - 1, centerTileY - 2, (ushort)gssTile, 0 );
+
 			int mmmTile = SurveyStationsWorldGenPass.GetMountedMagicMirrorTileType();
 			if( mmmTile != -1 ) {
-				WorldGen.Place3x3Wall( centerTileX - 1, centerTileY, (ushort)mmmTile, 0 );
+				WorldGen.Place3x3Wall( centerTileX - 1, centerTileY + 1, (ushort)mmmTile, 0 );
 			}
-
-			int gssTile = ModContent.TileType<GeothaumaticSurveyStationTile>();
-			WorldGen.Place3x3Wall( centerTileX - 1, centerTileY - 3, (ushort)gssTile, 0 );
 
 			//
 
@@ -159,7 +159,7 @@ namespace FindableManaCrystals.WorldGeneration {
 		}
 
 		private void SpawnStationWalls( int centerTileX, int centerTileY ) {
-			int minX = centerTileX - 2;
+			int minX = centerTileX - 3;
 			int maxX = centerTileX + 2;
 			int minY = centerTileY - 4;
 			int maxY = centerTileY + 4;

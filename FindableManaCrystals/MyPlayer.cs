@@ -77,6 +77,31 @@ namespace FindableManaCrystals {
 		
 		public override void ModifyScreenPosition() {
 			this.ApplyBinocZoomIf();
+
+			if( this.IsNearSurveyStation ) {
+				this.MoveScreenWithMouse( 1024f );
+			}
+		}
+
+
+		////////////////
+		
+		public void MoveScreenWithMouse( float distance ) {
+			var scrDim = new Vector2( Main.screenWidth, Main.screenHeight );
+			var scrDimHalf = scrDim * 0.5f;
+
+			Vector2 mouseFromScrMid = Main.MouseScreen - scrDimHalf;
+			float percFromScrMidX = Math.Abs( mouseFromScrMid.X / scrDimHalf.X ); 
+			float percFromScrMidY = Math.Abs( mouseFromScrMid.Y / scrDimHalf.Y );
+			float percFromScrMid = Math.Max( percFromScrMidX, percFromScrMidY );
+
+			//
+
+			Vector2 scrOffset = Vector2.Normalize(mouseFromScrMid) * percFromScrMid * distance;
+
+			//
+
+			Main.screenPosition = (this.player.MountedCenter - scrDimHalf) + scrOffset;
 		}
 	}
 }

@@ -30,7 +30,7 @@ namespace FindableManaCrystals {
 
 		private void DrawAllShardMapChunks() {
 			int chunkSize = FMCWorld.ChunkTileSize;
-			int tileBoxRadius = chunkSize * 16;
+			int tileBoxRadius = FMCWorld.SurveyStationTileScanBoxRadius;
 
 			(int x, int y, bool isOnScreen) topLeftTile = HUDMapLibraries.FindTopLeftTileOfFullscreenMap();
 //Main.spriteBatch.DrawString( Main.fontMouseText, "top left: "+topLeft.x+","+topLeft.y, new Vector2(16,400), Color.White );

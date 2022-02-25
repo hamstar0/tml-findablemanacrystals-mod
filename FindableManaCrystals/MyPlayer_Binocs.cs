@@ -26,7 +26,7 @@ namespace FindableManaCrystals {
 				if( this.ScanTickElapsed++ == 10 ) {
 					this.ScanTickElapsed = 0;
 
-					this.AnimateManaCrystalShardHintFxIf();
+					this.AnimateManaCrystalShardHintFxIf( isNearSurveyStation );
 				}
 			}
 		}

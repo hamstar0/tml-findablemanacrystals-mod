@@ -10,6 +10,8 @@ namespace FindableManaCrystals {
 	partial class FMCWorld : ModWorld {
 		public const int ChunkTileSize = 16;
 
+		public const int SurveyStationTileScanBoxRadius = FMCWorld.ChunkTileSize * 8;
+
 
 
 		////////////////

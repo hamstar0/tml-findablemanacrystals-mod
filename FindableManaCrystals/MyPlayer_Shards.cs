@@ -66,7 +66,7 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		public void AnimateManaCrystalShardHintFxIf() {
+		public void AnimateManaCrystalShardHintFxIf( bool isNearSurveyStation ) {
 			string timerName = "ManaCrystalShardHint";
 			if( Timers.GetTimerTickDuration(timerName) > 0 ) {
 				return;
@@ -86,9 +86,11 @@ namespace FindableManaCrystals {
 			//
 
 			Timers.SetTimer( timerName, beginTicks, false, () => {
-				Item heldItem = Main.LocalPlayer.HeldItem;
-				if( heldItem == null || heldItem.IsAir || heldItem.type != ItemID.Binoculars ) {
-					return 0;
+				if( !isNearSurveyStation ) {
+					Item heldItem = Main.LocalPlayer.HeldItem;
+					if( heldItem == null || heldItem.IsAir || heldItem.type != ItemID.Binoculars ) {
+						return 0;
+					}
 				}
 
 				float? newTileProximityIf = this.MeasureClosestOnScreenManaCrystalShardTileDistance( out percentToCenter );
@@ -111,6 +113,8 @@ namespace FindableManaCrystals {
 				float invRateScaleOfSparks = 1f - rateScaleOfSparks;
 				int tickDurationUntilNextSpark = (int)(newTileProximityIf.Value * invRateScaleOfSparks);
 
+				//
+
 				if( config.DebugModeInfo ) {
 					DebugLibraries.Print(
 						"FindableManaCrystals",
@@ -119,6 +123,8 @@ namespace FindableManaCrystals {
 							+ ", ticksUntilNextSpark: " + tickDurationUntilNextSpark.ToString( "N2" )
 					);
 				}
+
+				//
 
 				return (int)Math.Max( 5, tickDurationUntilNextSpark );
 			} );
