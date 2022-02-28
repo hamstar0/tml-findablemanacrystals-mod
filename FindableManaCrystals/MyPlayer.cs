@@ -54,6 +54,7 @@ namespace FindableManaCrystals {
 			if( Main.netMode != NetmodeID.Server ) {	// Non-server
 				if( this.player.whoAmI == Main.myPlayer ) {	// Current player
 					this.UpdateForSurveyStationProximity( out bool wasNear );
+
 					if( this.IsNearSurveyStation != wasNear ) {
 						if( this.IsNearSurveyStation ) {
 							Main.NewText( "Geothaumatic Surveillance Station active.", Color.Lime );
@@ -67,7 +68,7 @@ namespace FindableManaCrystals {
 
 					//
 
-					this.UpdateForShardViewing( isHoldingBinocs, this.IsNearSurveyStation );
+					this.UpdateForShardViewing( isHoldingBinocs );
 				}
 			}
 		}

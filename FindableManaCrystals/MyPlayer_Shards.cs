@@ -66,7 +66,7 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		public void AnimateManaCrystalShardHintFxIf( bool isNearSurveyStation ) {
+		public void AnimateManaCrystalShardHintFxIf() {
 			string timerName = "ManaCrystalShardHint";
 			if( Timers.GetTimerTickDuration(timerName) > 0 ) {
 				return;
@@ -86,7 +86,7 @@ namespace FindableManaCrystals {
 			//
 
 			Timers.SetTimer( timerName, beginTicks, false, () => {
-				if( !isNearSurveyStation ) {
+				if( !this.IsNearSurveyStation ) {
 					Item heldItem = Main.LocalPlayer.HeldItem;
 					if( heldItem == null || heldItem.IsAir || heldItem.type != ItemID.Binoculars ) {
 						return 0;

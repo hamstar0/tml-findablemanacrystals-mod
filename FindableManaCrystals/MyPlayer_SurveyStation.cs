@@ -9,7 +9,17 @@ using FindableManaCrystals.Tiles;
 namespace FindableManaCrystals {
 	partial class FMCPlayer : ModPlayer {
 		private void UpdateForSurveyStationProximity( out bool wasNear ) {
-			int range = 8;
+			wasNear = this.IsNearSurveyStation;
+
+			if( this.player.dead ) {
+				this.IsNearSurveyStation = false;
+
+				return;
+			}
+
+			//
+
+			int range = 6;
 			int stationType = ModContent.TileType<GeothaumaticSurveyStationTile>();
 			int tileX = (int)this.player.MountedCenter.X / 16;
 			int tileY = (int)this.player.MountedCenter.Y / 16;
@@ -29,14 +39,10 @@ namespace FindableManaCrystals {
 
 			//
 
-			wasNear = this.IsNearSurveyStation;
-
 			this.IsNearSurveyStation = false;
 
-			//
-
-			for( int x=minX; x<maxX; x+=3 ) {
-				for( int y=minY; y<maxY; y+=3 ) {
+			for( int x=minX; x<maxX; x++ ) {
+				for( int y=minY; y<maxY; y++ ) {
 					Tile tile = Main.tile[x, y];
 					if( tile?.active() == true && tile.type == stationType ) {
 						this.IsNearSurveyStation = true;

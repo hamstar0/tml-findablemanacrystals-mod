@@ -15,18 +15,18 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		private void UpdateForShardViewing( bool isHoldingBinocs, bool isNearSurveyStation ) {
+		private void UpdateForShardViewing( bool isHoldingBinocs ) {
 			this.UpdateForBinocs_ZoomStateForFocus( isHoldingBinocs );
 
-			if( isHoldingBinocs || isNearSurveyStation ) {
-				if( this.IsBinocFocus || isNearSurveyStation ) {
+			if( isHoldingBinocs || this.IsNearSurveyStation ) {
+				if( this.IsBinocFocus || this.IsNearSurveyStation ) {
 					this.UpdateForShardViewing_Focus_LightIf();
 				}
 
 				if( this.ScanTickElapsed++ == 10 ) {
 					this.ScanTickElapsed = 0;
 
-					this.AnimateManaCrystalShardHintFxIf( isNearSurveyStation );
+					this.AnimateManaCrystalShardHintFxIf();
 				}
 			}
 		}
