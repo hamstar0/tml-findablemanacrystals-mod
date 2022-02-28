@@ -22,7 +22,7 @@ namespace FindableManaCrystals {
 			var binocsLayer = new LegacyGameInterfaceLayer(
 				"FMC: Binocs Icon",
 				() => {
-					this.DrawBinocsIconIf( Main.spriteBatch );
+					this.DrawMouseIcon_If( Main.spriteBatch );
 					return true;
 				},
 				InterfaceScaleType.UI
@@ -36,24 +36,20 @@ namespace FindableManaCrystals {
 
 		////////////////
 
-		private bool DrawBinocsIconIf( SpriteBatch sb ) {
+		private bool DrawMouseIcon_If( SpriteBatch sb ) {
 			Item heldItem = Main.LocalPlayer.HeldItem;
-
-			if( heldItem?.active != true ) {
-				return false;
-			}
-			if( heldItem.type != ItemID.Binoculars ) {
-				return false;
-			}
+			bool isHoldingBinocs = heldItem?.active == true && heldItem.type == ItemID.Binoculars;
 
 			var myplayer = Main.LocalPlayer.GetModPlayer<FMCPlayer>();
-			if( myplayer.IsBinocFocus ) {
+			if( (!isHoldingBinocs || myplayer.IsBinocFocus) && !myplayer.IsNearSurveyStation ) {
 				return false;
 			}
 
 			//
-
-			Texture2D mouseTex = ModContent.GetTexture( "FindableManaCrystals/MouseLeftIcon" );
+			
+			Texture2D mouseTex = isHoldingBinocs
+				? ModContent.GetTexture( "FindableManaCrystals/MouseLeftIcon" )
+				: ModContent.GetTexture( "FindableManaCrystals/MouseRightIcon" );
 
 			Vector2 pos = Main.MouseScreen + new Vector2(-32f, -16f);
 

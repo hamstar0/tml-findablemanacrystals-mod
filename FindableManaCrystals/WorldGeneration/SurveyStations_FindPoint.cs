@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.World.Generation;
 using ModLibsCore.Classes.Errors;
-using ModLibsTiles.Classes.Tiles.TilePattern;
 using ModLibsCore.Libraries.Debug;
 using ModLibsCore.Libraries.DotNET.Extensions;
 

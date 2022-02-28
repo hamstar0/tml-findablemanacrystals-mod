@@ -108,6 +108,9 @@ namespace FindableManaCrystals {
 		[DefaultValue( true )]
 		public bool IsGeothaumSurveyStationBreakable { get; set; } = true;
 
+		[DefaultValue( true )]
+		public bool GeothaumSurveyStationDropsItem { get; set; } = true;
+
 		////
 
 		[DefaultValue( true )]

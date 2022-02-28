@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -8,11 +9,36 @@ using FindableManaCrystals.Tiles;
 
 namespace FindableManaCrystals {
 	partial class FMCPlayer : ModPlayer {
-		private void UpdateForSurveyStationProximity( out bool wasNear ) {
-			wasNear = this.IsNearSurveyStation;
+		private void UpdateForSurveyStation() {
+			this.UpdateForSurveyStationProximity( out bool isNearStation, out (int, int)? topLeftStationTile );
 
+			if( this.IsNearSurveyStation != isNearStation ) {
+				if( isNearStation ) {
+					Main.NewText( "Geothaumatic Surveillance Station active.", Color.Lime );
+				}
+
+				this.IsNearSurveyStation = isNearStation;
+			}
+
+			if( this.CurrentNearbySurveyStationTile != topLeftStationTile ) {
+				if( this.CurrentNearbySurveyStationTile.HasValue ) {
+					GeothaumaticSurveyStationTile.Deactivate( this.CurrentNearbySurveyStationTile.Value );
+				}
+				if( topLeftStationTile.HasValue ) {
+					GeothaumaticSurveyStationTile.Activate( topLeftStationTile.Value );
+				}
+
+				this.CurrentNearbySurveyStationTile = topLeftStationTile;
+			}
+		}
+
+
+		////
+
+		private void UpdateForSurveyStationProximity( out bool isNearStation, out (int x, int y)? topLeftStationTile ) {
 			if( this.player.dead ) {
-				this.IsNearSurveyStation = false;
+				isNearStation = false;
+				topLeftStationTile = null;
 
 				return;
 			}
@@ -39,20 +65,42 @@ namespace FindableManaCrystals {
 
 			//
 
-			this.IsNearSurveyStation = false;
+			isNearStation = false;
+			topLeftStationTile = null;
 
 			for( int x=minX; x<maxX; x++ ) {
 				for( int y=minY; y<maxY; y++ ) {
 					Tile tile = Main.tile[x, y];
-					if( tile?.active() == true && tile.type == stationType ) {
-						this.IsNearSurveyStation = true;
-
-						goto done;
+					if( tile?.active() != true || tile.type != stationType ) {
+						continue;
 					}
+
+					isNearStation = true;
+					topLeftStationTile = (x, y);
+
+					//
+
+					while( tile.frameY != 0 || tile.frameY != 54 ) {
+						y--;
+						tile = Main.tile[x, y];
+						if( tile?.active() != true || tile.type != stationType ) {
+							return;
+						}
+						topLeftStationTile = (x, y);
+					}
+
+					while( tile.frameX != 0 ) {
+						x--;
+						tile = Main.tile[x, y];
+						if( tile?.active() != true || tile.type != stationType ) {
+							return;
+						}
+						topLeftStationTile = (x, y);
+					}
+
+					return;
 				}
 			}
-
-			done:;
 		}
 	}
 }

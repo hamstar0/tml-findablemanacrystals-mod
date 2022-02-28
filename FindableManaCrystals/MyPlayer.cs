@@ -24,6 +24,8 @@ namespace FindableManaCrystals {
 
 		public bool IsNearSurveyStation { get; private set; } = false;
 
+		public ( int tileX, int tileY)? CurrentNearbySurveyStationTile { get; private set; } = null;
+
 
 		////////////////
 
@@ -52,25 +54,23 @@ namespace FindableManaCrystals {
 
 		public override void PreUpdate() {
 			if( Main.netMode != NetmodeID.Server ) {	// Non-server
-				if( this.player.whoAmI == Main.myPlayer ) {	// Current player
-					this.UpdateForSurveyStationProximity( out bool wasNear );
-
-					if( this.IsNearSurveyStation != wasNear ) {
-						if( this.IsNearSurveyStation ) {
-							Main.NewText( "Geothaumatic Surveillance Station active.", Color.Lime );
-						}
-					}
-
-					//
-
-					Item item = this.player.HeldItem;
-					bool isHoldingBinocs = item != null && !item.IsAir && item.type == ItemID.Binoculars;
-
-					//
-
-					this.UpdateForShardViewing( isHoldingBinocs );
+				if( this.player.whoAmI == Main.myPlayer ) { // Current player
+					this.UpdateForLocalPlayer();
 				}
 			}
+		}
+
+		////
+
+		private void UpdateForLocalPlayer() {
+			this.UpdateForSurveyStation();
+
+			//
+
+			Item item = this.player.HeldItem;
+			bool isHoldingBinocs = item != null && !item.IsAir && item.type == ItemID.Binoculars;
+
+			this.UpdateForShardViewing( isHoldingBinocs );
 		}
 
 
@@ -79,7 +79,7 @@ namespace FindableManaCrystals {
 		public override void ModifyScreenPosition() {
 			this.ApplyBinocZoomIf();
 
-			if( this.IsNearSurveyStation ) {
+			if( this.IsNearSurveyStation && Main.mouseRight ) {
 				this.MoveScreenWithMouse( 1024f );
 			}
 		}
@@ -95,10 +95,24 @@ namespace FindableManaCrystals {
 			float percFromScrMidX = Math.Abs( mouseFromScrMid.X / scrDimHalf.X ); 
 			float percFromScrMidY = Math.Abs( mouseFromScrMid.Y / scrDimHalf.Y );
 			float percFromScrMid = Math.Max( percFromScrMidX, percFromScrMidY );
+			if( percFromScrMid < 0f || percFromScrMid > 1f ) {
+				return;
+			}
 
 			//
 
-			Vector2 scrOffset = Vector2.Normalize(mouseFromScrMid) * percFromScrMid * distance;
+			Vector2 scrOffsetDir = Vector2.Normalize( mouseFromScrMid );
+			if( scrOffsetDir.X == 0f && scrOffsetDir.Y == 0f ) {
+				return;
+			}
+			if( float.IsInfinity(scrOffsetDir.X) || float.IsNaN(scrOffsetDir.X) ) {
+				return;
+			}
+			if( float.IsInfinity(scrOffsetDir.Y) || float.IsNaN(scrOffsetDir.Y) ) {
+				return;
+			}
+
+			Vector2 scrOffset = scrOffsetDir * percFromScrMid * distance;
 
 			//
 
