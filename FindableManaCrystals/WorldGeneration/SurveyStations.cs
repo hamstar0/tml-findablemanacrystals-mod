@@ -63,9 +63,7 @@ namespace FindableManaCrystals.WorldGeneration {
 			this.PlacementSpacePattern = new TilePattern( new TilePatternBuilder {
 				AreaFromCenter = new Rectangle( -1, -3, 3, 6 ),
 				HasLava = false,
-				HasSolidProperties = false,
-				IsPlatform = false,
-				IsActuated = false,
+				IsActive = false,
 				IsNotAnyOfWallType = new HashSet<int> {
 					WallID.SpiderUnsafe,
 					WallID.HiveUnsafe,
