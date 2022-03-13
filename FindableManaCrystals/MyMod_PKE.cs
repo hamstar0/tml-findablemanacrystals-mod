@@ -27,6 +27,7 @@ namespace FindableManaCrystals {
 				// Update gauge every 1/4s
 				if( gaugeTimer-- <= 0 ) {
 					gaugeTimer = 15;
+
 					lastGaugedManaShardPercent = FMCMod.GaugeNearbyManaShards( pos, out lastNearestShardTile );
 				}
 
