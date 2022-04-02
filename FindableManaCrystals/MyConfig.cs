@@ -122,12 +122,12 @@ namespace FindableManaCrystals {
 		public bool StartPlayersWithBinoculars { get; set; } = true;
 
 		[Range( 10, 1000 )]
-		[DefaultValue( 84 )]
-		public int BinocularsDetectionRadiusTiles { get; set; } = 84;
+		[DefaultValue( 52 )]
+		public int BinocularsDetectionRadiusTiles { get; set; } = 52;
 
 		[Range( 1, 60 * 60 )]
-		[DefaultValue( 30 )]
-		public int BinocularsHintBeginDurationTicks { get; set; } = 30;
+		[DefaultValue( 20 )]
+		public int BinocularsHintBeginDurationTicks { get; set; } = 20;
 
 		[Range( 0f, 1f )]
 		[DefaultValue( 0.7f )]	// was 0.6f

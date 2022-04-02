@@ -13,51 +13,74 @@ using FindableManaCrystals.Tiles;
 
 namespace FindableManaCrystals {
 	partial class FMCPlayer : ModPlayer {
-		public float? MeasureClosestOnScreenManaCrystalShardTileDistance( out float percentToCenter ) {
-			float closestDist = -1;
-			int midWldX = (int)Main.screenPosition.X + ( Main.screenWidth / 2 );
-			int midWldY = (int)Main.screenPosition.Y + ( Main.screenHeight / 2 );
-
+		public float? FindClosestOnScreenManaCrystalShardTile(
+					out float percentToCenter,
+					out (int, int) closestTile ) {
 			var config = FMCConfig.Instance;
-			int radius = config.Get<int>( nameof(FMCConfig.BinocularsDetectionRadiusTiles) );
+			int tileRadius = config.Get<int>( nameof(FMCConfig.BinocularsDetectionRadiusTiles) );
+			int tileRadiusSqr = tileRadius * tileRadius;
 
-			int midTileX = midWldX >> 4;
-			int midTileY = midWldY >> 4;
-			int minTileX = Math.Max( 0, midTileX - radius );
-			int minTileY = Math.Max( 0, midTileY - radius );
-			int maxTileX = Math.Min( Main.maxTilesX - 1, midTileX + radius );
-			int maxTileY = Math.Min( Main.maxTilesY - 1, midTileY + radius );
+			float closestTileDistSqr = -1;
+			int closestTileX = -1;
+			int closestTileY = -1;
+
+			//
+
+			Rectangle wldScr = UIZoomLibraries.GetWorldFrameOfScreen( null, true );
+			//int midWldX = (int)Main.screenPosition.X + ( Main.screenWidth / 2 );
+			//int midWldY = (int)Main.screenPosition.Y + ( Main.screenHeight / 2 );
+			int midWldScrX = (int)wldScr.X + (wldScr.Width / 2);
+			int midWldScrY = (int)wldScr.Y + (wldScr.Height / 2);
+
+			int midWldScrTileX = midWldScrX / 16;
+			int midWldScrTileY = midWldScrY / 16;
+			int minWldScrTileX = Math.Max( 0, midWldScrTileX - tileRadius );
+			int minWldScrTileY = Math.Max( 0, midWldScrTileY - tileRadius );
+			int maxWldScrTileX = Math.Min( Main.maxTilesX - 1, midWldScrTileX + tileRadius );
+			int maxWldScrTileY = Math.Min( Main.maxTilesY - 1, midWldScrTileY + tileRadius );
+			var midWldScrTile = new Vector2( midWldScrTileX, midWldScrTileY );
 
 			int shardType = ModContent.TileType<ManaCrystalShardTile>();
 
-			for( int x = minTileX; x < maxTileX; x++ ) {
-				for( int y = minTileY; y < maxTileY; y++ ) {
-					Tile tile = Main.tile[x, y];
-					if( tile == null || !tile.active() || tile.type != shardType ) {
+			//
+
+			for( int tileX = minWldScrTileX; tileX < maxWldScrTileX; tileX++ ) {
+				for( int tileY = minWldScrTileY; tileY < maxWldScrTileY; tileY++ ) {
+					Tile tile = Main.tile[tileX, tileY];
+					if( tile?.active() != true || tile.type != shardType ) {
 						continue;
 					}
 
-					float dist = Vector2.Distance(
-						new Vector2( x, y ),
-						new Vector2( midTileX, midTileY )
-					);
-					if( dist >= radius ) {
+					//
+
+					float tileDistSqr = Vector2.DistanceSquared( new Vector2(tileX, tileY), midWldScrTile );
+					if( tileDistSqr >= tileRadiusSqr ) {
 						continue;
 					}
 
-					if( closestDist == -1 || dist < closestDist ) {
-						closestDist = dist;
+					//
+
+					if( tileDistSqr < closestTileDistSqr || closestTileDistSqr == -1 ) {
+						closestTileX = tileX;
+						closestTileY = tileY;
+						closestTileDistSqr = tileDistSqr;
 					}
 				}
 			}
 
+			//
+
 			float? result;
-			if( closestDist == -1 ) {
+			if( closestTileDistSqr == -1 ) {
 				result = null;
 				percentToCenter = 0f;
+				closestTile = default;
 			} else {
-				result = closestDist;
-				percentToCenter = 1f - (closestDist / radius);
+				float closestTileDist = (float)Math.Sqrt( closestTileDistSqr );
+
+				result = closestTileDist;
+				percentToCenter = 1f - (closestTileDist / tileRadius);
+				closestTile = (closestTileX, closestTileY);
 			}
 
 			return result;
@@ -68,12 +91,20 @@ namespace FindableManaCrystals {
 
 		public void AnimateManaCrystalShardHintFxIf() {
 			string timerName = "ManaCrystalShardHint";
+
 			if( Timers.GetTimerTickDuration(timerName) > 0 ) {
 				return;
 			}
 
+			//
+
 			float percentToCenter;
-			if( this.MeasureClosestOnScreenManaCrystalShardTileDistance(out percentToCenter) == null ) {
+			float? shardDistFromScrMid = this.FindClosestOnScreenManaCrystalShardTile(
+				out percentToCenter,
+				out _
+			);
+
+			if( !shardDistFromScrMid.HasValue ) {
 				return;
 			}
 
@@ -93,46 +124,49 @@ namespace FindableManaCrystals {
 					}
 				}
 
-				float? newTileProximityIf = this.MeasureClosestOnScreenManaCrystalShardTileDistance( out percentToCenter );
-				if( !newTileProximityIf.HasValue ) {
+				//
+
+				shardDistFromScrMid = this.FindClosestOnScreenManaCrystalShardTile( out percentToCenter, out _ );
+				if( !shardDistFromScrMid.HasValue ) {
 					return 0;
 				}
 
 				//
 
-				if( this.IsBinocFocus ) {
-					percentToCenter = percentToCenter * percentToCenter * percentToCenter;
-					newTileProximityIf *= 3f;
-				}
-
 				this.CreateManaShardHintFxAt( percentToCenter, this.IsBinocFocus );
 
 				//
 
+				float binocSparkRateScale = this.IsBinocFocus
+					? 3f	// distance increases contrast
+					: 1f;
 				float rateScaleOfSparks = config.Get<float>( nameof(FMCConfig.BinocularsHintIntensity) );
 				float invRateScaleOfSparks = 1f - rateScaleOfSparks;
-				int tickDurationUntilNextSpark = (int)(newTileProximityIf.Value * invRateScaleOfSparks);
+
+				float ticksUntilNextHint = shardDistFromScrMid.Value;
+				ticksUntilNextHint *= binocSparkRateScale;
+				ticksUntilNextHint *= invRateScaleOfSparks;
+				ticksUntilNextHint = Math.Max( 4f, ticksUntilNextHint );
 
 				//
 
 				if( config.DebugModeInfo ) {
-					DebugLibraries.Print(
-						"FindableManaCrystals",
-							"baseSparkRate: " + rateScaleOfSparks.ToString( "N2" )
-							+ ", proximity: " + newTileProximityIf.Value.ToString( "N2" )
-							+ ", ticksUntilNextSpark: " + tickDurationUntilNextSpark.ToString( "N2" )
+					DebugLibraries.Print( "FindableManaCrystals",
+						"baseSparkRate: " + rateScaleOfSparks.ToString("N2")
+						+ ", proximity: " + shardDistFromScrMid.Value.ToString("N2")
+						+ ", ticksUntilNextSpark: " + ((int)ticksUntilNextHint).ToString("N2")
 					);
 				}
 
 				//
 
-				return (int)Math.Max( 5, tickDurationUntilNextSpark );
+				return (int)ticksUntilNextHint;
 			} );
 		}
 
 		////
 
-		public void CreateManaShardHintFxAt( float percentToCenter, bool isFocusing ) {
+		public void CreateManaShardHintFxAt( float intensity, bool isFocusing ) {
 			//int scrWid = (int)( (float)Main.screenWidth / Main.GameZoomTarget );
 			//int scrHei = (int)( (float)Main.screenHeight / Main.GameZoomTarget );
 			//
@@ -141,23 +175,36 @@ namespace FindableManaCrystals {
 			Rectangle scr = UIZoomLibraries.GetWorldFrameOfScreen( null, true );
 			UnifiedRandom rand = TmlLibraries.SafelyGetRand();
 
-			float maxVel = 2f;
+			//
+
+			float speedMax = 3f;
+			float addedScale = 2f;
 
 			if( isFocusing ) {
-				percentToCenter *= percentToCenter;
-				maxVel = 2.5f;
+				intensity = intensity * ((1f + intensity + intensity) / 3f);
+				addedScale = 2.35f;
+				speedMax = 4f;
 			}
+
+			float speedX = (2f * speedMax * rand.NextFloat()) - speedMax;
+			speedX *= intensity;
+			float speedY = (2f * speedMax * rand.NextFloat()) - speedMax;
+			speedY *= intensity;
+
+			float scale = 0.5f + (addedScale * intensity);
+
+			//
 
 			int dustIdx = Dust.NewDust(
 				Position: new Vector2( scr.X, scr.Y ),
 				Width: scr.Width,
 				Height: scr.Height,
 				Type: 59,
-				SpeedX: ((2f * maxVel * rand.NextFloat()) - maxVel) * percentToCenter,
-				SpeedY: ((2f * maxVel * rand.NextFloat()) - maxVel) * percentToCenter,
-				Alpha: 128 - (int)(percentToCenter * 128f),
+				SpeedX: speedX,
+				SpeedY: speedY,
+				Alpha: 128 - (int)(intensity * 128f),
 				newColor: new Color( 255, 255, 255 ),
-				Scale: 1f + (2f * percentToCenter)
+				Scale: scale
 			);
 			Dust dust = Main.dust[dustIdx];
 			dust.noGravity = true;
