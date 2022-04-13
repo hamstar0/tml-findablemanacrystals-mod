@@ -174,21 +174,21 @@ namespace FindableManaCrystals.WorldGeneration {
 				bool isEdge = x <= minX || x >= (maxX-1);
 
 				for( int y=minY; y<maxY; y++ ) {
-					bool isInside = y == minY;
+					bool isTop = y == minY;
 
-					if( (isEdge || isInside) && Main.tile[x, y].wall != WallID.None ) {
+					if( (isEdge || isTop) && Main.tile[x, y].wall != WallID.None ) {
 						continue;
 					}
 
 					//
 
-					Main.tile[x, y].wall = isEdge || isInside
+					Main.tile[x, y].wall = isEdge || isTop
 						? WallID.SillyBalloonPurpleWall
 						: WallID.LunarBrickWall;
 
 					//
 
-					if( isInside && y <= (centerTileY+2) ) {
+					if( !isEdge && y <= (centerTileY+2) ) {
 						Main.tile[x, y]?.active( false );
 					}
 
