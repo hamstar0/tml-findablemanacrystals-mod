@@ -91,6 +91,8 @@ namespace FindableManaCrystals.WorldGeneration {
 				progress.Message = "Pre-placing Geothaumatic Survey Stations: %";
 			}
 
+			//
+
 			var config = FMCConfig.Instance;
 			int minTileDist = config.Get<int>( nameof(config.MinimumSurveyStationTileSpacing) );
 			if( Main.maxTilesX <= (minTileDist + 4) || Main.maxTilesY <= (minTileDist + 4) ) {
@@ -98,9 +100,13 @@ namespace FindableManaCrystals.WorldGeneration {
 				return;
 			}
 
+			//
+
 			for( int i = 0; i < 1000; i++ ) {
 				WorldGen.genRand.Next();    // Desyncs this from Wormholes?
 			}
+
+			//
 
 			(int TileX, int TileY)? myRandCenterTile;
 			(int TileX, int TileY) randCenterTile;
@@ -156,6 +162,8 @@ namespace FindableManaCrystals.WorldGeneration {
 			}
 		}
 
+		////
+
 		private void SpawnStationWalls( int centerTileX, int centerTileY ) {
 			int minX = centerTileX - 3;
 			int maxX = centerTileX + 2;
@@ -163,20 +171,28 @@ namespace FindableManaCrystals.WorldGeneration {
 			int maxY = centerTileY + 4;
 
 			for( int x=minX; x<maxX; x++ ) {
-				bool isSideEdge = x <= minX || x >= (maxX-1);
+				bool isEdge = x <= minX || x >= (maxX-1);
 
 				for( int y=minY; y<maxY; y++ ) {
-					bool isTopEdge = y == minY;
+					bool isInside = y == minY;
 
-					if( (isSideEdge || isTopEdge) && Main.tile[x, y].wall != WallID.None ) {
+					if( (isEdge || isInside) && Main.tile[x, y].wall != WallID.None ) {
 						continue;
 					}
 
 					//
 
-					Main.tile[x, y].wall = isSideEdge || isTopEdge
+					Main.tile[x, y].wall = isEdge || isInside
 						? WallID.SillyBalloonPurpleWall
 						: WallID.LunarBrickWall;
+
+					//
+
+					if( isInside && y <= (centerTileY+2) ) {
+						Main.tile[x, y]?.active( false );
+					}
+
+					//
 
 					WorldGen.SquareWallFrame( x, y );
 				}
