@@ -40,8 +40,11 @@ namespace FindableManaCrystals {
 			//
 
 			PKEMeter.PKEMeterAPI.SetMeterText( "FindableManaCrystals", ( plr, pos, gauges ) => {
+				float litFlicker = 0.5f;
+				float invLitFlicker = 1f - litFlicker;
+
 				Color color = new Color( 32, 64, 255 );
-				color = color * (0.5f + (Main.rand.NextFloat() * 0.5f));
+				color = color * (invLitFlicker + (Main.rand.NextFloat() * litFlicker));
 
 				return new PKEMeter.Logic.PKETextMessage(
 					message: "CLASS II ETHEREAL GEOFORM",

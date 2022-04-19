@@ -1,6 +1,6 @@
 displayName = Findable Mana Crystals
 author = hamstar
-version = 2.1.0.1
+version = 2.1.0.2
 modReferences = ModLibsCore@1.2.0, ModLibsGeneral@1.2.1, ModLibsTiles@1.0.0
 weakReferences = MountedMagicMirrors@1.2.1.1, PKEMeter@2.0.0
 buildIgnore = *.csproj, *.user, *.bat, obj\*, bin\*, .vs\*, .git\*
