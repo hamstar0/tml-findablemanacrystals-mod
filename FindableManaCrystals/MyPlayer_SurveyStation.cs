@@ -14,7 +14,7 @@ namespace FindableManaCrystals {
 
 			if( this.IsNearSurveyStation != isNearStation ) {
 				if( isNearStation ) {
-					Main.NewText( "Geothaumatic Surveillance Station active.", Color.Lime );
+					Main.NewText( "Geothaumatic Surveillance Station active (see map).", Color.Lime );
 				}
 
 				this.IsNearSurveyStation = isNearStation;

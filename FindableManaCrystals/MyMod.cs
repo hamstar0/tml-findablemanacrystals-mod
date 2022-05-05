@@ -58,15 +58,19 @@ namespace FindableManaCrystals {
 				return;
 			}
 
-			int shardType = ModContent.ItemType<ManaCrystalShardItem>();
+			//
 
 			RecipeFinderLibraries.ClearCache();
+
+			int shardType = ModContent.ItemType<ManaCrystalShardItem>();
 
 			foreach( Recipe recipe in RecipeFinderLibraries.GetRecipesOfItem_Cached(ItemID.ManaCrystal) ) {
 				for( int i = 0; i < recipe.requiredItem.Length; i++ ) {
 					if( recipe.requiredItem[i] != null && !recipe.requiredItem[i].IsAir ) {
 						continue;
 					}
+
+					//
 
 					int stack = config.Get<int>( nameof(FMCConfig.ManaCrystalShardsPerManaCrystal) );
 

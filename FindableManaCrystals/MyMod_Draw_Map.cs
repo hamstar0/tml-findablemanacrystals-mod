@@ -172,7 +172,7 @@ namespace FindableManaCrystals {
 				Utils.DrawBorderStringFourWay(
 					sb: Main.spriteBatch,
 					font: Main.fontMouseText,
-					text: "Shards Found",
+					text: "Mana Shards Found",
 					x: Main.MouseScreen.X + 12,
 					y: Main.MouseScreen.Y + 16,
 					textColor: Color.White * pulse,
