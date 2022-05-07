@@ -31,8 +31,9 @@ namespace FindableManaCrystals {
 					lastGaugedManaShardPercent = FMCMod.GaugeNearbyManaShards( pos, out lastNearestShardTile );
 				}
 
-				existingGauge.BluePercent = FMCMod.ComputePKEGauge(lastGaugedManaShardPercent, lastNearestShardTile)
-					?? existingGauge.BluePercent;
+				existingGauge.BlueRealPercent = lastGaugedManaShardPercent;
+				existingGauge.BlueSeenPercent = FMCMod.ComputePKEGauge(lastGaugedManaShardPercent, lastNearestShardTile)
+					?? existingGauge.BlueRealPercent;
 
 				return existingGauge;
 			} );
