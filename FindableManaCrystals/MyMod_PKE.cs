@@ -40,7 +40,7 @@ namespace FindableManaCrystals {
 
 			//
 
-			PKEMeter.PKEMeterAPI.SetMeterText( "FindableManaCrystals", ( plr, pos, gauges ) => {
+			PKEMeter.PKEMeterAPI.SetMeterText( PKEMeter.Logic.PKEGaugeType.Blue, ( plr, pos, gauges ) => {
 				float litFlicker = 0.5f;
 				float invLitFlicker = 1f - litFlicker;
 
