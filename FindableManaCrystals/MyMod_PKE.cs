@@ -50,7 +50,9 @@ namespace FindableManaCrystals {
 				return new PKEMeter.Logic.PKETextMessage(
 					message: "CLASS II ETHEREAL GEOFORM",
 					color: color,
-					priority: lastGaugedManaShardPercent * 0.99999f
+					priority: lastGaugedManaShardPercent < 0.3f
+						? 0f
+						: lastGaugedManaShardPercent * 0.99999f
 				);
 			} );
 

@@ -151,8 +151,8 @@ namespace FindableManaCrystals {
 		public bool PKEDetectInterference { get; set; } = true;
 
 		[Range( -1, 4048 )]
-		[DefaultValue( 128 )]
-		public int ManaShardPKEDetectionTileRangeMax { get; set; } = 128;
+		[DefaultValue( 104 )]
+		public int ManaShardPKEDetectionTileRangeMax { get; set; } = 104;
 
 
 
