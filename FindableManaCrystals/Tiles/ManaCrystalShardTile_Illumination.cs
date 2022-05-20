@@ -19,11 +19,14 @@ namespace FindableManaCrystals.Tiles {
 				return false;
 			}
 
+			//
+
 			lock( ManaCrystalShardTile.MyLock ) {
-				if( singleton._IlluminatedCrystals == null ) {
-					singleton._IlluminatedCrystals = new Dictionary<int, IDictionary<int, float>>();
+				if( singleton.IlluminatedCrystals == null ) {
+					singleton.IlluminatedCrystals = new Dictionary<(int, int), float>();
 				}
-				return singleton._IlluminatedCrystals.Get2DOrDefault( i, j ) >= minIllum;
+
+				return singleton.IlluminatedCrystals.GetOrDefault( (i, j) ) >= minIllum;
 			}
 		}
 
@@ -31,14 +34,18 @@ namespace FindableManaCrystals.Tiles {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
 			if( singleton == null ) {
 				illum = 0f;
+
 				return false;
 			}
 
+			//
+
 			lock( ManaCrystalShardTile.MyLock ) {
-				if( singleton._IlluminatedCrystals == null ) {
-					singleton._IlluminatedCrystals = new Dictionary<int, IDictionary<int, float>>();
+				if( singleton.IlluminatedCrystals == null ) {
+					singleton.IlluminatedCrystals = new Dictionary<(int, int), float>();
 				}
-				return singleton._IlluminatedCrystals.TryGetValue2D( i, j, out illum );
+
+				return singleton.IlluminatedCrystals.TryGetValue( (i, j), out illum );
 			}
 		}
 
@@ -48,11 +55,13 @@ namespace FindableManaCrystals.Tiles {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
 			if( singleton == null ) { return; }
 
+			//
+
 			lock( ManaCrystalShardTile.MyLock ) {
-				if( singleton._IlluminatedCrystals == null ) {
-					singleton._IlluminatedCrystals = new Dictionary<int, IDictionary<int, float>>();
+				if( singleton.IlluminatedCrystals == null ) {
+					singleton.IlluminatedCrystals = new Dictionary<(int, int), float>();
 				}
-				singleton._IlluminatedCrystals.Remove2D( i, j );
+				singleton.IlluminatedCrystals.Remove( (i, j) );
 			}
 		}
 
@@ -60,11 +69,13 @@ namespace FindableManaCrystals.Tiles {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
 			if( singleton == null ) { return; }
 
+			//
+
 			lock( ManaCrystalShardTile.MyLock ) {
-				if( singleton._IlluminatedCrystals == null ) {
-					singleton._IlluminatedCrystals = new Dictionary<int, IDictionary<int, float>>();
+				if( singleton.IlluminatedCrystals == null ) {
+					singleton.IlluminatedCrystals = new Dictionary<(int, int), float>();
 				}
-				singleton._IlluminatedCrystals.Set2D( i, j, illum );
+				singleton.IlluminatedCrystals[ (i, j) ] = illum;
 			}
 		}
 
@@ -75,19 +86,28 @@ namespace FindableManaCrystals.Tiles {
 			var singleton = ModContent.GetInstance<ManaCrystalShardTile>();
 			if( singleton == null ) { return; }
 
+			//
+
+			var key = (i, j);
+
 			lock( ManaCrystalShardTile.MyLock ) {
-				if( singleton._IlluminatedCrystals == null ) {
-					singleton._IlluminatedCrystals = new Dictionary<int, IDictionary<int, float>>();
+				if( singleton.IlluminatedCrystals == null ) {
+					singleton.IlluminatedCrystals = new Dictionary<(int, int), float>();
 				}
-				if( !singleton._IlluminatedCrystals.ContainsKey(i) || !singleton._IlluminatedCrystals[i].ContainsKey(j) ) {
-					singleton._IlluminatedCrystals.Set2D( i, j, 0f );
+
+				if( !singleton.IlluminatedCrystals.ContainsKey(key) ) {
+					singleton.IlluminatedCrystals[key] = 0f;
+
 					return;
 				}
 
-				if( singleton._IlluminatedCrystals[i][j] > 0f ) {
+				//
+
+				if( singleton.IlluminatedCrystals[key] > 0f ) {
 					var config = FMCConfig.Instance;
-					string entryName = nameof( FMCConfig.IlluminationDimRate );
-					singleton._IlluminatedCrystals[i][j] -= config.Get<float>( entryName );
+					float dim = config.Get<float>( nameof(config.IlluminationDimRate) );
+
+					singleton.IlluminatedCrystals[key] -= dim;
 				}
 			}
 		}
@@ -96,6 +116,6 @@ namespace FindableManaCrystals.Tiles {
 
 		////////////////
 
-		private IDictionary<int, IDictionary<int, float>> _IlluminatedCrystals = null;
+		private IDictionary<(int tileX, int tileY), float> IlluminatedCrystals = null;
 	}
 }

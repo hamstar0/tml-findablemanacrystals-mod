@@ -28,6 +28,7 @@ namespace FindableManaCrystals.Tiles {
 
 		public override bool PreDraw( int i, int j, SpriteBatch spriteBatch ) {
 			this.UpdateDrawnTileSlow( i, j );
+
 			ManaCrystalShardTile.UpdateIlluminationAt( i, j );
 
 			float illum;

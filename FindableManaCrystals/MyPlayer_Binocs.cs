@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.ModLoader;
 using ModLibsCore.Libraries.Debug;
 using ModLibsGeneral.Libraries.UI;
+using FindableManaCrystals.Tiles;
 
 
 namespace FindableManaCrystals {
@@ -16,7 +17,11 @@ namespace FindableManaCrystals {
 		////////////////
 
 		private void UpdateForShardViewing( bool isHoldingBinocs ) {
-			this.UpdateForBinocs_ZoomStateForFocus( isHoldingBinocs );
+			bool isFocusingBinocs = this.UpdateForBinocs_ZoomStateForFocus( isHoldingBinocs );
+
+			if( isFocusingBinocs ) {
+				this.UpdateForBinocs_FocusIllum();
+			}
 
 			if( isHoldingBinocs || this.IsNearSurveyStation ) {
 				if( this.IsBinocFocus || this.IsNearSurveyStation ) {
@@ -31,8 +36,10 @@ namespace FindableManaCrystals {
 			}
 		}
 		
-		private void UpdateForBinocs_ZoomStateForFocus( bool isHoldingBinocs ) {
-			if( Main.mouseLeft && isHoldingBinocs ) {
+		private bool UpdateForBinocs_ZoomStateForFocus( bool isHoldingBinocs ) {
+			bool isFocusing = Main.mouseLeft && isHoldingBinocs;
+
+			if( isFocusing ) {
 				if( !this.PreBinocZoomPercent.HasValue ) {
 					this.PreBinocZoomPercent = Main.GameZoomTarget;
 				}
@@ -51,6 +58,27 @@ namespace FindableManaCrystals {
 						this.ResetBinocZoomIf();
 					}
 				}
+			}
+
+			return isFocusing;
+		}
+
+		private void UpdateForBinocs_FocusIllum() {
+			Vector2 wldScrPos = Main.screenPosition;
+			wldScrPos.X += Main.screenWidth / 2;
+			wldScrPos.Y += Main.screenHeight / 2;
+
+			int tileX = (int)wldScrPos.X / 16;
+			int tileY = (int)wldScrPos.Y / 16;
+
+			//
+
+			ManaCrystalShardTile.GetIlluminationAt( tileX, tileY, out float illum );
+
+			if( illum <= 0f ) {
+				ManaCrystalShardTile.SetIlluminationAt( tileX, tileY, 0.9f );
+			} else if( illum <= 0.3f ) {
+				ManaCrystalShardTile.SetIlluminationAt( tileX, tileY, 0.3f );
 			}
 		}
 

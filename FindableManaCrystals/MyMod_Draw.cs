@@ -23,6 +23,7 @@ namespace FindableManaCrystals {
 				"FMC: Binocs Icon",
 				() => {
 					this.DrawMouseIcon_If( Main.spriteBatch );
+					this.DrawMouseReticule_If( Main.spriteBatch );
 					return true;
 				},
 				InterfaceScaleType.UI
@@ -48,8 +49,8 @@ namespace FindableManaCrystals {
 			//
 			
 			Texture2D mouseTex = isHoldingBinocs
-				? ModContent.GetTexture( "FindableManaCrystals/MouseLeftIcon" )
-				: ModContent.GetTexture( "FindableManaCrystals/MouseRightIcon" );
+				? ModContent.GetTexture( "FindableManaCrystals/MouseLeftIcon" )		// binocs
+				: ModContent.GetTexture( "FindableManaCrystals/MouseRightIcon" );	// geothaum station
 
 			Vector2 pos = Main.MouseScreen + new Vector2(-32f, -16f);
 
@@ -58,6 +59,44 @@ namespace FindableManaCrystals {
 				position: pos,
 				color: Color.White * 0.35f
 			);
+
+			//
+
+			return true;
+		}
+
+
+		private bool DrawMouseReticule_If( SpriteBatch sb ) {
+			var myplayer = Main.LocalPlayer.GetModPlayer<FMCPlayer>();
+
+			if( !myplayer.IsBinocFocus ) {
+				return false;
+			}
+
+			//
+
+			sb.Draw(
+				texture: Main.magicPixel,
+				destinationRectangle: new Rectangle(
+					( Main.screenWidth / 2 ) - 8,
+					( Main.screenHeight / 2 ) - 1,
+					16,
+					2
+				),
+				color: Color.White * 0.35f
+			);
+			sb.Draw(
+				texture: Main.magicPixel,
+				destinationRectangle: new Rectangle(
+					( Main.screenWidth / 2 ) - 1,
+					( Main.screenHeight / 2 ) - 8,
+					2,
+					16
+				),
+				color: Color.White * 0.35f
+			);
+
+			//
 
 			return true;
 		}
