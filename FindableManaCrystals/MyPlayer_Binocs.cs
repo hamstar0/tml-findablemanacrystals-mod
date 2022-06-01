@@ -64,21 +64,29 @@ namespace FindableManaCrystals {
 		}
 
 		private void UpdateForBinocs_FocusIllum() {
-			Vector2 wldScrPos = Main.screenPosition;
-			wldScrPos.X += Main.screenWidth / 2;
-			wldScrPos.Y += Main.screenHeight / 2;
-
-			int tileX = (int)wldScrPos.X / 16;
-			int tileY = (int)wldScrPos.Y / 16;
+			int wldRadius = 10;
 
 			//
 
-			ManaCrystalShardTile.GetIlluminationAt( tileX, tileY, out float illum );
+			Vector2 wldScrPos = Main.screenPosition;
+			int wldScrX = (int)wldScrPos.X + (Main.screenWidth / 2);
+			int wldScrY = (int)wldScrPos.Y + (Main.screenHeight / 2);
 
-			if( illum <= 0f ) {
-				ManaCrystalShardTile.SetIlluminationAt( tileX, tileY, 0.9f );
-			} else if( illum <= 0.3f ) {
-				ManaCrystalShardTile.SetIlluminationAt( tileX, tileY, 0.3f );
+			int minX = (wldScrX - wldRadius) / 16;
+			int minY = (wldScrY - wldRadius) / 16;
+			int maxX = (wldScrX + wldRadius) / 16;
+			int maxY = (wldScrY + wldRadius) / 16;
+
+			for( int tileX = minX; tileX < maxX; tileX++ ) {
+				for( int tileY = minY; tileY < maxY; tileY++ ) {
+					ManaCrystalShardTile.GetIlluminationAt( tileX, tileY, out float illum );
+
+					if( illum <= 0f ) {
+						ManaCrystalShardTile.SetIlluminationAt( tileX, tileY, 0.9f );
+					} else if( illum <= 0.3f ) {
+						ManaCrystalShardTile.SetIlluminationAt( tileX, tileY, 0.3f );
+					}
+				}
 			}
 		}
 
